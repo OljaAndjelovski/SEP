@@ -9,6 +9,4 @@ import com.ftn.uns.payment_gateway.model.PaymentType;
 
 @Repository
 public interface PaymentTypeRepository extends JpaRepository<PaymentType, Integer> {
-
-	public Optional<PaymentType> findById(Integer id);
 }
