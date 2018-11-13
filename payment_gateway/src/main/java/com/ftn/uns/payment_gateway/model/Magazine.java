@@ -7,82 +7,86 @@ import javax.persistence.*;
 
 @Entity
 public class Magazine {
-	
-	@Id
-	private Integer id;
 
-	private String issn;
+    @Column(length = 8, nullable = false)
+    private String issn;
 
-	private String title;
-	private Double membership;
-	private String merchantId;
+    private String title;
 
-	private String merchantPassword;
+    private Double membership;
 
-	@ManyToMany(fetch = FetchType.LAZY)
-	private Set<PaymentType> types = new HashSet<>();
+    @Id
+    @Column(length = 30)
+    private String merchantId;
 
-	public Magazine(String issn, String title, Double membership, String merchantId, String merchantPassword,
-			Set<PaymentType> types) {
-		super();
-		this.issn = issn;
-		this.title = title;
-		this.membership = membership;
-		this.merchantId = merchantId;
-		this.merchantPassword = merchantPassword;
-		this.types = types;
-	}
+    @Column(length = 100)
+    private String merchantPassword;
 
-	public Magazine() {
-		super();
-	}
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "MAGAZINE_TYPES", joinColumns = @JoinColumn(name = "MAGAZINE"), inverseJoinColumns = @JoinColumn(name = "TYPE"))
+    private Set<PaymentType> types = new HashSet<>();
 
-	public String getIssn() {
-		return issn;
-	}
+    public Magazine(String issn, String title, Double membership, String merchantId, String merchantPassword,
+                    Set<PaymentType> types) {
+        super();
+        this.issn = issn;
+        this.title = title;
+        this.membership = membership;
+        this.merchantId = merchantId;
+        this.merchantPassword = merchantPassword;
+        this.types = types;
+    }
 
-	public void setIssn(String issn) {
-		this.issn = issn;
-	}
+    public Magazine() {
+        super();
+    }
 
-	public String getTitle() {
-		return title;
-	}
+    public String getIssn() {
+        return issn;
+    }
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
+    public void setIssn(String issn) {
+        this.issn = issn;
+    }
 
-	public Double getMembership() {
-		return membership;
-	}
+    public String getTitle() {
+        return title;
+    }
 
-	public void setMembership(Double membership) {
-		this.membership = membership;
-	}
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
-	public String getMerchantId() {
-		return merchantId;
-	}
+    public Double getMembership() {
+        return membership;
+    }
 
-	public void setMerchantId(String merchantId) {
-		this.merchantId = merchantId;
-	}
+    public void setMembership(Double membership) {
+        this.membership = membership;
+    }
 
-	public String getMerchantPassword() {
-		return merchantPassword;
-	}
+    public String getMerchantId() {
+        return merchantId;
+    }
 
-	public void setMerchantPassword(String merchantPassword) {
-		this.merchantPassword = merchantPassword;
-	}
+    public void setMerchantId(String merchantId) {
+        this.merchantId = merchantId;
+    }
 
-	public Set<PaymentType> getTypes() {
-		return types;
-	}
+    public String getMerchantPassword() {
+        return merchantPassword;
+    }
 
-	public void setTypes(Set<PaymentType> types) {
-		this.types = types;
-	}
+    public void setMerchantPassword(String merchantPassword) {
+        this.merchantPassword = merchantPassword;
+    }
+
+    public Set<PaymentType> getTypes() {
+        return types;
+    }
+
+    public void setTypes(Set<PaymentType> types) {
+        this.types = types;
+    }
 
 }

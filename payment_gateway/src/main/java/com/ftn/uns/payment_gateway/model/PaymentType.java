@@ -7,38 +7,36 @@ import javax.persistence.Id;
 @Entity
 public class PaymentType {
 
-	@Id
-	@GeneratedValue
-	private Integer id;
-	
-	private Integer code;
+    @Id
+    @GeneratedValue
+    private Integer code;
 
-	private String name;
+    private String name;
 
-	public PaymentType() {
-		super();
-	}
+    public PaymentType() {
+        super();
+    }
 
-	public PaymentType(Integer code, String name) {
-		super();
-		this.code = code;
-		this.name = name;
-	}
+    public PaymentType(Integer code, String name) {
+        super();
+        this.code = code;
+        this.name = name;
+    }
 
-	public Integer getCode() {
-		return code;
-	}
+    public Integer getCode() {
+        return code;
+    }
 
-	public void setCode(Integer code) {
-		this.code = code;
-	}
+    public void setCode(Integer code) {
+        this.code = code;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
 }
