@@ -1,5 +1,8 @@
 package com.ftn.uns.payment_gateway.controller;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -28,5 +31,17 @@ public class MagazineController {
 
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
+	
+	@GetMapping(produces =  MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Collection<Magazine>> getMagazines() {
+		System.out.println("\n GET MAGAZINE " + "\n");
+		ArrayList<Magazine> magazines = (ArrayList<Magazine>) magazineService.findAll();
+		if (magazines != null) {
+			return new ResponseEntity<Collection<Magazine>>(magazines, HttpStatus.OK);
+		}
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	}
+	
+	
 
 }
