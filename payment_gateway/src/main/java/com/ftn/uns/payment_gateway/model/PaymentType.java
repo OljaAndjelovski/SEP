@@ -7,6 +7,8 @@ import javax.persistence.Id;
 public class PaymentType {
 
 	@Id
+	private Integer id;
+	
 	private Integer code;
 
 	private String name;

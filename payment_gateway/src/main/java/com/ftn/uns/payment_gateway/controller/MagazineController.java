@@ -24,7 +24,7 @@ public class MagazineController {
 	private MagazineService magazineService;
 
 	@RequestMapping(value = "/{magazineId}", method = RequestMethod.GET, produces = "application/json")
-	public ResponseEntity<Magazine> getMagazine(@PathVariable("magazineId") String magazineId) {
+	public ResponseEntity<Magazine> getMagazine(@PathVariable("magazineId") Integer magazineId) {
 		Magazine magazine = magazineService.findById(magazineId);
 		System.out.println("\n GET MAGAZINE " + magazineId + "\n");
 		if (magazine != null) {
@@ -45,7 +45,7 @@ public class MagazineController {
 	}
 	
 	@RequestMapping(value = "/{magazineId}", method = RequestMethod.DELETE, produces = "application/json")
-	public ResponseEntity<Magazine> deleteAdditionalService(@PathVariable String magazineId) {
+	public ResponseEntity<Magazine> deleteAdditionalService(@PathVariable Integer magazineId) {
 		System.out.println("\n DELETE MAGAZINE:  " + magazineId + "\n");
 		Magazine deletedMagazine = magazineService.deleteMagazine(magazineId);
 
@@ -68,7 +68,7 @@ public class MagazineController {
 	}
 	
 	@RequestMapping(value = "/update/{magazineId}", method = RequestMethod.PUT, consumes = "application/json", produces = "application/json")
-	public ResponseEntity<Magazine> updateUser(@PathVariable String magazineId, @RequestBody MagazineDto magazineDto) {
+	public ResponseEntity<Magazine> updateUser(@PathVariable Integer magazineId, @RequestBody MagazineDto magazineDto) {
 		System.out.println("\n UPDATE MAGAZINE:  " + magazineId + "\n");
 		Magazine updatedMagazine = magazineService.updateMagazine(magazineId, magazineDto);
 

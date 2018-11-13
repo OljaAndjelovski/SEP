@@ -7,13 +7,14 @@ import javax.persistence.*;
 
 @Entity
 public class Magazine {
+	
+	@Id
+	private Integer id;
 
 	private String issn;
 
 	private String title;
 	private Double membership;
-
-	@Id
 	private String merchantId;
 
 	private String merchantPassword;
