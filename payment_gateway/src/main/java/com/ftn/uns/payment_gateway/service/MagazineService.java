@@ -22,4 +22,10 @@ public class MagazineService {
 	public List<Magazine> findAll() {
 		return magazineRepository.findAll();
 	}
+	
+	public Magazine deleteMagazine(String id) {
+		Magazine deletedMagazine = magazineRepository.findById(id).orElse(null);
+		magazineRepository.delete(deletedMagazine);
+		return deletedMagazine;
+	}
 }
