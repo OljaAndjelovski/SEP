@@ -9,6 +9,7 @@ import javax.persistence.*;
 public class Order {
 
     @Id
+    @GeneratedValue
     @Column(name = "ORDER_ID")
     private Integer merchantOrderId;
 

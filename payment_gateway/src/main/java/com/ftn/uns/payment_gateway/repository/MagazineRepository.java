@@ -6,8 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.ftn.uns.payment_gateway.model.Magazine;
 
 @Repository
-public interface MagazineRepository extends JpaRepository<Magazine, Integer> {
-	
-	//public Optional<Magazine> findById(Integer id);
-	
+public interface MagazineRepository extends JpaRepository<Magazine, String> {
+
 }
