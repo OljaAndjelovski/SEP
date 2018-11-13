@@ -1,38 +1,28 @@
-package com.ftn.uns.payment_gateway.model;
+package com.ftn.uns.payment_gateway.dto;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
 
-import javax.persistence.*;
+import com.ftn.uns.payment_gateway.model.Magazine;
 
-@Entity
-public class Magazine {
-
+public class MagazineDto {
 	private String issn;
-
 	private String title;
 	private Double membership;
-
-	@Id
 	private String merchantId;
-
 	private String merchantPassword;
+	private ArrayList<Integer> typesCode = new ArrayList<Integer>();
 
-	@ManyToMany(fetch = FetchType.LAZY)
-	private Set<PaymentType> types = new HashSet<>();
-
-	public Magazine(String issn, String title, Double membership, String merchantId, String merchantPassword,
-			Set<PaymentType> types) {
-		super();
-		this.issn = issn;
-		this.title = title;
-		this.membership = membership;
-		this.merchantId = merchantId;
-		this.merchantPassword = merchantPassword;
-		this.types = types;
+	public Magazine createMagazine(MagazineDto magazineDto) {
+		Magazine magazine = new Magazine();
+		magazine.setIssn(magazineDto.getIssn());
+		magazine.setTitle(magazineDto.getTitle());
+		magazine.setMembership(magazineDto.getMembership());
+		magazine.setMerchantId(magazineDto.getMerchantId());
+		magazine.setMerchantPassword(magazineDto.getMerchantPassword());
+		return magazine;
 	}
 
-	public Magazine() {
+	public MagazineDto() {
 		super();
 	}
 
@@ -76,12 +66,12 @@ public class Magazine {
 		this.merchantPassword = merchantPassword;
 	}
 
-	public Set<PaymentType> getTypes() {
-		return types;
+	public ArrayList<Integer> getTypesCode() {
+		return typesCode;
 	}
 
-	public void setTypes(Set<PaymentType> types) {
-		this.types = types;
+	public void setTypesCode(ArrayList<Integer> typesCode) {
+		this.typesCode = typesCode;
 	}
 
 }

@@ -18,7 +18,7 @@ public class Transaction {
 	private LocalDateTime merchantTimestamp;
 
 	private String payerId;
-	
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Magazine magazine;
 
@@ -28,7 +28,8 @@ public class Transaction {
 		super();
 	}
 
-	public Transaction(Integer merchantOrderId, LocalDateTime merchantTimestamp, String payerId, Double amount, Magazine magazine) {
+	public Transaction(Integer merchantOrderId, LocalDateTime merchantTimestamp, String payerId, Double amount,
+			Magazine magazine) {
 		super();
 		this.merchantOrderId = merchantOrderId;
 		this.merchantTimestamp = merchantTimestamp;
@@ -77,5 +78,4 @@ public class Transaction {
 		this.magazine = magazine;
 	}
 
-	
 }
