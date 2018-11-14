@@ -85,7 +85,7 @@ public class PaymentTypeController {
 
     @PutMapping(value = "/{id}/subscribe/{magazineId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Magazine> subscribeToPaymentType(@PathVariable("id") Integer typeId,
-                                                           @PathVariable("magazineId") Integer magazineId) {
+                                                           @PathVariable("magazineId") String magazineId) {
         System.out.println("\n SUBSCRIBE MAGAZINE " + magazineId + " TO " + typeId + "\n");
 
         Magazine magazine = paymentTypeService.subscribeToPaymentType(magazineId, typeId);
@@ -98,7 +98,7 @@ public class PaymentTypeController {
 
     @PutMapping(value = "/{id}/unsubscribe/{magazineId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Magazine> unsubscribeFromPaymentType(@PathVariable("id") Integer typeId,
-                                                               @PathVariable("magazineId") Integer magazineId) {
+                                                               @PathVariable("magazineId") String magazineId) {
         System.out.println("\n UNSUBSCRIBE MAGAZINE " + magazineId + " FROM " + typeId + "\n");
 
         Magazine magazine = paymentTypeService.unsubscribeFromPaymentType(magazineId, typeId);

@@ -22,7 +22,7 @@ public class MagazineService {
 	@Autowired
 	private PaymentTypeRepository paymentTypeRepository;
 	
-	public Magazine findById(Integer id) {
+	public Magazine findById(String id) {
 		return magazineRepository.findById(id).orElse(null);
 	}
 	
@@ -30,7 +30,7 @@ public class MagazineService {
 		return magazineRepository.findAll();
 	}
 	
-	public Magazine deleteMagazine(Integer id) {
+	public Magazine deleteMagazine(String id) {
 		Magazine deletedMagazine = magazineRepository.findById(id).orElse(null);
 		magazineRepository.delete(deletedMagazine);
 		return deletedMagazine;
@@ -47,7 +47,7 @@ public class MagazineService {
 		return magazineRepository.save(createdMagazine);
 	}
 	
-	public Magazine updateMagazine(Integer id, MagazineDto magazineDto) {
+	public Magazine updateMagazine(String id, MagazineDto magazineDto) {
 		Magazine updatedMagazine = magazineRepository.findById(id).orElse(null);
 		updatedMagazine.setIssn(magazineDto.getIssn());
 		updatedMagazine.setTitle(magazineDto.getTitle());

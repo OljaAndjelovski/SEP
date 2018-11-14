@@ -7,7 +7,6 @@ import com.ftn.uns.payment_gateway.repository.PaymentTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.nio.file.Path;
 import java.util.List;
 
 @Service
@@ -72,7 +71,7 @@ public class PaymentTypeService {
         paymentTypeRepository.deleteById(id);
     }
 
-    public Magazine subscribeToPaymentType(Integer merchantId, Integer typeId) {
+    public Magazine subscribeToPaymentType(String merchantId, Integer typeId) {
 
         Magazine magazine = magazineRepository.getOne(merchantId);
         if (magazine.equals(null)) {
@@ -88,7 +87,7 @@ public class PaymentTypeService {
         return magazineRepository.save(magazine);
     }
 
-    public Magazine unsubscribeFromPaymentType(Integer merchantId, Integer typeId) {
+    public Magazine unsubscribeFromPaymentType(String merchantId, Integer typeId) {
 
         Magazine magazine = magazineRepository.getOne(merchantId);
         if (magazine.equals(null)) {
