@@ -8,7 +8,7 @@ import javax.persistence.*;
 @Entity
 public class Magazine {
 
-    @Column(length = 8, nullable = false)
+    @Column(length = 8, nullable = false, unique = true)
     private String issn;
 
     private String title;

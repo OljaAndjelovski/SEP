@@ -1,6 +1,7 @@
 package com.ftn.uns.payment_gateway.controller;
 
 import com.ftn.uns.payment_gateway.dto.MagazineDto;
+import com.ftn.uns.payment_gateway.mapper.MagazineMapper;
 import com.ftn.uns.payment_gateway.model.Magazine;
 import com.ftn.uns.payment_gateway.model.PaymentType;
 import com.ftn.uns.payment_gateway.service.PaymentTypeService;
@@ -19,6 +20,9 @@ public class PaymentTypeController {
 
     @Autowired
     PaymentTypeService paymentTypeService;
+
+    @Autowired
+    MagazineMapper magazineMapper;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<PaymentType>> getAll() {
@@ -92,18 +96,7 @@ public class PaymentTypeController {
 
         Magazine magazine = paymentTypeService.subscribeToPaymentType(magazineId, typeId);
         if (magazine != null) {
-            MagazineDto dto = new MagazineDto();
-            dto.setIssn(magazine.getIssn());
-            dto.setMembership(magazine.getMembership());
-            dto.setMerchantId(magazine.getMerchantId());
-            dto.setTitle(magazine.getTitle());
-            dto.setTypesCode(new ArrayList<>());
-
-            for(PaymentType type: magazine.getTypes()){
-                dto.getTypesCode().add(type.getCode());
-            }
-
-            return ResponseEntity.ok(dto);
+            return ResponseEntity.ok(magazineMapper.mapToDTO(magazine));
         }
 
         return ResponseEntity.badRequest().build();
@@ -116,18 +109,7 @@ public class PaymentTypeController {
 
         Magazine magazine = paymentTypeService.unsubscribeFromPaymentType(magazineId, typeId);
         if (magazine != null) {
-            MagazineDto dto = new MagazineDto();
-            dto.setIssn(magazine.getIssn());
-            dto.setMembership(magazine.getMembership());
-            dto.setMerchantId(magazine.getMerchantId());
-            dto.setTitle(magazine.getTitle());
-            dto.setTypesCode(new ArrayList<>());
-
-            for(PaymentType type: magazine.getTypes()){
-                dto.getTypesCode().add(type.getCode());
-            }
-
-            return ResponseEntity.ok(dto);
+            return ResponseEntity.ok(magazineMapper.mapToDTO(magazine));
         }
 
         return ResponseEntity.badRequest().build();

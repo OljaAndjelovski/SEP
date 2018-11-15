@@ -1,6 +1,7 @@
 package com.ftn.uns.payment_gateway.model;
 
 import java.time.LocalDateTime;
+import java.util.stream.StreamSupport;
 
 import javax.persistence.*;
 
@@ -11,11 +12,10 @@ public class Order {
     @Id
     @GeneratedValue
     @Column(name = "ORDER_ID")
-    private Integer merchantOrderId;
+    private Long merchantOrderId;
 
     @Column(name = "TIMESTAMP")
     private LocalDateTime merchantTimestamp;
-
 
     private String payerId;
 
@@ -23,35 +23,68 @@ public class Order {
     @JoinColumn(name = "MAGAZINE")
     private Magazine magazine;
 
-    private Double amount;
+    private Integer quantity;
+
+    private Double price;
+
+    @Column(name = "CURRENCY", length = 3)
+    private String currency;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "TYPE")
+    private PaymentType type;
+
+    @Column(name = "BUYER_NAME")
+    private String buyerFirstName;
+
+    @Column(name = "BUYER_SURNAME")
+    private String buyerLastName;
+
+    @Column(name = "BUYER_EMAIL")
+    private String buyerEmail;
+
+    private String merchandise;
 
     public Order() {
         super();
     }
 
-    public Order(Integer merchantOrderId, LocalDateTime merchantTimestamp, String payerId, Double amount,
-                 Magazine magazine) {
-        super();
-        this.merchantOrderId = merchantOrderId;
+    public Order(LocalDateTime merchantTimestamp, String payerId, Magazine magazine, Integer quantity, Double price,
+                 String currency, PaymentType type, String buyerFirstName, String buyerLastName, String buyerEmail, String merchandise) {
         this.merchantTimestamp = merchantTimestamp;
         this.payerId = payerId;
-        this.amount = amount;
         this.magazine = magazine;
+        this.quantity = quantity;
+        this.price = price;
+        this.currency = currency;
+        this.type = type;
+        this.buyerFirstName = buyerFirstName;
+        this.buyerLastName = buyerLastName;
+        this.buyerEmail = buyerEmail;
+        this.merchandise = merchandise;
+    }
+
+    public PaymentType getType() {
+        return type;
+    }
+
+    public void setType(PaymentType type) {
+        this.type = type;
     }
 
     public Double getAmount() {
-        return amount;
+        return price;
     }
 
-    public void setAmount(Double amount) {
-        this.amount = amount;
+    public void setAmount(Double price) {
+        this.price = price;
     }
 
-    public Integer getMerchantOrderId() {
+    public Long getMerchantOrderId() {
         return merchantOrderId;
     }
 
-    public void setMerchantOrderId(Integer merchantOrderId) {
+    public void setMerchantOrderId(Long merchantOrderId) {
         this.merchantOrderId = merchantOrderId;
     }
 
@@ -79,4 +112,59 @@ public class Order {
         this.magazine = magazine;
     }
 
+    public String getBuyerFirstName() {
+        return buyerFirstName;
+    }
+
+    public void setBuyerFirstName(String buyerFirstName) {
+        this.buyerFirstName = buyerFirstName;
+    }
+
+    public String getBuyerLastName() {
+        return buyerLastName;
+    }
+
+    public void setBuyerLastName(String buyerLastName) {
+        this.buyerLastName = buyerLastName;
+    }
+
+    public String getBuyerEmail() {
+        return buyerEmail;
+    }
+
+    public void setBuyerEmail(String buyerEmail) {
+        this.buyerEmail = buyerEmail;
+    }
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
+    public String getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
+    }
+
+    public String getMerchandise() {
+        return merchandise;
+    }
+
+    public void setMerchandise(String merchandise) {
+        this.merchandise = merchandise;
+    }
 }
