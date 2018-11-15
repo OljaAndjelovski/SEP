@@ -1,5 +1,6 @@
 package com.ftn.uns.payment_gateway.controller;
 
+import com.ftn.uns.payment_gateway.dto.MagazineDto;
 import com.ftn.uns.payment_gateway.model.Magazine;
 import com.ftn.uns.payment_gateway.model.PaymentType;
 import com.ftn.uns.payment_gateway.service.PaymentTypeService;
@@ -8,6 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -43,7 +45,7 @@ public class PaymentTypeController {
     public ResponseEntity<PaymentType> createPaymentType(@RequestBody PaymentType type) {
         System.out.println("\n CREATE PAYMENT TYPE " + "\n");
 
-        if (type.getCode() == null) {
+        if (type != null && type.getCode() == null) {
             PaymentType newType = paymentTypeService.createPaymentType(type);
             if (newType != null) {
                 return ResponseEntity.ok(newType);
@@ -59,7 +61,7 @@ public class PaymentTypeController {
     public ResponseEntity<PaymentType> updatePaymentType(@RequestBody PaymentType type, @PathVariable("id") Integer id) {
         System.out.println("\n UPDATE PAYMENT TYPE " + "\n");
 
-        if (id != null) {
+        if (type != null && id != null) {
             PaymentType newType = paymentTypeService.updatePaymentType(type, id);
             if (newType != null) {
                 return ResponseEntity.ok(newType);
@@ -84,26 +86,48 @@ public class PaymentTypeController {
     }
 
     @PutMapping(value = "/{id}/subscribe/{magazineId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Magazine> subscribeToPaymentType(@PathVariable("id") Integer typeId,
-                                                           @PathVariable("magazineId") String magazineId) {
+    public ResponseEntity<MagazineDto> subscribeToPaymentType(@PathVariable("id") Integer typeId,
+                                                              @PathVariable("magazineId") String magazineId) {
         System.out.println("\n SUBSCRIBE MAGAZINE " + magazineId + " TO " + typeId + "\n");
 
         Magazine magazine = paymentTypeService.subscribeToPaymentType(magazineId, typeId);
-        if (!magazine.equals(null)) {
-            return ResponseEntity.ok(magazine);
+        if (magazine != null) {
+            MagazineDto dto = new MagazineDto();
+            dto.setIssn(magazine.getIssn());
+            dto.setMembership(magazine.getMembership());
+            dto.setMerchantId(magazine.getMerchantId());
+            dto.setTitle(magazine.getTitle());
+            dto.setTypesCode(new ArrayList<>());
+
+            for(PaymentType type: magazine.getTypes()){
+                dto.getTypesCode().add(type.getCode());
+            }
+
+            return ResponseEntity.ok(dto);
         }
 
         return ResponseEntity.badRequest().build();
     }
 
     @PutMapping(value = "/{id}/unsubscribe/{magazineId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Magazine> unsubscribeFromPaymentType(@PathVariable("id") Integer typeId,
+    public ResponseEntity<MagazineDto> unsubscribeFromPaymentType(@PathVariable("id") Integer typeId,
                                                                @PathVariable("magazineId") String magazineId) {
         System.out.println("\n UNSUBSCRIBE MAGAZINE " + magazineId + " FROM " + typeId + "\n");
 
         Magazine magazine = paymentTypeService.unsubscribeFromPaymentType(magazineId, typeId);
-        if (!magazine.equals(null)) {
-            return ResponseEntity.ok(magazine);
+        if (magazine != null) {
+            MagazineDto dto = new MagazineDto();
+            dto.setIssn(magazine.getIssn());
+            dto.setMembership(magazine.getMembership());
+            dto.setMerchantId(magazine.getMerchantId());
+            dto.setTitle(magazine.getTitle());
+            dto.setTypesCode(new ArrayList<>());
+
+            for(PaymentType type: magazine.getTypes()){
+                dto.getTypesCode().add(type.getCode());
+            }
+
+            return ResponseEntity.ok(dto);
         }
 
         return ResponseEntity.badRequest().build();

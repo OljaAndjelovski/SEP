@@ -1,5 +1,6 @@
 package com.ftn.uns.payment_gateway.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -11,6 +12,7 @@ public class PaymentType {
     @GeneratedValue
     private Integer code;
 
+    @Column(unique = true)
     private String name;
 
     public PaymentType() {

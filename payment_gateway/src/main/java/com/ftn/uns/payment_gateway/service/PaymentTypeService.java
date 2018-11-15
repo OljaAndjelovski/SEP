@@ -27,7 +27,11 @@ public class PaymentTypeService {
     }
 
     public PaymentType createPaymentType(PaymentType type) {
-        if (type.getName() != null || !type.getName().equals("")) {
+        if(type.getName() == null){
+            return null;
+        }
+
+        if (!type.getName().equals("")) {
 
             if (checkIfExistingPlugin(type)) {
                 return paymentTypeRepository.save(type);
@@ -38,7 +42,11 @@ public class PaymentTypeService {
     }
 
     public PaymentType updatePaymentType(PaymentType newType, Integer id) {
-        if (newType.getName() != null || !newType.getName().equals("")) {
+        if(newType.getName() == null){
+            return null;
+        }
+
+        if (!newType.getName().equals("")) {
 
             if (checkIfExistingPlugin(newType)) {
                 PaymentType type = paymentTypeRepository.getOne(id);
@@ -52,9 +60,8 @@ public class PaymentTypeService {
 
     private boolean checkIfExistingPlugin(PaymentType type) {
         String className = extractClassName(type);
-        Class clazz;
         try {
-            clazz = Class.forName(className);
+            Class.forName(className);
         } catch (ClassNotFoundException e) {
             return false;
         }
@@ -63,8 +70,7 @@ public class PaymentTypeService {
     }
 
     private static String extractClassName(PaymentType type) {
-        String lowerCaseName = type.getName().substring(0, 1) + type.getName().substring(1).toLowerCase();
-        return String.format("com.ftn.uns.payment_gateway.service.%sPaymentTypeGatewayImpl", lowerCaseName);
+        return String.format("com.ftn.uns.payment_gateway.service.%sPaymentTypeGatewayImpl", type.getName());
     }
 
     public void deletePaymentType(Integer id) {
@@ -74,12 +80,12 @@ public class PaymentTypeService {
     public Magazine subscribeToPaymentType(String merchantId, Integer typeId) {
 
         Magazine magazine = magazineRepository.getOne(merchantId);
-        if (magazine.equals(null)) {
+        if (magazine == null) {
             return null;
         }
 
         PaymentType type = paymentTypeRepository.getOne(typeId);
-        if (type.equals(null)) {
+        if (type == null) {
             return null;
         }
 
@@ -90,12 +96,12 @@ public class PaymentTypeService {
     public Magazine unsubscribeFromPaymentType(String merchantId, Integer typeId) {
 
         Magazine magazine = magazineRepository.getOne(merchantId);
-        if (magazine.equals(null)) {
+        if (magazine == null) {
             return null;
         }
 
         PaymentType type = paymentTypeRepository.getOne(typeId);
-        if (type.equals(null)) {
+        if (type == null) {
             return null;
         }
 
