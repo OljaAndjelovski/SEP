@@ -4,7 +4,7 @@ import com.ftn.uns.payment_gateway.model.Order;
 
 public interface PaymentTypeGateway {
 
-    Order createOrder();
-    Order cancelOrder();
-    Order confirmOrder();
+    Order createOrder(Order order);
+    Order cancelOrder(Order order);
+    Order confirmOrder(Order order);
 }

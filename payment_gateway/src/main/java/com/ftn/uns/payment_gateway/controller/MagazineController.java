@@ -3,14 +3,14 @@ package com.ftn.uns.payment_gateway.controller;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import com.ftn.uns.payment_gateway.mapper.MagazineMapper;
+import com.ftn.uns.payment_gateway.model.PaymentServiceDetails;
+import com.ftn.uns.payment_gateway.service.PaymentDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.ftn.uns.payment_gateway.dto.MagazineDto;
 import com.ftn.uns.payment_gateway.model.Magazine;
@@ -22,6 +22,12 @@ public class MagazineController {
 
 	@Autowired
 	private MagazineService magazineService;
+
+	@Autowired
+	private PaymentDetailsService paymentDetailsService;
+
+	@Autowired
+    private MagazineMapper magazineMapper;
 
 	@RequestMapping(value = "/{magazineId}", method = RequestMethod.GET, produces = "application/json")
 	public ResponseEntity<Magazine> getMagazine(@PathVariable("magazineId") String magazineId) {
@@ -77,5 +83,28 @@ public class MagazineController {
 		}
 		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
-	
+
+	@PutMapping(value = "/{id}/subscribe", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<MagazineDto> subscribeToPaymentType(@RequestBody PaymentServiceDetails details, @PathVariable("id") String issn){
+        System.out.println("\n SUBSCRIBE MAGAZINE TO PAYMENT TYPE:  " + issn + "\n");
+	    Magazine magazine = paymentDetailsService.subscribeToPaymentType(issn, details);
+
+	    if(!(magazine == null)){
+	        return ResponseEntity.ok(magazineMapper.mapToDTO(magazine));
+        }
+
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping(value = "/{id}/unsubscribe", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<MagazineDto> unsubscribeFromPaymentType(@RequestBody PaymentServiceDetails details, @PathVariable("id") String issn){
+        System.out.println("\n UNSUBSCRIBE MAGAZINE FROM PAYMENT TYPE:  " + issn + "\n");
+        Magazine magazine = paymentDetailsService.unsubscribeFromPaymentType(issn, details);
+
+        if(!(magazine == null)){
+            return ResponseEntity.ok(magazineMapper.mapToDTO(magazine));
+        }
+
+        return ResponseEntity.noContent().build();
+    }
 }

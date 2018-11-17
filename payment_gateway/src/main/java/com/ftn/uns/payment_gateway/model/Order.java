@@ -30,8 +30,6 @@ public class Order {
     @Column(name = "CURRENCY", length = 3)
     private String currency;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "TYPE")
     private PaymentType type;
 
     @Column(name = "BUYER_NAME")
@@ -45,12 +43,14 @@ public class Order {
 
     private String merchandise;
 
+    private Boolean executed;
+
     public Order() {
         super();
     }
 
     public Order(LocalDateTime merchantTimestamp, String payerId, Magazine magazine, Integer quantity, Double price,
-                 String currency, PaymentType type, String buyerFirstName, String buyerLastName, String buyerEmail, String merchandise) {
+                 String currency, PaymentType type, String buyerFirstName, String buyerLastName, String buyerEmail, String merchandise, Boolean executed) {
         this.merchantTimestamp = merchantTimestamp;
         this.payerId = payerId;
         this.magazine = magazine;
@@ -62,22 +62,26 @@ public class Order {
         this.buyerLastName = buyerLastName;
         this.buyerEmail = buyerEmail;
         this.merchandise = merchandise;
+        this.executed = executed;
     }
 
-    public PaymentType getType() {
-        return type;
-    }
-
-    public void setType(PaymentType type) {
-        this.type = type;
-    }
-
-    public Double getAmount() {
-        return price;
-    }
-
-    public void setAmount(Double price) {
-        this.price = price;
+    @Override
+    public String toString() {
+        return "Order{" +
+                "merchantOrderId=" + merchantOrderId +
+                ", merchantTimestamp=" + merchantTimestamp +
+                ", payerId='" + payerId + '\'' +
+                ", magazine=" + magazine +
+                ", quantity=" + quantity +
+                ", price=" + price +
+                ", currency='" + currency + '\'' +
+                ", type=" + type +
+                ", buyerFirstName='" + buyerFirstName + '\'' +
+                ", buyerLastName='" + buyerLastName + '\'' +
+                ", buyerEmail='" + buyerEmail + '\'' +
+                ", merchandise='" + merchandise + '\'' +
+                ", executed=" + executed +
+                '}';
     }
 
     public Long getMerchantOrderId() {
@@ -88,14 +92,6 @@ public class Order {
         this.merchantOrderId = merchantOrderId;
     }
 
-    public String getPayerId() {
-        return payerId;
-    }
-
-    public void setPayerId(String payerId) {
-        this.payerId = payerId;
-    }
-
     public LocalDateTime getMerchantTimestamp() {
         return merchantTimestamp;
     }
@@ -104,36 +100,20 @@ public class Order {
         this.merchantTimestamp = merchantTimestamp;
     }
 
+    public String getPayerId() {
+        return payerId;
+    }
+
+    public void setPayerId(String payerId) {
+        this.payerId = payerId;
+    }
+
     public Magazine getMagazine() {
         return magazine;
     }
 
     public void setMagazine(Magazine magazine) {
         this.magazine = magazine;
-    }
-
-    public String getBuyerFirstName() {
-        return buyerFirstName;
-    }
-
-    public void setBuyerFirstName(String buyerFirstName) {
-        this.buyerFirstName = buyerFirstName;
-    }
-
-    public String getBuyerLastName() {
-        return buyerLastName;
-    }
-
-    public void setBuyerLastName(String buyerLastName) {
-        this.buyerLastName = buyerLastName;
-    }
-
-    public String getBuyerEmail() {
-        return buyerEmail;
-    }
-
-    public void setBuyerEmail(String buyerEmail) {
-        this.buyerEmail = buyerEmail;
     }
 
     public Integer getQuantity() {
@@ -160,11 +140,51 @@ public class Order {
         this.currency = currency;
     }
 
+    public PaymentType getType() {
+        return type;
+    }
+
+    public void setType(PaymentType type) {
+        this.type = type;
+    }
+
+    public String getBuyerFirstName() {
+        return buyerFirstName;
+    }
+
+    public void setBuyerFirstName(String buyerFirstName) {
+        this.buyerFirstName = buyerFirstName;
+    }
+
+    public String getBuyerLastName() {
+        return buyerLastName;
+    }
+
+    public void setBuyerLastName(String buyerLastName) {
+        this.buyerLastName = buyerLastName;
+    }
+
+    public String getBuyerEmail() {
+        return buyerEmail;
+    }
+
+    public void setBuyerEmail(String buyerEmail) {
+        this.buyerEmail = buyerEmail;
+    }
+
     public String getMerchandise() {
         return merchandise;
     }
 
     public void setMerchandise(String merchandise) {
         this.merchandise = merchandise;
+    }
+
+    public Boolean getExecuted() {
+        return executed;
+    }
+
+    public void setExecuted(Boolean executed) {
+        this.executed = executed;
     }
 }

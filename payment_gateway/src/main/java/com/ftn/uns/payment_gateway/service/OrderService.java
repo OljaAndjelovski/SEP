@@ -18,6 +18,9 @@ public class OrderService {
     @Autowired
     MagazineRepository magazineRepository;
 
+    @Autowired
+    PaymentDetailsService paymentDetailsService;
+
     public Order findById(Integer id) {
         return orderRepository.findById(id).orElse(null);
     }
@@ -33,11 +36,7 @@ public class OrderService {
 
     public Order createOrder(Order order) {
 
-        if (!order.getMerchantOrderId().equals(null)) {
-            return null;
-        }
-
-        if (order.getAmount().equals(null)) {
+        if (order.getPrice().equals(null)) {
             return null;
         }
 
@@ -45,12 +44,12 @@ public class OrderService {
             return null;
         }
 
-        if (magazineRepository.getOne(order.getMagazine().getMerchantId()).equals(null)) {
-            return null;
-        }
-
         order.setMerchantTimestamp(LocalDateTime.now());
-        return orderRepository.save(order);
+        order.setExecuted(null);
+
+        order = orderRepository.save(order);
+
+        return createOrderService(order);
     }
 
     public Order updateOrder(Integer id, Order order) {
@@ -65,22 +64,23 @@ public class OrderService {
 
         newOrder.setMerchantTimestamp(order.getMerchantTimestamp());
 
-        if (order.getAmount().equals(null)) {
+        if (order.getPrice().equals(null)) {
             return null;
         }
-        newOrder.setAmount(order.getAmount());
+        newOrder.setPrice(order.getPrice());
 
         if (order.getPayerId().equals(null)) {
             return null;
         }
         newOrder.setPayerId(order.getPayerId());
 
-        if (magazineRepository.getOne(order.getMagazine().getMerchantId()).equals(null)) {
-            return null;
-        }
         newOrder.setMagazine(order.getMagazine());
 
         return orderRepository.save(order);
     }
 
+    private Order createOrderService(Order order){
+        PaymentTypeGateway gateway = PaymentTypeGatewayFactory.getGateway(order.getType());
+        return gateway.createOrder(order);
+    }
 }

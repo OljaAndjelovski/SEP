@@ -1,11 +1,13 @@
 package com.ftn.uns.payment_gateway.controller;
 
-import com.ftn.uns.payment_gateway.dto.OrderDTO;
+import com.ftn.uns.payment_gateway.dto.OrderDto;
+import com.ftn.uns.payment_gateway.mapper.OrderMapper;
+import com.ftn.uns.payment_gateway.service.OrderService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,29 +15,34 @@ import java.util.List;
 @RequestMapping("/orders")
 public class OrderController {
 
+    @Autowired
+    OrderService orderService;
+
+    @Autowired
+    OrderMapper mapper;
+
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<OrderDTO>> getAllOrders(){
+    public ResponseEntity<List<OrderDto>> getAllOrders() {
         return ResponseEntity.ok(new ArrayList<>());
     }
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<OrderDTO> getOrder(@PathVariable("id") Long id){
-        return ResponseEntity.ok(new OrderDTO());
+    public ResponseEntity<OrderDto> getOrder(@PathVariable("id") Long id) {
+        return ResponseEntity.ok(new OrderDto());
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<OrderDTO> createOrder(@RequestBody OrderDTO dto){
-        System.out.println("Order placed: " + dto.getAmount() + " at " + LocalDateTime.now());
-        return ResponseEntity.ok(new OrderDTO());
+    public ResponseEntity<OrderDto> createOrder(@RequestBody OrderDto dto) {
+        return ResponseEntity.ok(mapper.mapToDTO(orderService.createOrder(mapper.mapFromDTO(dto))));
     }
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<OrderDTO> executeOrder(@RequestBody OrderDTO dto, @PathVariable("id") Long id){
-        return ResponseEntity.ok(new OrderDTO());
+    public ResponseEntity<OrderDto> executeOrder(@RequestBody OrderDto dto, @PathVariable("id") Long id) {
+        return ResponseEntity.ok(new OrderDto());
     }
 
     @DeleteMapping(value = "/{id}")
-    public void cancelOrder(@PathVariable("id") Long id){
+    public void cancelOrder(@PathVariable("id") Long id) {
 
     }
 }

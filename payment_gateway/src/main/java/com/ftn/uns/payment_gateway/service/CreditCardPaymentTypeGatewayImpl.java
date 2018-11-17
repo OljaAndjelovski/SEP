@@ -4,17 +4,19 @@ import com.ftn.uns.payment_gateway.model.Order;
 
 public class CreditCardPaymentTypeGatewayImpl implements PaymentTypeGateway {
     @Override
-    public Order createOrder() {
+    public Order createOrder(Order o) {
+        System.out.println("STARTED CREDITCARD SERVICE");
+        System.out.println(o.toString());
+        return o;
+    }
+
+    @Override
+    public Order cancelOrder(Order o) {
         return null;
     }
 
     @Override
-    public Order cancelOrder() {
-        return null;
-    }
-
-    @Override
-    public Order confirmOrder() {
+    public Order confirmOrder(Order o) {
         return null;
     }
 }

@@ -1,44 +1,29 @@
 package com.ftn.uns.payment_gateway.model;
 
+import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
-
-import javax.persistence.*;
 
 @Entity
 public class Magazine {
 
+    @Id
     @Column(length = 8, nullable = false, unique = true)
     private String issn;
 
     private String title;
 
-    private Double membership;
-
-    @Id
-    @Column(length = 30)
-    private String merchantId;
-
-    @Column(length = 100)
-    private String merchantPassword;
-
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "MAGAZINE_TYPES", joinColumns = @JoinColumn(name = "MAGAZINE"), inverseJoinColumns = @JoinColumn(name = "TYPE"))
-    private Set<PaymentType> types = new HashSet<>();
-
-    public Magazine(String issn, String title, Double membership, String merchantId, String merchantPassword,
-                    Set<PaymentType> types) {
-        super();
-        this.issn = issn;
-        this.title = title;
-        this.membership = membership;
-        this.merchantId = merchantId;
-        this.merchantPassword = merchantPassword;
-        this.types = types;
-    }
+    @OneToMany
+    @JoinColumn(name = "MAGAZINE")
+    private Set<PaymentServiceDetails> details = new HashSet<>();
 
     public Magazine() {
-        super();
+    }
+
+    public Magazine(String issn, String title, Set<PaymentServiceDetails> details) {
+        this.issn = issn;
+        this.title = title;
+        this.details = details;
     }
 
     public String getIssn() {
@@ -57,36 +42,11 @@ public class Magazine {
         this.title = title;
     }
 
-    public Double getMembership() {
-        return membership;
+    public Set<PaymentServiceDetails> getDetails() {
+        return details;
     }
 
-    public void setMembership(Double membership) {
-        this.membership = membership;
+    public void setDetails(Set<PaymentServiceDetails> details) {
+        this.details = details;
     }
-
-    public String getMerchantId() {
-        return merchantId;
-    }
-
-    public void setMerchantId(String merchantId) {
-        this.merchantId = merchantId;
-    }
-
-    public String getMerchantPassword() {
-        return merchantPassword;
-    }
-
-    public void setMerchantPassword(String merchantPassword) {
-        this.merchantPassword = merchantPassword;
-    }
-
-    public Set<PaymentType> getTypes() {
-        return types;
-    }
-
-    public void setTypes(Set<PaymentType> types) {
-        this.types = types;
-    }
-
 }

@@ -1,1 +1,3 @@
 /.metadata/
+
+/payment-gateway-front/node_modules/*
