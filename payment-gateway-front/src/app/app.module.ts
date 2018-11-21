@@ -14,6 +14,7 @@ import { CancelPageComponent } from './end-pages/cancel-page/cancel-page.compone
 import { ErrorPageComponent } from './end-pages/error-page/error-page.component';
 import { AppRoutingModule } from './app-routing/app-routing.module';
 import { PageNotFoundComponent } from './end-pages/page-not-found/page-not-found.component';
+import { StartPageComponent } from './end-pages/start-page/start-page.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { PageNotFoundComponent } from './end-pages/page-not-found/page-not-found
     SuccessPageComponent,
     CancelPageComponent,
     ErrorPageComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
+    StartPageComponent
   ],
   imports: [
     BrowserModule,

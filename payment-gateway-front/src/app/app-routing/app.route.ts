@@ -5,6 +5,7 @@ import { SuccessPageComponent } from '../end-pages/success-page/success-page.com
 import { ErrorPageComponent } from '../end-pages/error-page/error-page.component';
 import { CancelPageComponent } from '../end-pages/cancel-page/cancel-page.component';
 import { PageNotFoundComponent } from '../end-pages/page-not-found/page-not-found.component';
+import { StartPageComponent } from '../end-pages/start-page/start-page.component';
 
 export const routes: Routes = [
     {
@@ -32,8 +33,12 @@ export const routes: Routes = [
         component: PageNotFoundComponent
     },
     {
+        path: 'home',
+        component: StartPageComponent
+    },
+    {
         path: '',
-        redirectTo: '/choose-payment',
+        redirectTo: '/home',
         pathMatch: 'full'
     },
     {
