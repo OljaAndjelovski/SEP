@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Magazine } from '../model/magazine';
 import { PaymentDetails } from '../model/payment-details';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-subscribe-magazine-page',
@@ -16,7 +17,9 @@ export class SubscribeMagazinePageComponent implements OnInit {
   newID: string;
   newPassword: string;
 
-  constructor() { }
+  constructor(
+    private router: Router
+  ) { }
 
   ngOnInit() {
     this.initForm();
@@ -50,13 +53,7 @@ export class SubscribeMagazinePageComponent implements OnInit {
       }
     ];
   
-    this.magazine = {
-      issn: "xxWWyyZZ",
-      title: "Default magazine",
-      details: []
-    };
-
-
+    this.magazine = new Magazine("xxWWyyZZ", "Default magazine", []);
   }
 
   paymentTypeChecked(type: string): boolean{
@@ -88,6 +85,12 @@ export class SubscribeMagazinePageComponent implements OnInit {
   openType(type: string){
     if(!this.paymentTypeChecked(type)){
       this.chosenType = type;
+    }
+  }
+
+  saveMagazine(){
+    if(window.confirm("Do you want to save this magazine?\n"+this.magazine.print())){
+      this.router.navigate(["/home"]);
     }
   }
 

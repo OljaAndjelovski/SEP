@@ -6,4 +6,15 @@ export class Magazine {
         public title: string,
         public details: PaymentDetails[]
     ) {}
+
+    public print(): String{
+        let str = "ISSN: "+this.issn 
+            + "\nTitle: "+this.title
+            +"\nTypes: ";
+        for(let detail of this.details){
+            str += detail.type + ",";
+        }
+
+        return str;
+    }
 }
