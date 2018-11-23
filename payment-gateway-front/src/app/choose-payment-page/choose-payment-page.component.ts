@@ -1,18 +1,47 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewChecked } from '@angular/core';
 import { Merchandise } from '../model/merchandise';
 import { Order } from '../model/order';
 import { Router } from '@angular/router';
+
+declare let paypal: any;
 
 @Component({
   selector: 'app-choose-payment-page',
   templateUrl: './choose-payment-page.component.html',
   styleUrls: ['./choose-payment-page.component.css']
 })
-export class ChoosePaymentPageComponent implements OnInit {
+export class ChoosePaymentPageComponent implements OnInit, AfterViewChecked {
 
+  addScript: boolean = false;
+  paypalLoad: boolean = true;
   merchandise: Merchandise;
   order: Order;
   paymentTypes: any[];
+  
+  paypalConfig = {
+    env: 'sandbox',
+    client: {
+      sandbox: 'AS7kftlYLLaUYwYyYJMsW3K3piIompuO7yJl_5n7YbCBXTjW0WS17IahnEFoauQTOnc5kdrg1YeHHMQY'
+    },
+    commit: true,
+    payment: (data, actions) => {
+      return actions.payment.create({
+        payment: {
+          transactions: [
+            { amount: {total: 500, currency: 'USD'}}
+          ]
+        }
+      });
+    },
+    onAuthorize: function(data, actions) {
+      // 2. Make a request to your server
+      return actions.payment.execute()
+        .then((payment) => {
+            console.log(payment);
+            this.router.navigate(['/success']);
+        });
+    }
+  };
 
   constructor(
     private router: Router
@@ -44,6 +73,25 @@ export class ChoosePaymentPageComponent implements OnInit {
         "name": "Bitcoin"
       }
     ];
+  }
+
+  ngAfterViewChecked(): void {
+    if (!this.addScript) {
+      this.addPaypalScript().then(() => {
+        paypal.Button.render(this.paypalConfig, '#paypal-button');
+        this.paypalLoad = false;
+      })
+    }
+  }
+  
+  addPaypalScript() {
+    this.addScript = true;
+    return new Promise((resolve, reject) => {
+      let scripttagElement = document.createElement('script');    
+      scripttagElement.src = 'https://www.paypalobjects.com/api/checkout.js';
+      scripttagElement.onload = resolve;
+      document.body.appendChild(scripttagElement);
+    })
   }
 
   public createOrder(){

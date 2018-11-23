@@ -6,8 +6,7 @@ public class PayPalPaymentTypeGatewayImpl implements PaymentTypeGateway {
 
     @Override
     public Order createOrder(Order o) {
-        System.out.println("STARTED PAYPAL SERVICE");
-        System.out.println(o.toString());
+        
         return o;
     }
 

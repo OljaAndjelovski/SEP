@@ -37,8 +37,9 @@
             <ul class="list-group">
               <li class="list-group-item" *ngFor="let type of paymentTypes" [ngClass]="{'active': order.type===type.code}">
                 <a class="btn text-dark" (click)="order.type=type.code">&nbsp;
-                  <i class="fa" [ngClass]="{'fa-credit-card-alt': type.code==='CreditCard', 'fa-paypal': type.code==='PayPal', 'fa-btc': type.code==='Bitcoin', 'fa-money': type.code!=='CreditCard' && type.code!=='PayPal' && type.code!=='Bitcoin'}" aria-hidden="true"></i>
+                  <i class="fa" *ngIf="type.code !== 'PayPal'" [ngClass]="{'fa-credit-card-alt': type.code==='CreditCard', 'fa-btc': type.code==='Bitcoin', 'fa-money': type.code!=='CreditCard' && type.code!=='Bitcoin'}" aria-hidden="true"></i>
                   &nbsp;&nbsp;{{type.name}}&nbsp;
+                  <span *ngIf="type.code === 'PayPal'" id="paypal-button"></span>
                 </a>
               </li>
             </ul>
@@ -51,3 +52,4 @@
     </div>
   </div>
 
+  
