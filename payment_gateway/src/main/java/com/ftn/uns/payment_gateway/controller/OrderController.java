@@ -12,7 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/orders")
+@RequestMapping("/api/orders")
+@CrossOrigin(origins = "http://localhost:4200", maxAge = 36000)
 public class OrderController {
 
     @Autowired
@@ -27,18 +28,18 @@ public class OrderController {
     }
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<OrderDto> getOrder(@PathVariable("id") Long id) {
+    public ResponseEntity<OrderDto> getOrder(@PathVariable("id") String id) {
         return ResponseEntity.ok(new OrderDto());
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<OrderDto> createOrder(@RequestBody OrderDto dto) {
-        return ResponseEntity.ok(mapper.mapToDTO(orderService.createOrder(mapper.mapFromDTO(dto))));
+    public ResponseEntity<String> createOrder(@RequestBody OrderDto dto) {
+        return ResponseEntity.ok(orderService.createOrder(mapper.mapFromDTO(dto)));
     }
 
-    @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<OrderDto> executeOrder(@RequestBody OrderDto dto, @PathVariable("id") Long id) {
-        return ResponseEntity.ok(new OrderDto());
+    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> executeOrder(@RequestBody OrderDto dto) {
+        return ResponseEntity.ok(orderService.updateOrder(mapper.mapFromDTO(dto)));
     }
 
     @DeleteMapping(value = "/{id}")

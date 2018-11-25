@@ -2,6 +2,7 @@ import { Component, OnInit, AfterViewChecked } from '@angular/core';
 import { Merchandise } from '../model/merchandise';
 import { Order } from '../model/order';
 import { Router } from '@angular/router';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 declare let paypal: any;
 
@@ -17,25 +18,41 @@ export class ChoosePaymentPageComponent implements OnInit, AfterViewChecked {
   merchandise: Merchandise;
   order: Order;
   paymentTypes: any[];
+  headers: HttpHeaders;
   
   paypalConfig = {
     env: 'sandbox',
-    client: {
-      sandbox: 'AS7kftlYLLaUYwYyYJMsW3K3piIompuO7yJl_5n7YbCBXTjW0WS17IahnEFoauQTOnc5kdrg1YeHHMQY'
-    },
     commit: true,
-    payment: (data, actions) => {
-      return actions.payment.create({
-        payment: {
-          transactions: [
-            { amount: {total: 500, currency: 'USD'}}
-          ]
-        }
-      });
+    payment: function (data, actions) {
+      return actions.request({
+          url: "http://localhost:8080/api/orders",
+          method: 'POST',
+          json: {
+            merchantOrderId: "31231231321",
+            payerID: "2313",
+            merchantId: "12345678",
+            amount: 1,
+            type: "PAY_PAL"
+          },
+          contentType: 'application/json'
+      })
+        .then(function(res){
+          return res.id;
+        })
     },
     onAuthorize: function(data, actions) {
       // 2. Make a request to your server
-      return actions.payment.execute()
+      return actions.request({
+        url: "http://localhost:8080/api/orders",
+        method: "PUT",
+        json: {
+          merchantOrderId: data.paymentID,
+          payerId: data.payerID,
+          type: "PAY_PAL"/*,
+          amount: 1*/
+        },
+        contentType: 'application/json'
+      })
         .then((payment) => {
             console.log(payment);
             this.router.navigate(['/success']);
@@ -44,8 +61,12 @@ export class ChoosePaymentPageComponent implements OnInit, AfterViewChecked {
   };
 
   constructor(
-    private router: Router
-  ) { }
+    private router: Router,
+    private http: HttpClient
+  ) { 
+    this.headers = new HttpHeaders();
+    this.headers.append("Content-Type", "appication/json");
+  }
 
   ngOnInit() {
     this.merchandise = {
@@ -57,7 +78,7 @@ export class ChoosePaymentPageComponent implements OnInit, AfterViewChecked {
       merchantId: "xxWWyyZZ"
     };
     
-    this.order = new Order(-1, Date.now(), "1234ABCD", "", 0, "CreditCard");
+    this.order = new Order("-1", Date.now(), "1234ABCD", "", 0, "CreditCard");
 
     this.paymentTypes = [
       {
@@ -95,13 +116,14 @@ export class ChoosePaymentPageComponent implements OnInit, AfterViewChecked {
   }
 
   public createOrder(){
-    this.order.merchantOrderId = Math.floor(Math.random()+1);
+    /*this.order.merchantOrderId = Math.floor(Math.random()+1);
     this.order.merchantTimestamp = Date.now();
     this.order.merchantId = this.merchandise.merchantId;
     this.order.amount = this.merchandise.quantity * this.merchandise.price;
 
     if(window.confirm("Are you sure you want to place the following order?\n"+this.order.print())){
       window.alert("Preparing your order");
+
       let rand = (Math.random() * 100) % 20;
       if(rand > 7){
         this.router.navigate(["/success"]);
@@ -110,6 +132,14 @@ export class ChoosePaymentPageComponent implements OnInit, AfterViewChecked {
       }
     }else {
       this.router.navigate(["/cancel"]);
-    }
+    }*/
+    this.http.get("http://localhost:8080/api/orders").subscribe(
+      (data) => {
+        this.router.navigate(['/success'])
+      },
+      error => {
+        this.router.navigate(['/error'])
+      }
+    )
   }
 }

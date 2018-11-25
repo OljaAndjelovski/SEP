@@ -28,7 +28,7 @@ public class OrderMapper {
     public Order mapFromDTO(OrderDto dto) {
         Order order = new Order();
 
-        order.setMagazine(magazineRepository.getOne(dto.getMerchantId()));
+        order.setMagazine(null);
         order.setPayerId(dto.getPayerId());
         order.setPrice(dto.getAmount());
         order.setMerchantTimestamp(dto.getMerchantTimestamp());

@@ -1,7 +1,7 @@
 export class Order {
 
     constructor(
-        public merchantOrderId: number,
+        public merchantOrderId: string,
         public merchantTimestamp: number,
         public payerId: string,
         public merchantId: string,
