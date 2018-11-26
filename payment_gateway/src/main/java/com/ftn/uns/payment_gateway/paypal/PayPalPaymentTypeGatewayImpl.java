@@ -1,6 +1,7 @@
-package com.ftn.uns.payment_gateway.service;
+package com.ftn.uns.payment_gateway.paypal;
 
 import com.ftn.uns.payment_gateway.model.Order;
+import com.ftn.uns.payment_gateway.service.PaymentTypeGateway;
 
 public class PayPalPaymentTypeGatewayImpl implements PaymentTypeGateway {
 
