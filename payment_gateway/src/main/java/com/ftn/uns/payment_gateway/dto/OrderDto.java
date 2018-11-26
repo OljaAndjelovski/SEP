@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 
 public class OrderDto {
 
-    private Long merchantOrderId;
+    private String merchantOrderId;
 
     private LocalDateTime merchantTimestamp;
 
@@ -21,7 +21,7 @@ public class OrderDto {
     public OrderDto() {
     }
 
-    public OrderDto(Long merchantOrderId, LocalDateTime merchantTimestamp, String payerId, String merchantId, Double amount, PaymentType type) {
+    public OrderDto(String merchantOrderId, LocalDateTime merchantTimestamp, String payerId, String merchantId, Double amount, PaymentType type) {
         this.merchantOrderId = merchantOrderId;
         this.merchantTimestamp = merchantTimestamp;
         this.payerId = payerId;
@@ -30,11 +30,11 @@ public class OrderDto {
         this.type = type;
     }
 
-    public Long getMerchantOrderId() {
+    public String getMerchantOrderId() {
         return merchantOrderId;
     }
 
-    public void setMerchantOrderId(Long merchantOrderId) {
+    public void setMerchantOrderId(String merchantOrderId) {
         this.merchantOrderId = merchantOrderId;
     }
 

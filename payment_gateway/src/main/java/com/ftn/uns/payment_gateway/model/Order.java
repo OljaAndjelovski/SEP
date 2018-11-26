@@ -10,9 +10,8 @@ import javax.persistence.*;
 public class Order {
 
     @Id
-    @GeneratedValue
     @Column(name = "ORDER_ID")
-    private Long merchantOrderId;
+    private String merchantOrderId;
 
     @Column(name = "TIMESTAMP")
     private LocalDateTime merchantTimestamp;
@@ -49,8 +48,7 @@ public class Order {
         super();
     }
 
-    public Order(LocalDateTime merchantTimestamp, String payerId, Magazine magazine, Integer quantity, Double price,
-                 String currency, PaymentType type, String buyerFirstName, String buyerLastName, String buyerEmail, String merchandise, Boolean executed) {
+    public Order(LocalDateTime merchantTimestamp, String payerId, Magazine magazine, Integer quantity, Double price, String currency, PaymentType type, String buyerFirstName, String buyerLastName, String buyerEmail, String merchandise, Boolean executed) {
         this.merchantTimestamp = merchantTimestamp;
         this.payerId = payerId;
         this.magazine = magazine;
@@ -84,11 +82,11 @@ public class Order {
                 '}';
     }
 
-    public Long getMerchantOrderId() {
+    public String getMerchantOrderId() {
         return merchantOrderId;
     }
 
-    public void setMerchantOrderId(Long merchantOrderId) {
+    public void setMerchantOrderId(String merchantOrderId) {
         this.merchantOrderId = merchantOrderId;
     }
 

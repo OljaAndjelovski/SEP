@@ -9,10 +9,6 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
-@EnableAutoConfiguration(exclude = {ErrorMvcAutoConfiguration.class})
-@EntityScan("com.ftn.uns.payment_gateway.model")
-@ComponentScan(basePackages = "com.ftn.uns.payment_gateway")
-@EnableJpaRepositories("com.ftn.uns.payment_gateway.repository")
 @EnableScheduling
 @SpringBootApplication
 public class PaymentGatewayApplication {

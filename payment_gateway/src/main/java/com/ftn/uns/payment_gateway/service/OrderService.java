@@ -21,7 +21,7 @@ public class OrderService {
     @Autowired
     PaymentDetailsService paymentDetailsService;
 
-    public Order findById(Integer id) {
+    public Order findById(String id) {
         return orderRepository.findById(id).orElse(null);
     }
 
@@ -29,20 +29,12 @@ public class OrderService {
         return orderRepository.findAll();
     }
 
-    public Order deleteOrder(Integer id) {
+    public Order deleteOrder(String id) {
         orderRepository.deleteById(id);
         return null;
     }
 
-    public Order createOrder(Order order) {
-
-        if (order.getPrice().equals(null)) {
-            return null;
-        }
-
-        if (order.getPayerId().equals(null)) {
-            return null;
-        }
+    public String createOrder(Order order) {
 
         order.setMerchantTimestamp(LocalDateTime.now());
         order.setExecuted(null);
@@ -52,8 +44,8 @@ public class OrderService {
         return createOrderService(order);
     }
 
-    public Order updateOrder(Integer id, Order order) {
-        if (id.equals(null)) {
+    public String updateOrder(Order order) {
+        /*if (id.equals(null)) {
             return null;
         }
 
@@ -74,13 +66,18 @@ public class OrderService {
         }
         newOrder.setPayerId(order.getPayerId());
 
-        newOrder.setMagazine(order.getMagazine());
+        newOrder.setMagazine(order.getMagazine());*/
 
-        return orderRepository.save(order);
+        return executeOrderService(order);
     }
 
-    private Order createOrderService(Order order){
+    private String createOrderService(Order order){
         PaymentTypeGateway gateway = PaymentTypeGatewayFactory.getGateway(order.getType());
         return gateway.createOrder(order);
+    }
+
+    private String executeOrderService(Order order){
+        PaymentTypeGateway gateway = PaymentTypeGatewayFactory.getGateway(order.getType());
+        return gateway.executeOrder(order);
     }
 }

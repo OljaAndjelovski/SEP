@@ -23,7 +23,7 @@ public class PaymentTypeGatewayFactory {
             name.append(part.substring(1, part.length()).toLowerCase());
         }
 
-        return String.format("com.ftn.uns.payment_gateway.service.%sPaymentTypeGatewayImpl", name);
+        return String.format("com.ftn.uns.payment_gateway.%s.%sPaymentTypeGatewayImpl", name.toString().toLowerCase(), name);
     }
 
     public static PaymentTypeGateway getGateway(PaymentType type){
