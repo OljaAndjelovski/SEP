@@ -41,6 +41,7 @@ export class ChoosePaymentPageComponent implements OnInit, AfterViewChecked {
         })
     },
     onAuthorize: function(data, actions) {
+     
       // 2. Make a request to your server
       return actions.request({
         url: "http://localhost:8080/api/orders",
@@ -106,6 +107,7 @@ export class ChoosePaymentPageComponent implements OnInit, AfterViewChecked {
   }
   
   addPaypalScript() {
+    
     this.addScript = true;
     return new Promise((resolve, reject) => {
       let scripttagElement = document.createElement('script');    
@@ -114,8 +116,29 @@ export class ChoosePaymentPageComponent implements OnInit, AfterViewChecked {
       document.body.appendChild(scripttagElement);
     })
   }
+  public pay(type: string){
+    this.order.type = type;
+    console.log(type);
+    console.log(this.merchandise.price);
+    if(type == "Bitcoin"){
+      console.log(this.merchandise.price);
+      this.http.post("http://localhost:8080/api/bitcoinOrder/bitcoin",this.merchandise)
+      .subscribe(
+          data => {
+              console.log("POST Request is successful ", data);
 
+              this.router.navigate(['/externalRedirect', { externalUrl: "\""+data+"\"" }]);
+          },
+          error => {
+              console.log("Error", error);
+          }
+      );    
+    
+    }
+
+  }
   public createOrder(){
+    
     /*this.order.merchantOrderId = Math.floor(Math.random()+1);
     this.order.merchantTimestamp = Date.now();
     this.order.merchantId = this.merchandise.merchantId;

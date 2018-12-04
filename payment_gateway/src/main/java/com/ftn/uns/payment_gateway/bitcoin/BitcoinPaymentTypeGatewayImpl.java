@@ -23,21 +23,21 @@ public class BitcoinPaymentTypeGatewayImpl implements PaymentTypeGateway {
 		System.out.println("\n CREATE ORDER:  " + "\n");
 		OrderBitcoinDto order = new OrderBitcoinDto();
 		// order.setDescription(orderProduct.getDescription());
-		order.setMerchantId(o.getMagazine().getIssn()); // Ovde ce ici
-		order.setTitle(o.getMagazine().getTitle());
-		order.setPrice_amount(o.getPrice());
+		order.setMerchantId("ID MAGAZINA"); // Ovde ce ici
+		order.setTitle("Title");
+		order.setPrice_amount(20.0); // Mora da se pazi na cenu
 		order.setOrder_id(o.getMerchantOrderId());
 
-		order.setPrice_currency("EUR"); // Valuta u kojoj placa
+		order.setPrice_currency("EUR"); // Valuta u kojoj placa ne sme RSD ili cemo konvertovati
 		order.setReceive_currency("USD"); // Valuta u kojoj zelim da dobijem
 		order.setCancel_url("http://localhost:4200/#/error"); // ako korisnik odustane
 		order.setSuccess_url("http://localhost:4200/#/success");
-		order.setToken("i6ViVXQyAx-R8CGscCnyCVYg47k7__PG6oUsoRtx");
+		order.setToken("Q-smRAh_a6nF-NVXJarEt48YyHtNag1iX-__bZwx");
 
-		String url = "https://api.coingate.com/v2/orders";
+		String url = "https://api-sandbox.coingate.com/v2/orders";
 
 		// set up the basic authentication header
-		String authorizationHeader = "Bearer i6ViVXQyAx-R8CGscCnyCVYg47k7__PG6oUsoRtx";
+		String authorizationHeader ="Bearer Q-smRAh_a6nF-NVXJarEt48YyHtNag1iX-__bZwx";
 
 		// setting up the request headers
 		HttpHeaders requestHeaders = new HttpHeaders();
@@ -57,9 +57,10 @@ public class BitcoinPaymentTypeGatewayImpl implements PaymentTypeGateway {
 		if (responseEntity.getStatusCode() == HttpStatus.OK) {
 			responseOrder = responseEntity.getBody();
 			System.out.println("user response retrieved " + responseOrder.getPayment_url());
+			return responseOrder.getPayment_url();
 		}
-
-		return "";
+		
+		return responseEntity.getStatusCode().toString();
 	}
 
 	@Override

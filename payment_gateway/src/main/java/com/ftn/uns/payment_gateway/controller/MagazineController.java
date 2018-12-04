@@ -17,6 +17,7 @@ import com.ftn.uns.payment_gateway.model.Magazine;
 import com.ftn.uns.payment_gateway.service.MagazineService;
 
 @RestController
+@CrossOrigin(origins = {"http://localhost:4200"})
 @RequestMapping(value = "/magazines")
 public class MagazineController {
 

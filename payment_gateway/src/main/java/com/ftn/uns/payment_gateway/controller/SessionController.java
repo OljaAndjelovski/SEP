@@ -3,6 +3,7 @@ package com.ftn.uns.payment_gateway.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,6 +14,7 @@ import com.ftn.uns.payment_gateway.model.Session;
 import com.ftn.uns.payment_gateway.service.SessionService;
 
 @RestController
+@CrossOrigin(origins = {"http://localhost:4200"})
 @RequestMapping(value = "/sessions")
 public class SessionController {
 	@Autowired

@@ -57,6 +57,7 @@ export class SubscribeMagazinePageComponent implements OnInit {
   }
 
   paymentTypeChecked(type: string): boolean{
+   
     for(let detail of this.magazine.details){
       if(detail.type === type){
         return true;
@@ -83,12 +84,15 @@ export class SubscribeMagazinePageComponent implements OnInit {
   }
 
   openType(type: string){
+    
     if(!this.paymentTypeChecked(type)){
+
       this.chosenType = type;
     }
   }
 
   saveMagazine(){
+    
     if(window.confirm("Do you want to save this magazine?\n"+this.magazine.print())){
       this.router.navigate(["/home"]);
     }

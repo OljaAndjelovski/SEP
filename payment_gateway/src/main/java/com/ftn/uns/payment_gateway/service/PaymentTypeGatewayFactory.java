@@ -1,7 +1,10 @@
 package com.ftn.uns.payment_gateway.service;
 
+import org.springframework.stereotype.Service;
+
 import com.ftn.uns.payment_gateway.model.PaymentType;
 
+@Service
 public class PaymentTypeGatewayFactory {
 
     public boolean checkIfExistingPlugin(PaymentType type) {
@@ -22,7 +25,6 @@ public class PaymentTypeGatewayFactory {
             name.append(part.substring(0, 1));
             name.append(part.substring(1, part.length()).toLowerCase());
         }
-
         return String.format("com.ftn.uns.payment_gateway.%s.%sPaymentTypeGatewayImpl", name.toString().toLowerCase(), name);
     }
 
