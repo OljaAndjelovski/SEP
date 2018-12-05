@@ -127,7 +127,11 @@ export class ChoosePaymentPageComponent implements OnInit, AfterViewChecked {
           data => {
               console.log("POST Request is successful ", data);
 
-              this.router.navigate(['/externalRedirect', { externalUrl: "\""+data+"\"" }]);
+              let d: string = "/'"+data+"/'";
+           console.log(d);
+             window.location.href =data.toString();
+            //document.location.href = "\'"+data + "\'"; 
+             //this.router.navigate(['/externalRedirect', { externalUrl: 'https://sandbox.coingate.com/invoice/cf6e91fb-3a05-4468-ae84-0420240fbf66' }]);
           },
           error => {
               console.log("Error", error);
