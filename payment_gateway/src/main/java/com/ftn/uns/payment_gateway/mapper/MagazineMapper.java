@@ -21,6 +21,8 @@ public class MagazineMapper {
         dto.setIssn(magazine.getIssn());
         dto.setTitle(magazine.getTitle());
         dto.setDetails(new HashSet<>());
+        
+       
 /*
         for(PaymentServiceDetails details: magazine.getDetails()){
             dto.getDetails().add(details.getId());
@@ -34,12 +36,14 @@ public class MagazineMapper {
 
         magazine.setIssn(dto.getIssn());
         magazine.setTitle(dto.getTitle());
-        magazine.setDetails(new HashSet<>());
+       // magazine.setDetails(dto.getDetails());
+        
+       
 /*
         for(Long id: dto.getDetails()){
             magazine.getDetails().add(paymentServiceDetailsRepository.getOne(id));
-        }*/
-
+        }
+*/
         return magazine;
     }
 }

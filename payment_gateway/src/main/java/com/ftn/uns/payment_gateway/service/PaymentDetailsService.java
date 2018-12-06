@@ -2,7 +2,6 @@ package com.ftn.uns.payment_gateway.service;
 
 import com.ftn.uns.payment_gateway.model.Magazine;
 import com.ftn.uns.payment_gateway.model.PaymentServiceDetails;
-import com.ftn.uns.payment_gateway.model.PaymentType;
 import com.ftn.uns.payment_gateway.repository.MagazineRepository;
 import com.ftn.uns.payment_gateway.repository.PaymentServiceDetailsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
