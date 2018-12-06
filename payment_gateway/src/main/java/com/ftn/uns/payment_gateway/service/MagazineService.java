@@ -1,5 +1,6 @@
 package com.ftn.uns.payment_gateway.service;
 
+import java.util.HashSet;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,9 +22,11 @@ public class MagazineService {
 	@Autowired
 	private MagazineMapper magazineMapper;
 
-	 @Autowired
-	PaymentServiceDetailsRepository paymentServiceDetailsRepository;
+	@Autowired
+	private PaymentServiceDetailsRepository paymentServiceDetailsRepository;
 
+	@Autowired
+	private PaymentDetailsService paymentDetailsService;
 
 	public Magazine findById(String id) {
 		return magazineRepository.findById(id).orElse(null);
@@ -44,20 +47,22 @@ public class MagazineService {
 			System.out.println("\n" + d.getType().toString() + " " + d.getMerchantPassword());
 
 		}
-
+		paymentDetailsService.deleteNullIssn(magazineDto.getIssn());
 		Magazine createdMagazine = magazineMapper.mapFromDTO(magazineDto);
 		Magazine saved = magazineRepository.save(createdMagazine);
 
 		
+
 		for (PaymentServiceDetails d : magazineDto.getDetails()) {
 			PaymentServiceDetails psd = new PaymentServiceDetails();
-			System.out.println("\n"+ d.getId());
+			System.out.println("\n" + d.getId());
 			psd.setMerchantID(d.getMerchantID());
 			psd.setMerchantPassword(d.getMerchantPassword());
 			psd.setType(d.getType());
 			PaymentServiceDetails details = paymentServiceDetailsRepository.save(psd);
 			saved.getDetails().add(details);
 		}
+		//paymentDetailsService.deleteNullIssn(saved.getIssn());
 		return magazineRepository.save(saved);
 	}
 
