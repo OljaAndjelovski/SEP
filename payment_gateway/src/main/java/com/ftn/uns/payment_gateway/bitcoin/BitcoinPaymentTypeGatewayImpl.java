@@ -20,7 +20,9 @@ public class BitcoinPaymentTypeGatewayImpl implements PaymentTypeGateway {
 		System.out.println("STARTED BITCOIN SERVICE");
 		System.out.println(o.toString());
 
-		System.out.println("\n CREATE ORDER:  " + "\n");
+		Double ex = excangeRate("RSD", "EUR");
+		
+		System.out.println("\n ***** " +ex + " CREATE ORDER:  " + "\n");
 		OrderBitcoinDto order = new OrderBitcoinDto();
 		// order.setDescription(orderProduct.getDescription());
 		order.setMerchantId("ID MAGAZINA"); // Ovde ce ici
@@ -71,5 +73,22 @@ public class BitcoinPaymentTypeGatewayImpl implements PaymentTypeGateway {
 	@Override
 	public String executeOrder(Order order) {
 		return null;
+	}
+	
+	public Double excangeRate(String fromCurrency, String toCurrency) {
+		String url = "https://api-sandbox.coingate.com/v2/rates/merchant/"+ fromCurrency + "/" + toCurrency ;
+		String authorizationHeader ="Bearer Q-smRAh_a6nF-NVXJarEt48YyHtNag1iX-__bZwx";
+	
+		HttpHeaders requestHeaders = new HttpHeaders();
+		requestHeaders.setContentType(MediaType.APPLICATION_JSON);
+		requestHeaders.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+		requestHeaders.add("Authorization", authorizationHeader);
+		HttpEntity<String> entity = new HttpEntity<>(null, requestHeaders);
+		
+		RestTemplate rt = new RestTemplate();
+		ResponseEntity<Double> convertedValue = rt.exchange(url, HttpMethod.GET, entity,
+				Double.class);
+		return convertedValue.getBody();
+		
 	}
 }
