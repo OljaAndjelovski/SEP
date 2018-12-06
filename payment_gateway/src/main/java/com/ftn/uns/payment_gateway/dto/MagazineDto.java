@@ -3,15 +3,17 @@ package com.ftn.uns.payment_gateway.dto;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.ftn.uns.payment_gateway.model.PaymentServiceDetails;
+
 public class MagazineDto {
     private String issn;
     private String title;
-    private Set<Long> details = new HashSet<>();
+    private Set<PaymentServiceDetails> details = new HashSet<>();
 
     public MagazineDto() {
     }
 
-    public MagazineDto(String issn, String title, Set<Long> details) {
+    public MagazineDto(String issn, String title, Set<PaymentServiceDetails> details) {
         this.issn = issn;
         this.title = title;
         this.details = details;
@@ -33,11 +35,11 @@ public class MagazineDto {
         this.title = title;
     }
 
-    public Set<Long> getDetails() {
+    public Set<PaymentServiceDetails> getDetails() {
         return details;
     }
 
-    public void setDetails(Set<Long> details) {
+    public void setDetails(Set<PaymentServiceDetails> details) {
         this.details = details;
     }
 }

@@ -1,16 +1,15 @@
 package com.ftn.uns.payment_gateway.service;
 
-import com.ftn.uns.payment_gateway.dto.MagazineDto;
-import com.ftn.uns.payment_gateway.mapper.MagazineMapper;
-import com.ftn.uns.payment_gateway.model.Magazine;
-import com.ftn.uns.payment_gateway.model.PaymentType;
-import com.ftn.uns.payment_gateway.repository.MagazineRepository;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import com.ftn.uns.payment_gateway.dto.MagazineDto;
+import com.ftn.uns.payment_gateway.mapper.MagazineMapper;
+import com.ftn.uns.payment_gateway.model.Magazine;
+import com.ftn.uns.payment_gateway.model.PaymentServiceDetails;
+import com.ftn.uns.payment_gateway.repository.MagazineRepository;
 
 @Service
 public class MagazineService {
@@ -36,6 +35,10 @@ public class MagazineService {
     }
 
     public Magazine createMagazine(MagazineDto magazineDto) {
+    	for(PaymentServiceDetails d : magazineDto.getDetails()) {
+    		System.out.println("\n" + d.getType().toString()+ " " + d.getMerchantPassword() ) ;
+    		
+    	}
         Magazine createdMagazine = magazineMapper.mapFromDTO(magazineDto);
         return magazineRepository.save(createdMagazine);
     }
