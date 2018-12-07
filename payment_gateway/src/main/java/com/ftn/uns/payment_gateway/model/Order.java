@@ -44,6 +44,8 @@ public class Order {
 
     private Boolean executed;
 
+    private Integer idBitcoin;
+    
     public Order() {
         super();
     }
@@ -185,4 +187,14 @@ public class Order {
     public void setExecuted(Boolean executed) {
         this.executed = executed;
     }
+
+	public Integer getIdBitcoin() {
+		return idBitcoin;
+	}
+
+	public void setIdBitcoin(Integer idBitcoin) {
+		this.idBitcoin = idBitcoin;
+	}
+    
+    
 }
