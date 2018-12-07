@@ -20,14 +20,14 @@ public class BitcoinPaymentTypeGatewayImpl implements PaymentTypeGateway {
 		System.out.println("STARTED BITCOIN SERVICE");
 		System.out.println(o.toString());
 
-		Double ex = excangeRate("RSD", "EUR");
+		Double ex = excangeRate(o.getCurrency(), "EUR");
 
 		System.out.println("\n ***** " + ex + " CREATE ORDER:  " + "\n");
 		OrderBitcoinDto order = new OrderBitcoinDto();
 		// order.setDescription(orderProduct.getDescription());
 		order.setMerchantId("ID MAGAZINA"); // Ovde ce ici
 		order.setTitle("Title");
-		order.setPrice_amount(20.0); // Mora da se pazi na cenu
+		order.setPrice_amount(o.getPrice()/ex); // Mora da se pazi na cenu
 		order.setOrder_id(o.getMerchantOrderId());
 		System.out.println("MERCHANT ORDER ID " + o.getMerchantOrderId());
 		order.setPrice_currency("EUR"); // Valuta u kojoj placa ne sme RSD ili cemo konvertovati
