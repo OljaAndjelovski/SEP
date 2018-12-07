@@ -2,7 +2,6 @@ package com.ftn.uns.payment_gateway.bitcoin;
 
 import java.util.Arrays;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -12,13 +11,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
 import com.ftn.uns.payment_gateway.model.Order;
-
-import com.ftn.uns.payment_gateway.service.BitcoinService;
-
 import com.ftn.uns.payment_gateway.service.PaymentTypeGateway;
 
 public class BitcoinPaymentTypeGatewayImpl implements PaymentTypeGateway {
-
 
 	@Override
 	public String createOrder(Order o) {
@@ -34,7 +29,7 @@ public class BitcoinPaymentTypeGatewayImpl implements PaymentTypeGateway {
 		order.setTitle("Title");
 		order.setPrice_amount(20.0); // Mora da se pazi na cenu
 		order.setOrder_id(o.getMerchantOrderId());
-		System.out.println("MERCHANT ORDER ID "+ o.getMerchantOrderId() );
+		System.out.println("MERCHANT ORDER ID " + o.getMerchantOrderId());
 		order.setPrice_currency("EUR"); // Valuta u kojoj placa ne sme RSD ili cemo konvertovati
 		order.setReceive_currency("USD"); // Valuta u kojoj zelim da dobijem
 		order.setCancel_url("http://localhost:4200/#/error"); // ako korisnik odustane
@@ -52,9 +47,8 @@ public class BitcoinPaymentTypeGatewayImpl implements PaymentTypeGateway {
 		requestHeaders.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
 		requestHeaders.add("Authorization", authorizationHeader);
 
-		// setting up the request body
-		// order
-		// request entity is created with request body and headers
+		// setting up the request body order request entity is created with request body
+		// and headers
 		HttpEntity<OrderBitcoinDto> requestEntity = new HttpEntity<OrderBitcoinDto>(order, requestHeaders);
 		RestTemplate rt = new RestTemplate();
 		ResponseEntity<OrderBitcoinResponse> responseEntity = rt.exchange(url, HttpMethod.POST, requestEntity,
@@ -64,7 +58,7 @@ public class BitcoinPaymentTypeGatewayImpl implements PaymentTypeGateway {
 		if (responseEntity.getStatusCode() == HttpStatus.OK) {
 			responseOrder = responseEntity.getBody();
 			System.out.println(Integer.valueOf(responseEntity.getBody().getId()));
-			
+
 			return responseOrder.getPayment_url() + "," + Integer.valueOf(responseEntity.getBody().getId());
 		}
 
@@ -96,13 +90,5 @@ public class BitcoinPaymentTypeGatewayImpl implements PaymentTypeGateway {
 		return convertedValue.getBody();
 
 	}
-	
-	public void checkOrderStatus() {
-		/*for(Order o : orderService.findAll()) {
-			// Ukoliko je bitcoin
-			if(o.getMerchantTimestamp().equals(PaymentType.BITCOIN)) {
-				
-			}
-		}*/
-	}
+
 }
