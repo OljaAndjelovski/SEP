@@ -48,12 +48,30 @@ public class BitcoinService {
 				RestTemplate rt = new RestTemplate();
 				ResponseEntity<GetOrderDto> order = rt.exchange(url, HttpMethod.GET, entity, GetOrderDto.class);
 				System.out.println("STATUS ORDERA " + order.getBody().getStatus());
-				
-				
+				o.setStatus(order.getBody().getStatus());
+				orderRepository.save(o);
+
 				/////
 
 			}
 		}
+	}
+	
+	public void setOrderStatus(Order o) {
+		System.out.println(o.getIdBitcoin());
+		String url = "https://api-sandbox.coingate.com/v2/orders/" + o.getIdBitcoin();
+		String authorizationHeader = "Bearer Q-smRAh_a6nF-NVXJarEt48YyHtNag1iX-__bZwx";
 
+		HttpHeaders requestHeaders = new HttpHeaders();
+		requestHeaders.setContentType(MediaType.APPLICATION_JSON);
+		requestHeaders.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+		requestHeaders.add("Authorization", authorizationHeader);
+		HttpEntity<String> entity = new HttpEntity<>(null, requestHeaders);
+
+		RestTemplate rt = new RestTemplate();
+		ResponseEntity<GetOrderDto> order = rt.exchange(url, HttpMethod.GET, entity, GetOrderDto.class);
+		System.out.println("STATUS ORDERA JE SETOVAN NA " + order.getBody().getStatus());
+		o.setStatus(order.getBody().getStatus());
+		orderRepository.save(o);
 	}
 }

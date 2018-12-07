@@ -26,7 +26,7 @@ public class BitcoinController {
 
 	@Autowired
 	private BitcoinService bitcoinService;
-	
+
 	@Autowired
 	private OrderService orderService;
 
@@ -46,26 +46,15 @@ public class BitcoinController {
 		order.setType(PaymentType.BITCOIN);
 		order.setMerchantOrderId(bitcoinDto.getMerchantId());
 		orderService.createOrder(order);
-		
+
 		String pgr = paymentTypeGateway.createOrder(order);
-		String split[]= pgr.split(",");
-		
+		String split[] = pgr.split(",");
+
 		System.out.println("split 0 " + split[0]);
 		System.out.println("split 1 " + split[1]);
 		String status = "\"" + split[0] + "\"";
-		
-		bitcoinService.setOrderBitcoinId(bitcoinDto.getMerchantId(), Integer.valueOf(split[1]));
-		/*
-		String pg = 
-				
-				
-		String status = "\"" + paymentTypeGateway.createOrder(order) + "\"";
-		System.out.println("\n " + status);*/
 
-		/*
-		 * RedirectView rv = new RedirectView();
-		 * rv.setUrl(paymentTypeGateway.createOrder(order)); return rv;
-		 */
+		bitcoinService.setOrderBitcoinId(bitcoinDto.getMerchantId(), Integer.valueOf(split[1]));
 
 		return status;
 

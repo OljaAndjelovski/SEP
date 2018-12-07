@@ -38,7 +38,7 @@ public class OrderService {
 
 		order.setMerchantTimestamp(LocalDateTime.now());
 		order.setExecuted(null);
-
+		order.setStatus("new");
 		order = orderRepository.save(order);
 
 		return createOrderService(order);
