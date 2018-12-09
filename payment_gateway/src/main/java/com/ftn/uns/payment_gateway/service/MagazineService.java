@@ -1,6 +1,5 @@
 package com.ftn.uns.payment_gateway.service;
 
-import java.util.HashSet;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
