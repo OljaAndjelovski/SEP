@@ -8,6 +8,6 @@
 3) Upload sertifikata backenda u chrome
     https://support.securly.com/hc/en-us/articles/206081828-How-to-manually-install-the-Securly-SSL-certificate-in-Chrome
 
-4) komanda za pokretanje ng serve --ssl true --ssl-cert "ssl/server.crt" --ssl-key "ssl/server.key"
+4) komanda za pokretanje "NPM START"
 
 5) chrome://flags/#allow-insecure-localhost  - uneti u URL bar i postaviti sa DISABLED na ENABLED
