@@ -79,7 +79,7 @@ export class ChoosePaymentPageComponent implements OnInit, AfterViewChecked {
       merchantId: "xxWWyyZZ"
     };
     
-    this.order = new Order("-1", Date.now(), "1234ABCD", "", 0, "CreditCard");
+    this.order = new Order("-1", Date.now(), "1234ABCD", "", 0, "CreditCard", "");
 
     this.paymentTypes = [
       {
