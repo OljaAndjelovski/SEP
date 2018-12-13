@@ -19,32 +19,32 @@ export class ChoosePaymentPageComponent implements OnInit, AfterViewChecked {
   order: Order;
   paymentTypes: any[];
   headers: HttpHeaders;
-  
+
   paypalConfig = {
     env: 'sandbox',
     commit: true,
     payment: function (data, actions) {
       return actions.request({
-          url: "http://localhost:8080/api/orders",
-          method: 'POST',
-          json: {
-            merchantOrderId: "31231231321",
-            payerID: "2313",
-            merchantId: "12345678",
-            amount: 1,
-            type: "PAY_PAL"
-          },
-          contentType: 'application/json'
+        url: "https://localhost:8080/api/orders",
+        method: 'POST',
+        json: {
+          merchantOrderId: "31231231321",
+          payerID: "2313",
+          merchantId: "12345678",
+          amount: 1,
+          type: "PAY_PAL"
+        },
+        contentType: 'application/json'
       })
-        .then(function(res){
+        .then(function (res) {
           return res.id;
         })
     },
-    onAuthorize: function(data, actions) {
-     
+    onAuthorize: function (data, actions) {
+
       // 2. Make a request to your server
       return actions.request({
-        url: "http://localhost:8080/api/orders",
+        url: "https://localhost:8080/api/orders",
         method: "PUT",
         json: {
           merchantOrderId: data.paymentID,
@@ -55,8 +55,8 @@ export class ChoosePaymentPageComponent implements OnInit, AfterViewChecked {
         contentType: 'application/json'
       })
         .then((payment) => {
-            console.log(payment);
-            this.router.navigate(['/success']);
+          console.log(payment);
+          this.router.navigate(['/success']);
         });
     }
   };
@@ -64,7 +64,7 @@ export class ChoosePaymentPageComponent implements OnInit, AfterViewChecked {
   constructor(
     private router: Router,
     private http: HttpClient
-  ) { 
+  ) {
     this.headers = new HttpHeaders();
     this.headers.append("Content-Type", "appication/json");
   }
@@ -78,7 +78,7 @@ export class ChoosePaymentPageComponent implements OnInit, AfterViewChecked {
       currency: "RSD",
       merchantId: "xxWWyyZZ"
     };
-    
+
     this.order = new Order("-1", Date.now(), "1234ABCD", "", 0, "CreditCard", "");
 
     this.paymentTypes = [
@@ -105,44 +105,62 @@ export class ChoosePaymentPageComponent implements OnInit, AfterViewChecked {
       })
     }
   }
-  
+
   addPaypalScript() {
-    
+
     this.addScript = true;
     return new Promise((resolve, reject) => {
-      let scripttagElement = document.createElement('script');    
+      let scripttagElement = document.createElement('script');
       scripttagElement.src = 'https://www.paypalobjects.com/api/checkout.js';
       scripttagElement.onload = resolve;
       document.body.appendChild(scripttagElement);
     })
   }
-  public pay(type: string){
+  public pay(type: string) {
     this.order.type = type;
-    console.log(type);
-    console.log(this.merchandise.price);
-    if(type == "Bitcoin"){
+    // console.log(type);
+    // console.log(this.merchandise);
+    if (type == "Bitcoin") {
       console.log(this.merchandise.price);
-      this.http.post("http://localhost:8080/api/bitcoinOrder/bitcoin",this.merchandise)
-      .subscribe(
+      this.http.post("https://localhost:8080/api/bitcoinOrder/bitcoin", this.merchandise)
+        .subscribe(
           data => {
-              console.log("POST Request is successful ", data);
+            console.log("POST Request is successful ", data);
 
-              let d: string = "/'"+data+"/'";
-           console.log(d);
-             window.location.href =data.toString();
+            let d: string = "/'" + data + "/'";
+            console.log(d);
+            window.location.href = data.toString();
             //document.location.href = "\'"+data + "\'"; 
-             //this.router.navigate(['/externalRedirect', { externalUrl: 'https://sandbox.coingate.com/invoice/cf6e91fb-3a05-4468-ae84-0420240fbf66' }]);
+            //this.router.navigate(['/externalRedirect', { externalUrl: 'https://sandbox.coingate.com/invoice/cf6e91fb-3a05-4468-ae84-0420240fbf66' }]);
           },
           error => {
-              console.log("Error", error);
+            console.log("Error", error);
           }
-      );    
-    
+        );
+
+    } else if (type == 'CreditCard') {
+
+      let order = new Order();
+      order.amount = 1;
+      order.merchantId = "123123";
+      order.merchantOrderId = "31231231321";
+      order.payerId = "78946";
+      order.type = "CREDIT_CARD";
+
+      this.http.post("https://localhost:8080/api/orders", order)
+        .subscribe(
+          data => {
+            console.log("POST Request is successful ", data);
+          },
+          error => {
+            console.log("Error", error);
+          }
+        );
     }
 
   }
-  public createOrder(){
-    
+  public createOrder() {
+
     /*this.order.merchantOrderId = Math.floor(Math.random()+1);
     this.order.merchantTimestamp = Date.now();
     this.order.merchantId = this.merchandise.merchantId;

@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/orders")
-@CrossOrigin(origins = "http://localhost:4200", maxAge = 36000)
+@CrossOrigin(origins = "https://localhost:4200", maxAge = 36000)
 public class OrderController {
 
     @Autowired

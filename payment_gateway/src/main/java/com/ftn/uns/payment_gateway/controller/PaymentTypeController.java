@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/types")
-@CrossOrigin(origins = "http://localhost:4200", maxAge = 36000)
+@CrossOrigin(origins = "https://localhost:4200", maxAge = 36000)
 public class PaymentTypeController {
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)

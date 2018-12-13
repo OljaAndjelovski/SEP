@@ -14,7 +14,7 @@ import com.ftn.uns.payment_gateway.model.Session;
 import com.ftn.uns.payment_gateway.service.SessionService;
 
 @RestController
-@CrossOrigin(origins = {"http://localhost:4200"})
+@CrossOrigin(origins = {"https://localhost:4200"})
 @RequestMapping(value = "/sessions")
 public class SessionController {
 	@Autowired

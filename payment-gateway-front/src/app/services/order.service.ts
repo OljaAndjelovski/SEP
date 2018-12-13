@@ -16,7 +16,7 @@ export class OrderService {
   public createOrder(actions: any, o: Order): Promise<any>{
     let headers = new HttpHeaders();
     headers = headers.append("Content-Type", "application/json");
-    return this.http.post("http://localhost:8080/api/orders", 
+    return this.http.post("https://localhost:8080/api/orders", 
       JSON.stringify({
         merchantOrderId: o.merchantOrderId,
         payerID: o.payerId,
@@ -30,7 +30,7 @@ export class OrderService {
   public executeOrder(actions: any, o: Order): Promise<any>{
     let headers = new HttpHeaders();
     headers = headers.append("Content-Type", "application/json");
-    return this.http.put("http://localhost:8080/api/orders",
+    return this.http.put("https://localhost:8080/api/orders",
       JSON.stringify({
         merchantOrderId: o.merchantOrderId,
         payerId: o.payerId,
