@@ -125,7 +125,7 @@ export class SubscribeMagazinePageComponent implements OnInit {
           }
         }
 
-        this.http.post("http://localhost:8080/magazines",this.magazine)
+        this.http.post("https://localhost:8080/magazines",this.magazine)
         .subscribe(
             data => {
               this.router.navigate(["/home"]);
