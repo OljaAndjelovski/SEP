@@ -19,7 +19,8 @@ import { OrderService } from './services/order.service';
 import { PaymentService } from './services/payment.service';
 import { MagazineService } from './services/magazine.service';
 import { PaymentDetailsService } from './services/payment-details.service';
-import { MerchandiseService } from './services/merchandise.service';
+import { SubscribeComponent } from './subscribe/subscribe.component';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { MerchandiseService } from './services/merchandise.service';
     CancelPageComponent,
     ErrorPageComponent,
     PageNotFoundComponent,
-    StartPageComponent
+    StartPageComponent,
+    SubscribeComponent
   ],
   imports: [
     BrowserModule,
@@ -41,7 +43,7 @@ import { MerchandiseService } from './services/merchandise.service';
     AngularFontAwesomeModule,
     TooltipModule.forRoot()
   ],
-  providers: [OrderService, PaymentService, MagazineService, PaymentDetailsService, MerchandiseService],
+  providers: [OrderService, PaymentService, MagazineService, PaymentDetailsService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

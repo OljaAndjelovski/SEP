@@ -3,6 +3,7 @@ import { Magazine } from '../model/magazine';
 import { PaymentDetails } from '../model/payment-details';
 import { Router } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { PaymentDetailsService } from '../services/payment-details.service';
 @Component({
   selector: 'app-subscribe-magazine-page',
   templateUrl: './subscribe-magazine-page.component.html',
@@ -11,9 +12,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 export class SubscribeMagazinePageComponent implements OnInit {
 
   magazine: Magazine;
-  fullPaymentTypes: any[];
   paymentTypes: any[];
-  chosenType: string;
   newID: string;
   newPassword: string;
   headers: HttpHeaders;
@@ -26,43 +25,19 @@ export class SubscribeMagazinePageComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private http: HttpClient
+    private http: HttpClient,
+    private paymentService: PaymentDetailsService
   ) {this.headers = new HttpHeaders();
     this.headers.append("Content-Type", "appication/json"); }
 
   ngOnInit() {
     this.initForm();
-    this.paymentTypes = [
-      {
-        "code": "CreditCard",
-        "name": "Credit Card"
-      },
-      {
-        "code": "PayPal",
-        "name": "PayPal"
-      },
-      {
-        "code": "Bitcoin",
-        "name": "Bitcoin"
-      }
-    ];
-
-    this.fullPaymentTypes = [
-      {
-        "code": "CreditCard",
-        "name": "Credit Card"
-      },
-      {
-        "code": "PayPal",
-        "name": "PayPal"
-      },
-      {
-        "code": "Bitcoin",
-        "name": "Bitcoin"
-      }
-    ];
-  
     this.magazine = new Magazine("", "", []);
+    this.paymentService.getTypes().subscribe(
+      (data) => {
+        this.paymentTypes = data;
+      }
+    )
   }
 
   paymentTypeChecked(type: string): boolean{
@@ -76,20 +51,7 @@ export class SubscribeMagazinePageComponent implements OnInit {
     return false;
   }
 
-  addDetails(){
-    if(this.paymentTypeChecked(this.chosenType) === false && this.newID !== "" && this.newPassword !== ""){
-      
-      
-      this.magazine.details.push(
-        new PaymentDetails(this.chosenType, this.newID, this.newPassword, this.magazine.details.length+1)
-      );
-      
-      this.initForm();
-    }
-  }
-
   initForm(){
-    this.chosenType = "";
     this.newID = "";
     this.newPassword = "";
     this.issnMsg = "";
@@ -99,31 +61,27 @@ export class SubscribeMagazinePageComponent implements OnInit {
   }
 
   openType(type: string){
-    
-    if(!this.paymentTypeChecked(type)){
-      this.chosenType = type;
+    if(this.paymentTypeChecked(type)){
+      return;
     }
+
+    this.magazine.details.push(
+      {
+        type: type,
+        merchantID: '',
+        merchantPassword: ''
+      }
+    )
+  }
+
+  removeDetails(details: PaymentDetails){
+    this.magazine.details.splice(this.magazine.details.indexOf(details), 1);
   }
 
   saveMagazine(){
     if(this.issnValid == true &&  this.magazine.title.length > 0){
       this.magazine.issn = this.issn1+this.issn2;
       if(window.confirm("Do you want to save this magazine?\n"+this.magazine.print())){
-        for(let detail of this.magazine.details){
-        
-          if(detail.type=="PayPal"){
-            detail.type = "PAY_PAL";
-            console.log("pp");
-          }
-          else if(detail.type=="CreditCard"){
-            detail.type = "CREDIT_CARD";
-            console.log("cc");
-          }
-          else{
-            detail.type = "BITCOIN";
-            console.log("btc");
-          }
-        }
 
         this.http.post("https://localhost:8080/magazines",this.magazine)
         .subscribe(

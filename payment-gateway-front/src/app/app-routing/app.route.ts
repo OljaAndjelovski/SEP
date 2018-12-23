@@ -6,15 +6,20 @@ import { ErrorPageComponent } from '../end-pages/error-page/error-page.component
 import { CancelPageComponent } from '../end-pages/cancel-page/cancel-page.component';
 import { PageNotFoundComponent } from '../end-pages/page-not-found/page-not-found.component';
 import { StartPageComponent } from '../end-pages/start-page/start-page.component';
+import { SubscribeComponent } from '../subscribe/subscribe.component';
 
 export const routes: Routes = [
     {
-        path: 'choose-payment',
+        path: 'choose-payment/:id',
         component: ChoosePaymentPageComponent
     },
     {
-        path: 'subscribe-magazine',
+        path: 'magazines',
         component: SubscribeMagazinePageComponent
+    },
+    {
+        path: 'subscribe',
+        component: SubscribeComponent
     },
     {
         path: 'success',

@@ -29,9 +29,8 @@ public class OrderService {
 		return orderRepository.findAll();
 	}
 
-	public Order deleteOrder(String id) {
+	public void deleteOrder(String id) {
 		orderRepository.deleteById(id);
-		return null;
 	}
 
 	public String createOrder(Order order) {

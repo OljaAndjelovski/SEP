@@ -3,6 +3,7 @@ import { Merchandise } from '../model/merchandise';
 import { Order } from '../model/order';
 import { Router } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { PaymentDetailsService } from '../services/payment-details.service';
 
 declare let paypal: any;
 
@@ -63,7 +64,8 @@ export class ChoosePaymentPageComponent implements OnInit, AfterViewChecked {
 
   constructor(
     private router: Router,
-    private http: HttpClient
+    private http: HttpClient,
+    private paymentService: PaymentDetailsService
   ) {
     this.headers = new HttpHeaders();
     this.headers.append("Content-Type", "appication/json");
@@ -81,20 +83,22 @@ export class ChoosePaymentPageComponent implements OnInit, AfterViewChecked {
 
     this.order = new Order("-1", Date.now(), "1234ABCD", "", 0, "CreditCard", "");
 
-    this.paymentTypes = [
-      {
-        "code": "CreditCard",
-        "name": "Credit Card"
-      },
-      {
-        "code": "PayPal",
-        "name": "PayPal"
-      },
-      {
-        "code": "Bitcoin",
-        "name": "Bitcoin"
-      }
-    ];
+    let parts = window.location.href.split('/');
+
+    this.http.get<any>("https://localhost:8080/sessions/" + parts[parts.length-1])
+      .subscribe((data) => {
+        this.merchandise.name = data.merchandise;
+        this.merchandise.price = data.price;
+        this.merchandise.currency = data.currency;
+        this.merchandise.merchantId = data.issn;
+
+        
+        this.paymentService.getTypesOfMagazine(this.merchandise.merchantId).subscribe(
+          (data) => {
+            this.paymentTypes = data;
+          }
+        );
+      });
   }
 
   ngAfterViewChecked(): void {

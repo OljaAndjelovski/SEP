@@ -6,6 +6,10 @@ import com.ftn.uns.payment_gateway.repository.MagazineRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+
 @Service
 public class OrderMapper {
 
@@ -36,5 +40,11 @@ public class OrderMapper {
         order.setType(dto.getType());
 
         return order;
+    }
+
+    public List<OrderDto> mapManyToDTO(List<Order> orders){
+        return StreamSupport.stream(orders.spliterator(),false)
+                .map((order) -> mapToDTO(order))
+                .collect(Collectors.toList());
     }
 }

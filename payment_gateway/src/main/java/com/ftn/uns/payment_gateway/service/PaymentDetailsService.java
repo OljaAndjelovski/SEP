@@ -1,6 +1,7 @@
 package com.ftn.uns.payment_gateway.service;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -65,5 +66,9 @@ public class PaymentDetailsService {
 			paymentServiceDetailsRepository.deleteAll(pdd);
 		}
 
+	}
+
+	public Set<PaymentServiceDetails> getTypesOfMagazine(String issn){
+		return magazineRepository.getOne(issn).getDetails();
 	}
 }
