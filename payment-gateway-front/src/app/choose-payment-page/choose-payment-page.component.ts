@@ -3,7 +3,11 @@ import { Merchandise } from '../model/merchandise';
 import { Order } from '../model/order';
 import { Router } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+<<<<<<< HEAD
 // import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+=======
+import { PaymentDetailsService } from '../services/payment-details.service';
+>>>>>>> ec50c9c59851f531603c2b2d929b1df256ae6268
 
 declare let paypal: any;
 
@@ -26,7 +30,7 @@ export class ChoosePaymentPageComponent implements OnInit, AfterViewChecked {
     commit: true,
     payment: function (data, actions) {
       return actions.request({
-        url: "http://localhost:8080/api/orders",
+        url: "https://localhost:8080/api/orders",
         method: 'POST',
         json: {
           merchantOrderId: "31231231321",
@@ -45,7 +49,7 @@ export class ChoosePaymentPageComponent implements OnInit, AfterViewChecked {
 
       // 2. Make a request to your server
       return actions.request({
-        url: "http://localhost:8080/api/orders",
+        url: "https://localhost:8080/api/orders",
         method: "PUT",
         json: {
           merchantOrderId: data.paymentID,
@@ -65,7 +69,11 @@ export class ChoosePaymentPageComponent implements OnInit, AfterViewChecked {
   constructor(
     private router: Router,
     private http: HttpClient,
+<<<<<<< HEAD
     // private modalService: NgbModal
+=======
+    private paymentService: PaymentDetailsService
+>>>>>>> ec50c9c59851f531603c2b2d929b1df256ae6268
   ) {
     this.headers = new HttpHeaders();
     this.headers.append("Content-Type", "appication/json");
@@ -81,22 +89,24 @@ export class ChoosePaymentPageComponent implements OnInit, AfterViewChecked {
       merchantId: "xxWWyyZZ"
     };
 
-    this.order = new Order("-1", Date.now(), "1234ABCD", "", 0, "CreditCard");
+    this.order = new Order("-1", Date.now(), "1234ABCD", "", 0, "CreditCard", "");
 
-    this.paymentTypes = [
-      {
-        "code": "CreditCard",
-        "name": "Credit Card"
-      },
-      {
-        "code": "PayPal",
-        "name": "PayPal"
-      },
-      {
-        "code": "Bitcoin",
-        "name": "Bitcoin"
-      }
-    ];
+    let parts = window.location.href.split('/');
+
+    this.http.get<any>("https://localhost:8080/sessions/" + parts[parts.length-1])
+      .subscribe((data) => {
+        this.merchandise.name = data.merchandise;
+        this.merchandise.price = data.price;
+        this.merchandise.currency = data.currency;
+        this.merchandise.merchantId = data.issn;
+
+        
+        this.paymentService.getTypesOfMagazine(this.merchandise.merchantId).subscribe(
+          (data) => {
+            this.paymentTypes = data;
+          }
+        );
+      });
   }
 
   ngAfterViewChecked(): void {
@@ -124,7 +134,7 @@ export class ChoosePaymentPageComponent implements OnInit, AfterViewChecked {
     // console.log(this.merchandise);
     if (type == "Bitcoin") {
       console.log(this.merchandise.price);
-      this.http.post("http://localhost:8080/api/bitcoinOrder/bitcoin", this.merchandise)
+      this.http.post("https://localhost:8080/api/bitcoinOrder/bitcoin", this.merchandise)
         .subscribe(
           data => {
             console.log("POST Request is successful ", data);
@@ -151,7 +161,7 @@ export class ChoosePaymentPageComponent implements OnInit, AfterViewChecked {
       order.payerId = "78946";
       order.type = "CREDIT_CARD";
 
-      this.http.post("http://localhost:8080/api/orders", order)
+      this.http.post("https://localhost:8080/api/orders", order)
         .subscribe(
           data => {
             console.log("POST Request is successful ", data);

@@ -1,0 +1,13 @@
+1) Izgenerisati SSL PKC sertifikat pomocu Javinog keytool - a
+  IZ ADMIN KONZOLE, POZICIONIRATI SE U JRE folder i uneti ./keytool -genkeypair -keysize 2048 -keyalg RSA -alias servlet-engine -storetype pkcs12 -keystore keysep.p12
+    sifra da bude sepmaster
+    naziv fajla da bude kao sto je naveden u parametrima komande
+
+2) Podesiti application.properties
+
+3) Upload sertifikata backenda u chrome
+    https://support.securly.com/hc/en-us/articles/206081828-How-to-manually-install-the-Securly-SSL-certificate-in-Chrome
+
+4) komanda za pokretanje "NPM START"
+
+5) chrome://flags/#allow-insecure-localhost  - uneti u URL bar i postaviti sa DISABLED na ENABLED

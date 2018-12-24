@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/orders")
-@CrossOrigin(origins = "http://localhost:4200", maxAge = 36000)
+@CrossOrigin(origins = "https://localhost:4200", maxAge = 36000)
 public class OrderController {
 
     @Autowired
@@ -24,12 +24,12 @@ public class OrderController {
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<OrderDto>> getAllOrders() {
-        return ResponseEntity.ok(new ArrayList<>());
+        return ResponseEntity.ok(mapper.mapManyToDTO(orderService.findAll()));
     }
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<OrderDto> getOrder(@PathVariable("id") String id) {
-        return ResponseEntity.ok(new OrderDto());
+        return ResponseEntity.ok(mapper.mapToDTO(orderService.findById(id)));
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

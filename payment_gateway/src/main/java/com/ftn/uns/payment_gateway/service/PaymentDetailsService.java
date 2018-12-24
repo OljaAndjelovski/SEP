@@ -1,6 +1,7 @@
 package com.ftn.uns.payment_gateway.service;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -57,7 +58,7 @@ public class PaymentDetailsService {
 	public void deleteNullIssn(String id) {
 		Magazine magazine = magazineRepository.findById(id).orElse(null);
 		ArrayList<PaymentServiceDetails> pdd = new ArrayList<PaymentServiceDetails>();
-		
+
 		if (magazine != null) {
 			for (PaymentServiceDetails pd : magazine.getDetails()) {
 				pdd.add(pd);
@@ -66,8 +67,12 @@ public class PaymentDetailsService {
 		}
 
 	}
-	
+
 	public String getMerchantPasswordByMerchantId(String merchantId) {
 		return paymentServiceDetailsRepository.findByMerchantId(merchantId).getMerchantPassword();
+	}
+
+	public Set<PaymentServiceDetails> getTypesOfMagazine(String issn) {
+		return magazineRepository.getOne(issn).getDetails();
 	}
 }

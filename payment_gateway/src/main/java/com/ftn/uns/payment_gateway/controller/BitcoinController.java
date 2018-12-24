@@ -17,7 +17,7 @@ import com.ftn.uns.payment_gateway.service.OrderService;
 import com.ftn.uns.payment_gateway.service.PaymentTypeGatewayFactory;
 
 @RestController
-@CrossOrigin(origins = { "http://localhost:4200" })
+@CrossOrigin(origins = { "https://localhost:4200" })
 @RequestMapping("/api/bitcoinOrder")
 public class BitcoinController {
 

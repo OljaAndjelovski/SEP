@@ -6,7 +6,8 @@ export class Order {
         public payerId?: string,
         public merchantId?: string,
         public amount?: number,
-        public type?: string
+        public type?: string,
+        public currency?: string
     ) { }
 
     public print(): String {
@@ -14,6 +15,7 @@ export class Order {
             + "\nPayer: " + this.payerId
             + "\nMerchant: " + this.merchantId
             + "\nAmount: " + this.amount
-            + "\nPayment type: " + this.type;
+            + "\nPayment type: " + this.type
+            + "\nCurrency: " + this.currency;
     }
 }

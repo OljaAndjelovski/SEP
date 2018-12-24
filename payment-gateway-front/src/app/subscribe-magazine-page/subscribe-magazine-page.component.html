@@ -1,21 +1,28 @@
 <div class="container">
   <div class="jumbotron container-fluid">
     <div class="row">
-      <div class="col-8">
+      <div class="col-9">
           <div><h2>Magazine</h2></div>
           <table class="table">
             <tr class="table-light">
               <th scope="row">ISSN</th>
-              <td><input type="text" name="type"
-                 [(ngModel)]="magazine.issn"  maxlength="8"/></td>
+              <td>ISSN </td>
+              <td><input type="text" name="issn1"
+                 [(ngModel)]="issn1" (keyup)="checkValidIssn()" [ngClass]="{'border border-danger': !issnValid}"/></td>
+              <td> - </td>
+              <td><input type="text" name="issn2"
+                [(ngModel)]="issn2" (keyup)="checkValidIssn()" [ngClass]="{'border border-danger': !issnValid}"/></td>
+            </tr>
+            <tr class="table-light" *ngIf="!issnValid">
+              <td></td><td colspan="4" class="text-danger">{{issnMsg}}</td>
             </tr>
             <tr class="table-light">
               <th scope="row">Title</th>
-              <td><input type="text" name="type" [(ngModel)]="magazine.title"/></td>
+              <td colspan="4"><input type="text" name="type" [(ngModel)]="magazine.title" class="w-100" [ngClass]="{'border border-danger': magazine.title.length == 0}"/></td>
             </tr>
             <tr class="table-light">
               <th scope="row">Chosen types</th>
-              <td>
+              <td colspan="4">
                 <table class="table table-striped table-bordered">
                   <tr>
                     <th>Type</th>
@@ -23,30 +30,26 @@
                     <th>Merchant Password</th>
                   </tr>
                   <tr *ngFor="let details of magazine.details">
-                    <td>{{details.type}}</td>
-                    <td>{{details.merchantID}}</td>
-                    <td>{{details.merchantPassword}}</td>
-                  </tr>
-                  <tr *ngIf="chosenType!==''">
-                      <td><input type="text" name="type" disabled value="{{chosenType}}"/></td>
-                      <td><input type="text" (blur)="addDetails()" name="id" placeholder="Merchant id..." [(ngModel)]="newID"/></td>
-                      <td><input type="text" (blur)="addDetails()" name="password" placeholder="Merchant password..." [(ngModel)]="newPassword"/></td>
+                    <td><input type="text" disabled value="{{details.type}}" name="type" /></td>
+                    <td><input type="text" placeholder="Merchant id..." [(ngModel)]="details.merchantID"/></td>
+                    <td><input type="text" placeholder="Merchant password..." [(ngModel)]="details.merchantPassword" /></td>
+                    <td><span class="btn-group"><button class="btn btn-danger btn-sm" (click)="removeDetails(details)"><i class="fa fa-remove"></i></button></span></td>
                   </tr>
                 </table>
               </td>
             </tr>
           </table>
       </div>
-      <div class="col-4">
+      <div class="col-3">
         <div class="row">
           <div class="col d-flex justify-content-center"><h3>Choose payment types: </h3></div>
         </div>
         <br />
         <div class="d-flex justify-content-center">
           <ul class="list-group">
-            <li class="list-group-item disabled" *ngFor="let type of paymentTypes" [ngClass]="{'bg-secondary disabled': paymentTypeChecked(type.code), 'active': chosenType === type.code}">
+            <li class="list-group-item disabled" *ngFor="let type of paymentTypes" [ngClass]="{'active': paymentTypeChecked(type.code)}">
               <a class="btn text-dark" (click)="openType(type.code)">&nbsp;
-                <i class="fa" [ngClass]="{'fa-credit-card-alt': type.code==='CreditCard', 'fa-paypal': type.code==='PayPal', 'fa-btc': type.code==='Bitcoin', 'fa-money': type.code!=='CreditCard' && type.code!=='PayPal' && type.code!=='Bitcoin'}" aria-hidden="true"></i>
+                <i class="fa" [ngClass]="{'fa-credit-card-alt': type.code==='CREDIT_CARD', 'fa-paypal': type.code==='PAY_PAL', 'fa-btc': type.code==='BITCOIN', 'fa-money': type.code!=='CREDIT_CARD' && type.code!=='PAY_PAL' && type.code!=='BITCOIN'}" aria-hidden="true"></i>
                 &nbsp;&nbsp;{{type.name}}&nbsp;
               </a>
             </li>
