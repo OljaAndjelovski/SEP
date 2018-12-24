@@ -3,6 +3,7 @@ import { Merchandise } from '../model/merchandise';
 import { Order } from '../model/order';
 import { Router } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+// import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 
 declare let paypal: any;
 
@@ -12,7 +13,7 @@ declare let paypal: any;
   styleUrls: ['./choose-payment-page.component.css']
 })
 export class ChoosePaymentPageComponent implements OnInit, AfterViewChecked {
-
+  closeResult: string;
   addScript: boolean = false;
   paypalLoad: boolean = true;
   merchandise: Merchandise;
@@ -63,7 +64,8 @@ export class ChoosePaymentPageComponent implements OnInit, AfterViewChecked {
 
   constructor(
     private router: Router,
-    private http: HttpClient
+    private http: HttpClient,
+    // private modalService: NgbModal
   ) {
     this.headers = new HttpHeaders();
     this.headers.append("Content-Type", "appication/json");
@@ -116,7 +118,7 @@ export class ChoosePaymentPageComponent implements OnInit, AfterViewChecked {
       document.body.appendChild(scripttagElement);
     })
   }
-  public pay(type: string) {
+  public pay(type: string, content) {
     this.order.type = type;
     // console.log(type);
     // console.log(this.merchandise);
@@ -140,6 +142,8 @@ export class ChoosePaymentPageComponent implements OnInit, AfterViewChecked {
 
     } else if (type == 'CreditCard') {
 
+      // this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
+      // console.log(`Closed with: ${result}`);
       let order = new Order();
       order.amount = 1;
       order.merchantId = "123123";
@@ -156,9 +160,22 @@ export class ChoosePaymentPageComponent implements OnInit, AfterViewChecked {
             console.log("Error", error);
           }
         );
+      // }, (reason) => {
+      //   console.log(`Dismissed ${this.getDismissReason(reason)}`);
+      // });
     }
-
   }
+
+  // private getDismissReason(reason: any): string {
+  //   if (reason === ModalDismissReasons.ESC) {
+  //     return 'by pressing ESC';
+  //   } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+  //     return 'by clicking on a backdrop';
+  //   } else {
+  //     return `with: ${reason}`;
+  //   }
+  // }
+
   public createOrder() {
 
     /*this.order.merchantOrderId = Math.floor(Math.random()+1);

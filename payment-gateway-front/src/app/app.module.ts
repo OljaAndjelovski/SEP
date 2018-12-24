@@ -15,6 +15,7 @@ import { ErrorPageComponent } from './end-pages/error-page/error-page.component'
 import { AppRoutingModule } from './app-routing/app-routing.module';
 import { PageNotFoundComponent } from './end-pages/page-not-found/page-not-found.component';
 import { StartPageComponent } from './end-pages/start-page/start-page.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,7 @@ import { StartPageComponent } from './end-pages/start-page/start-page.component'
     CancelPageComponent,
     ErrorPageComponent,
     PageNotFoundComponent,
-    StartPageComponent
+    StartPageComponent,
   ],
   imports: [
     BrowserModule,
@@ -34,9 +35,10 @@ import { StartPageComponent } from './end-pages/start-page/start-page.component'
     HttpClientModule,
     FormsModule,
     AngularFontAwesomeModule,
+    NgbModule,
     TooltipModule.forRoot()
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule { }

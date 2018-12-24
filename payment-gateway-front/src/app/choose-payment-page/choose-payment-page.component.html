@@ -1,53 +1,74 @@
 <div class="container">
-    <div class="jumbotron container-fluid">
-      <div class="row">
-        <div class="col-8">
-            <div><h3>Product</h3></div>
-            <table class="table">
-              <tr class="table-light">
-                <th scope="row">Name</th>
-                <td colspan="3">{{merchandise.name}}</td>
-              </tr>
-              <tr class="table-light">
-                <th scope="row">Description</th>
-                <td colspan="3">{{merchandise.description}}</td>
-              </tr>
-              <tr class="table-light">
-                <th scope="row">Merchant</th>
-                <td colspan="3">{{merchandise.merchantId}}</td>
-              </tr>
-              <tr class="table-light">
-                <th scope="row">Quantity</th>
-                <td colspan="3">{{merchandise.quantity}}</td>
-              </tr>
-              <tr class="table-light">
-                  <th scope="cell">Price</th>
-                  <td>{{merchandise.price}}</td>
-                  <th scope="cell">Currency</th>
-                  <td>{{merchandise.currency}}</td>
-              </tr>
-            </table>
+  <div class="jumbotron container-fluid">
+    <div class="row">
+      <div class="col-8">
+        <div>
+          <h3>Product</h3>
         </div>
-        <div class="col-4">
-          <div class="row">
-            <div class="col d-flex justify-content-center"><h3>Choose a payment type: </h3></div>
+        <table class="table">
+          <tr class="table-light">
+            <th scope="row">Name</th>
+            <td colspan="3">{{merchandise.name}}</td>
+          </tr>
+          <tr class="table-light">
+            <th scope="row">Description</th>
+            <td colspan="3">{{merchandise.description}}</td>
+          </tr>
+          <tr class="table-light">
+            <th scope="row">Merchant</th>
+            <td colspan="3">{{merchandise.merchantId}}</td>
+          </tr>
+          <tr class="table-light">
+            <th scope="row">Quantity</th>
+            <td colspan="3">{{merchandise.quantity}}</td>
+          </tr>
+          <tr class="table-light">
+            <th scope="cell">Price</th>
+            <td>{{merchandise.price}}</td>
+            <th scope="cell">Currency</th>
+            <td>{{merchandise.currency}}</td>
+          </tr>
+        </table>
+      </div>
+      <div class="col-4">
+        <div class="row">
+          <div class="col d-flex justify-content-center">
+            <h3>Choose a payment type: </h3>
           </div>
-          <br />
-          <div class="d-flex justify-content-center">
-            <ul class="list-group">
-              <li class="list-group-item" *ngFor="let type of paymentTypes" [ngClass]="{'active': order.type===type.code}">
-                <a class="btn text-dark" (click)="pay(type.code)">&nbsp;
-                  <i class="fa" *ngIf="type.code !== 'PayPal'" [ngClass]="{'fa-credit-card-alt': type.code==='CreditCard', 'fa-btc': type.code==='Bitcoin', 'fa-money': type.code!=='CreditCard' && type.code!=='Bitcoin'}" aria-hidden="true"></i>
-                  &nbsp;&nbsp;{{type.name}}&nbsp;
-                  <span *ngIf="type.code === 'PayPal'" id="paypal-button"></span>
-                </a>
-              </li>
-            </ul>
-          </div>
+        </div>
+        <br />
+        <div class="d-flex justify-content-center">
+          <ul class="list-group">
+            <li class="list-group-item" *ngFor="let type of paymentTypes" [ngClass]="{'active': order.type===type.code}">
+              <a class="btn text-dark" (click)="pay(type.code, content)">&nbsp;
+                <i class="fa" *ngIf="type.code !== 'PayPal'" [ngClass]="{'fa-credit-card-alt': type.code==='CreditCard', 'fa-btc': type.code==='Bitcoin', 'fa-money': type.code!=='CreditCard' && type.code!=='Bitcoin'}"
+                  aria-hidden="true"></i>
+                &nbsp;&nbsp;{{type.name}}&nbsp;
+                <span *ngIf="type.code === 'PayPal'" id="paypal-button"></span>
+              </a>
+            </li>
+          </ul>
         </div>
       </div>
-      
     </div>
-  </div>
 
-  
+
+    <!-- <ng-template #content let-modal>
+      <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Your card password</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form name="form" (ngSubmit)="f.form.valid && register()" #f="ngForm" novalidate>
+
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button>
+      </div>
+    </ng-template> -->
+
+  </div>
+</div>

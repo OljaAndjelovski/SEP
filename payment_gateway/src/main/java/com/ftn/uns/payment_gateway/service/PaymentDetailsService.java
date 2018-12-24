@@ -66,4 +66,8 @@ public class PaymentDetailsService {
 		}
 
 	}
+	
+	public String getMerchantPasswordByMerchantId(String merchantId) {
+		return paymentServiceDetailsRepository.findByMerchantId(merchantId).getMerchantPassword();
+	}
 }
