@@ -15,16 +15,13 @@ import { ErrorPageComponent } from './end-pages/error-page/error-page.component'
 import { AppRoutingModule } from './app-routing/app-routing.module';
 import { PageNotFoundComponent } from './end-pages/page-not-found/page-not-found.component';
 import { StartPageComponent } from './end-pages/start-page/start-page.component';
-<<<<<<< HEAD
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-=======
 import { OrderService } from './services/order.service';
 import { PaymentService } from './services/payment.service';
 import { MagazineService } from './services/magazine.service';
 import { PaymentDetailsService } from './services/payment-details.service';
 import { SubscribeComponent } from './subscribe/subscribe.component';
 import { RouterModule } from '@angular/router';
->>>>>>> ec50c9c59851f531603c2b2d929b1df256ae6268
 
 @NgModule({
   declarations: [
@@ -37,10 +34,7 @@ import { RouterModule } from '@angular/router';
     ErrorPageComponent,
     PageNotFoundComponent,
     StartPageComponent,
-<<<<<<< HEAD
-=======
     SubscribeComponent
->>>>>>> ec50c9c59851f531603c2b2d929b1df256ae6268
   ],
   imports: [
     BrowserModule,
@@ -51,12 +45,7 @@ import { RouterModule } from '@angular/router';
     NgbModule,
     TooltipModule.forRoot()
   ],
-<<<<<<< HEAD
-  providers: [],
   bootstrap: [AppComponent],
-=======
   providers: [OrderService, PaymentService, MagazineService, PaymentDetailsService],
-  bootstrap: [AppComponent]
->>>>>>> ec50c9c59851f531603c2b2d929b1df256ae6268
 })
 export class AppModule { }

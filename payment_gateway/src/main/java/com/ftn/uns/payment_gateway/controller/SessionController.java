@@ -9,10 +9,6 @@ import org.springframework.web.bind.annotation.*;
 
 import com.ftn.uns.payment_gateway.model.Session;
 import com.ftn.uns.payment_gateway.service.SessionService;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
-
-import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @CrossOrigin(origins = {"https://localhost:4200", "http://localhost:4201"})

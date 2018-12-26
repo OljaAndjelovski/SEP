@@ -3,11 +3,8 @@ import { Merchandise } from '../model/merchandise';
 import { Order } from '../model/order';
 import { Router } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-<<<<<<< HEAD
 // import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
-=======
 import { PaymentDetailsService } from '../services/payment-details.service';
->>>>>>> ec50c9c59851f531603c2b2d929b1df256ae6268
 
 declare let paypal: any;
 
@@ -69,11 +66,8 @@ export class ChoosePaymentPageComponent implements OnInit, AfterViewChecked {
   constructor(
     private router: Router,
     private http: HttpClient,
-<<<<<<< HEAD
     // private modalService: NgbModal
-=======
     private paymentService: PaymentDetailsService
->>>>>>> ec50c9c59851f531603c2b2d929b1df256ae6268
   ) {
     this.headers = new HttpHeaders();
     this.headers.append("Content-Type", "appication/json");
@@ -93,14 +87,14 @@ export class ChoosePaymentPageComponent implements OnInit, AfterViewChecked {
 
     let parts = window.location.href.split('/');
 
-    this.http.get<any>("https://localhost:8080/sessions/" + parts[parts.length-1])
+    this.http.get<any>("https://localhost:8080/sessions/" + parts[parts.length - 1])
       .subscribe((data) => {
         this.merchandise.name = data.merchandise;
         this.merchandise.price = data.price;
         this.merchandise.currency = data.currency;
         this.merchandise.merchantId = data.issn;
 
-        
+
         this.paymentService.getTypesOfMagazine(this.merchandise.merchantId).subscribe(
           (data) => {
             this.paymentTypes = data;
