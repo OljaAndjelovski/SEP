@@ -86,21 +86,35 @@ export class ChoosePaymentPageComponent implements OnInit, AfterViewChecked {
     this.order = new Order("-1", Date.now(), "1234ABCD", "", 0, "CreditCard", "");
 
     let parts = window.location.href.split('/');
+    this.paymentTypes = [
+      {
+        name: "Credit Card",
+        code: "CREDIT_CARD"
+      },
+      {
+        name: "Pay Pal",
+        code: "PAY_PAL"
+      },
+      {
+        name: "Bitcoin",
+        code: "BITCOIN"
+      }
+    ]
 
-    this.http.get<any>("https://localhost:8080/sessions/" + parts[parts.length - 1])
+    /*this.http.get<any>("https://localhost:8080/sessions/" + parts[parts.length-1])
       .subscribe((data) => {
         this.merchandise.name = data.merchandise;
         this.merchandise.price = data.price;
         this.merchandise.currency = data.currency;
         this.merchandise.merchantId = data.issn;
+*/
 
-
-        this.paymentService.getTypesOfMagazine(this.merchandise.merchantId).subscribe(
-          (data) => {
-            this.paymentTypes = data;
-          }
-        );
-      });
+    /* this.paymentService.getTypesOfMagazine(this.merchandise.merchantId).subscribe(
+       (data) => {
+         this.paymentTypes = data;
+       }
+     );
+   });*/
   }
 
   ngAfterViewChecked(): void {
