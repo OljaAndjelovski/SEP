@@ -58,7 +58,7 @@ public class BitcoinPaymentTypeGatewayImpl implements PaymentTypeGateway {
 		if (responseEntity.getStatusCode() == HttpStatus.OK) {
 			responseOrder = responseEntity.getBody();
 			System.out.println(Integer.valueOf(responseEntity.getBody().getId()));
-
+			
 			return responseOrder.getPayment_url() + "," + Integer.valueOf(responseEntity.getBody().getId());
 		}
 

@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.ftn.uns.payment_gateway.bitcoin.BitcoinDto;
 import com.ftn.uns.payment_gateway.bitcoin.BitcoinPaymentTypeGatewayImpl;
 import com.ftn.uns.payment_gateway.model.Order;
@@ -29,6 +32,8 @@ public class BitcoinController {
 
 	@Autowired
 	private OrderService orderService;
+
+	private static final Logger logger = LoggerFactory.getLogger(BitcoinController.class); // svaka aktrivnost
 
 	@RequestMapping(value = "/{paymentType}", method = RequestMethod.POST, produces = "application/json")
 	public String getType(@PathVariable("paymentType") String paymentType, @RequestBody BitcoinDto bitcoinDto) {
@@ -54,6 +59,7 @@ public class BitcoinController {
 		System.out.println("split 1 " + split[1]);
 		String status = "\"" + split[0] + "\"";
 
+		System.out.println("****" + status);
 		bitcoinService.setOrderBitcoinId(bitcoinDto.getMerchantId(), Integer.valueOf(split[1]));
 
 		return status;
