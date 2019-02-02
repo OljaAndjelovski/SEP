@@ -11,6 +11,7 @@ import com.ftn.uns.payment_gateway.dto.MerchantDto;
 import com.ftn.uns.payment_gateway.dto.UrlAndIdDto;
 import com.ftn.uns.payment_gateway.model.Order;
 import com.ftn.uns.payment_gateway.service.BankService;
+import com.ftn.uns.payment_gateway.service.PaymentDetailsService;
 import com.ftn.uns.payment_gateway.service.PaymentTypeGateway;
 
 public class CreditCardPaymentTypeGatewayImpl implements PaymentTypeGateway {
@@ -26,20 +27,22 @@ public class CreditCardPaymentTypeGatewayImpl implements PaymentTypeGateway {
 
 	@Autowired
 	private BankService bankService;
+	
+	@Autowired
+	private PaymentDetailsService paymentDetailsService;
 
 	@Override
 	public String createOrder(Order order) {
+		
 		MerchantDto merchantDto = new MerchantDto();
 		merchantDto.setAmount(order.getPrice());
-		//merchant.pass fali
+		merchantDto.setMerchantPassword(paymentDetailsService.getMerchantPasswordByMerchantId(order.getMagazine().getIssn()));
 		merchantDto.setMerchantId(order.getMagazine().getIssn());
 		merchantDto.setMerchantOrderID(Integer.parseInt(order.getMerchantOrderId()));
 		merchantDto.setMerchantTimestamp(order.getMerchantTimestamp());
 		merchantDto.setCancelUrl(cancel);
 		merchantDto.setSuccesslUrl(success);
 		merchantDto.setFailureUrl(failure);
-
-		
 
 		try {
 			String bankUrl = bankService.getBankByMerchantId(merchantDto.getMerchantId()).getBank_url();
@@ -56,7 +59,7 @@ public class CreditCardPaymentTypeGatewayImpl implements PaymentTypeGateway {
 			// TODO: handle exception
 		}
 
-		return null;
+		return "https://www.youtube.com/watch?v=lI9jjfphpUU";
 	}
 
 	@Override

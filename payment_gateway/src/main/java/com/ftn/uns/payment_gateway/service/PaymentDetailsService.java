@@ -68,7 +68,7 @@ public class PaymentDetailsService {
 	public void deleteNullIssn(String id) {
 		Magazine magazine = magazineRepository.findById(id).orElse(null);
 		ArrayList<PaymentServiceDetails> pdd = new ArrayList<PaymentServiceDetails>();
-		
+
 		if (magazine != null) {
 			for (PaymentServiceDetails pd : magazine.getDetails()) {
 				pdd.add(pd);

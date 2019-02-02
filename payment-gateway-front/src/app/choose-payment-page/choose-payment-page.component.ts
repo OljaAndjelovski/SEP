@@ -3,6 +3,7 @@ import { Merchandise } from '../model/merchandise';
 import { Order } from '../model/order';
 import { Router } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+// import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { PaymentDetailsService } from '../services/payment-details.service';
 
 declare let paypal: any;
@@ -13,7 +14,7 @@ declare let paypal: any;
   styleUrls: ['./choose-payment-page.component.css']
 })
 export class ChoosePaymentPageComponent implements OnInit, AfterViewChecked {
-
+  closeResult: string;
   addScript: boolean = false;
   paypalLoad: boolean = true;
   merchandise: Merchandise;
@@ -65,6 +66,7 @@ export class ChoosePaymentPageComponent implements OnInit, AfterViewChecked {
   constructor(
     private router: Router,
     private http: HttpClient,
+    // private modalService: NgbModal
     private paymentService: PaymentDetailsService
   ) {
     this.headers = new HttpHeaders();
@@ -84,21 +86,35 @@ export class ChoosePaymentPageComponent implements OnInit, AfterViewChecked {
     this.order = new Order("-1", Date.now(), "1234ABCD", "", 0, "CreditCard", "");
 
     let parts = window.location.href.split('/');
+    this.paymentTypes = [
+      {
+        name: "Credit Card",
+        code: "CREDIT_CARD"
+      },
+      {
+        name: "Pay Pal",
+        code: "PAY_PAL"
+      },
+      {
+        name: "Bitcoin",
+        code: "BITCOIN"
+      }
+    ]
 
-    this.http.get<any>("https://localhost:8080/sessions/" + parts[parts.length-1])
+    /*this.http.get<any>("https://localhost:8080/sessions/" + parts[parts.length-1])
       .subscribe((data) => {
         this.merchandise.name = data.merchandise;
         this.merchandise.price = data.price;
         this.merchandise.currency = data.currency;
         this.merchandise.merchantId = data.issn;
+*/
 
-        
-        this.paymentService.getTypesOfMagazine(this.merchandise.merchantId).subscribe(
-          (data) => {
-            this.paymentTypes = data;
-          }
-        );
-      });
+    /* this.paymentService.getTypesOfMagazine(this.merchandise.merchantId).subscribe(
+       (data) => {
+         this.paymentTypes = data;
+       }
+     );
+   });*/
   }
 
   ngAfterViewChecked(): void {
@@ -120,7 +136,7 @@ export class ChoosePaymentPageComponent implements OnInit, AfterViewChecked {
       document.body.appendChild(scripttagElement);
     })
   }
-  public pay(type: string) {
+  public pay(type: string, content) {
     this.order.type = type;
     // console.log(type);
     // console.log(this.merchandise);
@@ -144,6 +160,8 @@ export class ChoosePaymentPageComponent implements OnInit, AfterViewChecked {
 
     } else if (type == 'CreditCard') {
 
+      // this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
+      // console.log(`Closed with: ${result}`);
       let order = new Order();
       order.amount = 1;
       order.merchantId = "123123";
@@ -160,9 +178,22 @@ export class ChoosePaymentPageComponent implements OnInit, AfterViewChecked {
             console.log("Error", error);
           }
         );
+      // }, (reason) => {
+      //   console.log(`Dismissed ${this.getDismissReason(reason)}`);
+      // });
     }
-
   }
+
+  // private getDismissReason(reason: any): string {
+  //   if (reason === ModalDismissReasons.ESC) {
+  //     return 'by pressing ESC';
+  //   } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+  //     return 'by clicking on a backdrop';
+  //   } else {
+  //     return `with: ${reason}`;
+  //   }
+  // }
+
   public createOrder() {
 
     /*this.order.merchantOrderId = Math.floor(Math.random()+1);
