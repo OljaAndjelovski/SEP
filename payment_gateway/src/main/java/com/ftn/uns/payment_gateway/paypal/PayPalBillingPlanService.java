@@ -10,8 +10,7 @@ import org.springframework.web.client.RestTemplate;
 @Service
 public class PayPalBillingPlanService {
 
-    @Autowired
-    PayPalTokenAcquirer acquirer;
+    PayPalTokenAcquirer acquirer = new PayPalTokenAcquirer();
 
     public String createPlan(String issn) {
 

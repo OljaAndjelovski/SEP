@@ -13,8 +13,7 @@ import java.time.LocalDateTime;
 @Service
 public class PayPalBillingAgreementService {
 
-    @Autowired
-    PayPalTokenAcquirer acquirer;
+    PayPalTokenAcquirer acquirer = new PayPalTokenAcquirer();
 
     public String createAgreement(Magazine magazine, String billingPlanId){
 

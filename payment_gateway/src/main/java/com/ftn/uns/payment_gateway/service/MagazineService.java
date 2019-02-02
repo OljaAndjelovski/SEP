@@ -53,13 +53,7 @@ public class MagazineService {
 		
 
 		for (PaymentServiceDetails d : magazineDto.getDetails()) {
-			PaymentServiceDetails psd = new PaymentServiceDetails();
-			System.out.println("\n" + d.getId());
-			psd.setMerchantID(d.getMerchantID());
-			psd.setMerchantPassword(d.getMerchantPassword());
-			psd.setType(d.getType());
-			PaymentServiceDetails details = paymentServiceDetailsRepository.save(psd);
-			saved.getDetails().add(details);
+			paymentDetailsService.subscribeToPaymentType(magazineDto.getIssn(), d);
 		}
 		//paymentDetailsService.deleteNullIssn(saved.getIssn());
 		return magazineRepository.save(saved);

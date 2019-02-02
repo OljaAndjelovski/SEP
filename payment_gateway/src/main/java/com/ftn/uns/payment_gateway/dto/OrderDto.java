@@ -18,17 +18,19 @@ public class OrderDto {
 
 	private PaymentType type;
 
+	private String currency;
+
 	public OrderDto() {
 	}
 
-	public OrderDto(String merchantOrderId, LocalDateTime merchantTimestamp, String payerId, String merchantId,
-			Double amount, PaymentType type) {
+	public OrderDto(String merchantOrderId, LocalDateTime merchantTimestamp, String payerId, String merchantId, Double amount, PaymentType type, String currency) {
 		this.merchantOrderId = merchantOrderId;
 		this.merchantTimestamp = merchantTimestamp;
 		this.payerId = payerId;
 		this.merchantId = merchantId;
 		this.amount = amount;
 		this.type = type;
+		this.currency = currency;
 	}
 
 	public String getMerchantOrderId() {
@@ -77,5 +79,13 @@ public class OrderDto {
 
 	public void setType(PaymentType type) {
 		this.type = type;
+	}
+
+	public String getCurrency() {
+		return currency;
+	}
+
+	public void setCurrency(String currency) {
+		this.currency = currency;
 	}
 }

@@ -2,6 +2,7 @@ package com.ftn.uns.payment_gateway.bitcoin;
 
 import java.util.Arrays;
 
+import com.ftn.uns.payment_gateway.paypal.CurrencyConverter;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -20,14 +21,14 @@ public class BitcoinPaymentTypeGatewayImpl implements PaymentTypeGateway {
 		System.out.println("STARTED BITCOIN SERVICE");
 		System.out.println(o.toString());
 
-		Double ex = excangeRate(o.getCurrency(), "EUR");
+		Double ex = CurrencyConverter.excangeRate(o.getCurrency(), "EUR");
 
 		System.out.println("\n ***** " + ex + " CREATE ORDER:  " + "\n");
 		OrderBitcoinDto order = new OrderBitcoinDto();
 		// order.setDescription(orderProduct.getDescription());
 		order.setMerchantId("ID MAGAZINA"); // Ovde ce ici
 		order.setTitle("Title");
-		order.setPrice_amount(o.getPrice()/ex); // Mora da se pazi na cenu
+		order.setPrice_amount(o.getPrice()*ex); // Mora da se pazi na cenu
 		order.setOrder_id(o.getMerchantOrderId());
 		System.out.println("MERCHANT ORDER ID " + o.getMerchantOrderId());
 		order.setPrice_currency("EUR"); // Valuta u kojoj placa ne sme RSD ili cemo konvertovati
@@ -73,22 +74,6 @@ public class BitcoinPaymentTypeGatewayImpl implements PaymentTypeGateway {
 	@Override
 	public String executeOrder(Order order) {
 		return null;
-	}
-
-	public Double excangeRate(String fromCurrency, String toCurrency) {
-		String url = "https://api-sandbox.coingate.com/v2/rates/merchant/" + fromCurrency + "/" + toCurrency;
-		String authorizationHeader = "Bearer Q-smRAh_a6nF-NVXJarEt48YyHtNag1iX-__bZwx";
-
-		HttpHeaders requestHeaders = new HttpHeaders();
-		requestHeaders.setContentType(MediaType.APPLICATION_JSON);
-		requestHeaders.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-		requestHeaders.add("Authorization", authorizationHeader);
-		HttpEntity<String> entity = new HttpEntity<>(null, requestHeaders);
-
-		RestTemplate rt = new RestTemplate();
-		ResponseEntity<Double> convertedValue = rt.exchange(url, HttpMethod.GET, entity, Double.class);
-		return convertedValue.getBody();
-
 	}
 
 }

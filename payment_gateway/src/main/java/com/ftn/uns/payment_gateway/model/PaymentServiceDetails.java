@@ -1,20 +1,22 @@
 package com.ftn.uns.payment_gateway.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
+@Table(name = "DETAILS")
 public class PaymentServiceDetails {
 
     @Id
     @GeneratedValue
     private Long id;
 
+    @Column(name = "merchant")
     private String merchantID;
 
+    @Column(name = "password")
     private String merchantPassword;
 
+    @Column(name = "type")
     private PaymentType type;
 
     public PaymentServiceDetails() {}

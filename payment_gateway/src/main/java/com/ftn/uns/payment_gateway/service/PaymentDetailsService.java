@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.ftn.uns.payment_gateway.model.Magazine;
@@ -29,6 +31,14 @@ public class PaymentDetailsService {
 
 		// todo
 		// create check if magazine already has payment details specified for the type
+		for(PaymentServiceDetails detail: magazine.getDetails()){
+			if(detail.getType() == details.getType()){
+				return null;
+			}
+		}
+
+		BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+		details.setMerchantPassword(bCryptPasswordEncoder.encode(details.getMerchantPassword()));
 
 		details = paymentServiceDetailsRepository.save(details);
 		magazine.getDetails().add(details);

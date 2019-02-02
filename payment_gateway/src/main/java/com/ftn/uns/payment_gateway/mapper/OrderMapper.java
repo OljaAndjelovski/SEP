@@ -25,6 +25,7 @@ public class OrderMapper {
         dto.setMerchantTimestamp(order.getMerchantTimestamp());
         dto.setPayerId(order.getPayerId());
         dto.setType(order.getType());
+        dto.setCurrency(order.getCurrency());
 
         return dto;
     }
@@ -32,12 +33,13 @@ public class OrderMapper {
     public Order mapFromDTO(OrderDto dto) {
         Order order = new Order();
 
-        order.setMagazine(null);
+        order.setMagazine(magazineRepository.getOne(dto.getMerchantId()));
         order.setPayerId(dto.getPayerId());
         order.setPrice(dto.getAmount());
         order.setMerchantTimestamp(dto.getMerchantTimestamp());
         order.setMerchantOrderId(dto.getMerchantOrderId());
         order.setType(dto.getType());
+        order.setCurrency(dto.getCurrency());
 
         return order;
     }

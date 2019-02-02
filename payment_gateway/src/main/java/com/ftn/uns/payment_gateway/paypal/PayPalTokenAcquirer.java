@@ -1,5 +1,7 @@
 package com.ftn.uns.payment_gateway.paypal;
 
+import com.ftn.uns.payment_gateway.config.SpringContext;
+import com.ftn.uns.payment_gateway.model.Magazine;
 import com.ftn.uns.payment_gateway.model.PayPalToken;
 import com.ftn.uns.payment_gateway.model.PaymentServiceDetails;
 import com.ftn.uns.payment_gateway.model.PaymentType;
@@ -23,24 +25,22 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-@Service
 public class PayPalTokenAcquirer {
-
-    @Autowired
-    MagazineRepository magazineRepository;
-
-    @Autowired
-    PayPalTokenRepository payPalTokenRepository;
 
     public String acquireAccessToken(String issn) {
         RestTemplate restTemplate = new RestTemplate();
 
-        PayPalToken token = payPalTokenRepository.getOne(issn);
-        if(token != null){
+        PayPalTokenRepository tokenRepo = SpringContext.getBean(PayPalTokenRepository.class);
+        MagazineRepository magRepo = SpringContext.getBean(MagazineRepository.class);
+
+        Magazine mag = magRepo.getOne(issn);
+
+        PayPalToken token = tokenRepo.getOne(issn);
+        if(token.getClass().equals(PayPalToken.class) && token != null){
             return token.getToken();
         }
 
-        Set<PaymentServiceDetails> details = magazineRepository.getOne(issn).getDetails();
+        Set<PaymentServiceDetails> details = magRepo.getOne(issn).getDetails();
         String client = "";
         String password = "";
 
@@ -76,11 +76,12 @@ public class PayPalTokenAcquirer {
 
     @Scheduled(fixedRate = 600000)
     private void cleanSpentTokens(){
-        List<PayPalToken> expired = StreamSupport.stream(payPalTokenRepository.findAll().spliterator(), false)
+        PayPalTokenRepository tokenRepo = SpringContext.getBean(PayPalTokenRepository.class);
+        List<PayPalToken> expired = StreamSupport.stream(tokenRepo.findAll().spliterator(), false)
                 .filter(token -> token.getValidUntil().isAfter(LocalDateTime.now()))
                 .collect(Collectors.toList());
 
         System.out.println("Cleaning expired pay pal tokens");
-        payPalTokenRepository.deleteAll(expired);
+        tokenRepo.deleteAll(expired);
     }
 }
