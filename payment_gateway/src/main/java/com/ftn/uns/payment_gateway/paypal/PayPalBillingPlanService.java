@@ -10,7 +10,8 @@ import org.springframework.web.client.RestTemplate;
 @Service
 public class PayPalBillingPlanService {
 
-    PayPalTokenAcquirer acquirer = new PayPalTokenAcquirer();
+    @Autowired
+    PayPalTokenAcquirer acquirer;
 
     public String createPlan(String issn) {
 
@@ -31,8 +32,8 @@ public class PayPalBillingPlanService {
                 "\"value\": \"1\", \"currency\": \"USD\"" +
                 "}}]," +
                 "\"merchant_preferences\": {" +
-                "\"return_url\": \"https://example.com\"," +
-                "\"cancel_url\": \"https://example.com/cancel\"}}";
+                "\"return_url\": \"https://localhost:4200/#/confirm?magazine=" + issn + "\"," +
+                "\"cancel_url\": \"https://localhost:4200/#/cancel\"}}";
 
         System.out.println(defJson);
         HttpHeaders headers = new HttpHeaders();

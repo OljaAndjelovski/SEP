@@ -25,9 +25,9 @@ public class SubscribeController {
         return ResponseEntity.ok(subscribeService.createSubscription(issn));
     }
 
-    @PutMapping(value = "/subscribe/{planID}/execute", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> executeSubscription(@PathVariable String planID){
+    @PutMapping(value = "/subscribe/{planID}/execute", consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity executeSubscription(@PathVariable String planID, @RequestBody String issn){
     	logger.info("\n\t\tUspešan executeSubscription.\n");
-    	return ResponseEntity.ok(/*subscribeService.executeSubscription(planID)*/).body(null);
+    	return ResponseEntity.ok(subscribeService.executeSubscription(planID, issn));
     }
 }

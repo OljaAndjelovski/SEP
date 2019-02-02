@@ -36,7 +36,7 @@ public class CreditCardPaymentTypeGatewayImpl implements PaymentTypeGateway {
 		
 		MerchantDto merchantDto = new MerchantDto();
 		merchantDto.setAmount(order.getPrice());
-		merchantDto.setMerchantPassword(paymentDetailsService.getMerchantPasswordByMerchantId(order.getMagazine().getIssn()));
+		//merchantDto.setMerchantPassword(paymentDetailsService.getMerchantPasswordByMerchantId(order.getMagazine().getIssn()));
 		merchantDto.setMerchantId(order.getMagazine().getIssn());
 		merchantDto.setMerchantOrderID(Integer.parseInt(order.getMerchantOrderId()));
 		merchantDto.setMerchantTimestamp(order.getMerchantTimestamp());

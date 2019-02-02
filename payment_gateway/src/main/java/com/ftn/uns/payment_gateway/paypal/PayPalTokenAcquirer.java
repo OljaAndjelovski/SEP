@@ -7,12 +7,15 @@ import com.ftn.uns.payment_gateway.model.PaymentServiceDetails;
 import com.ftn.uns.payment_gateway.model.PaymentType;
 import com.ftn.uns.payment_gateway.repository.MagazineRepository;
 import com.ftn.uns.payment_gateway.repository.PayPalTokenRepository;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.json.JsonParserFactory;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -21,26 +24,34 @@ import java.net.URLEncoder;
 import java.time.LocalDateTime;
 import java.util.Base64;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+@Service
 public class PayPalTokenAcquirer {
 
+    private final MagazineRepository magazineRepository;
+
+    private final PayPalTokenRepository payPalTokenRepository;
+
+    private RestTemplate restTemplate;
+
+    @Autowired
+    public PayPalTokenAcquirer(MagazineRepository magazineRepository, PayPalTokenRepository payPalTokenRepository) {
+        this.magazineRepository = magazineRepository;
+        this.payPalTokenRepository = payPalTokenRepository;
+        this.restTemplate = new RestTemplate();
+    }
+
     public String acquireAccessToken(String issn) {
-        RestTemplate restTemplate = new RestTemplate();
-
-        PayPalTokenRepository tokenRepo = SpringContext.getBean(PayPalTokenRepository.class);
-        MagazineRepository magRepo = SpringContext.getBean(MagazineRepository.class);
-
-        Magazine mag = magRepo.getOne(issn);
-
-        PayPalToken token = tokenRepo.getOne(issn);
-        if(token.getClass().equals(PayPalToken.class) && token != null){
-            return token.getToken();
+        Optional<PayPalToken> token = payPalTokenRepository.findById(issn);
+        if(token.isPresent()){
+            return token.get().getToken();
         }
 
-        Set<PaymentServiceDetails> details = magRepo.getOne(issn).getDetails();
+        Set<PaymentServiceDetails> details = magazineRepository.getOne(issn).getDetails();
         String client = "";
         String password = "";
 
@@ -67,9 +78,15 @@ public class PayPalTokenAcquirer {
 
         HttpEntity<String> entity = new HttpEntity<>(null, headers);
         String jsonResponse = restTemplate.postForObject(paypalAPI, entity, String.class);
-        java.util.Map<String, Object> objectMap = JsonParserFactory.getJsonParser().parseMap(jsonResponse);
 
-        return objectMap.get("access_token").toString();
+        Gson gson = new Gson();
+        PayPalToken dbToken = new PayPalToken();
+        dbToken.setIssn(issn);
+        dbToken.setToken(gson.fromJson(jsonResponse, JsonObject.class).get("access_token").getAsString());
+        dbToken.setValidUntil(LocalDateTime.now().plusSeconds(Long.parseLong(gson.fromJson(jsonResponse, JsonObject.class).get("expires_in").getAsString())));
+        payPalTokenRepository.save(dbToken);
+
+        return dbToken.getToken();
     }
 
 

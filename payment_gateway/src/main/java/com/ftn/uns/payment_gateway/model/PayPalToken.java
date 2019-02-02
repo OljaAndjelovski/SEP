@@ -9,10 +9,6 @@ public class PayPalToken {
     @Id
     private String issn;
 
-    @MapsId
-    @OneToOne
-    Magazine magazine;
-
     @Column
     String token;
 
@@ -22,9 +18,8 @@ public class PayPalToken {
     public PayPalToken() {
     }
 
-    public PayPalToken(String issn, Magazine magazine, String token, LocalDateTime validUntil) {
+    public PayPalToken(String issn, String token, LocalDateTime validUntil) {
         this.issn = issn;
-        this.magazine = magazine;
         this.token = token;
         this.validUntil = validUntil;
     }
@@ -35,14 +30,6 @@ public class PayPalToken {
 
     public void setIssn(String issn) {
         this.issn = issn;
-    }
-
-    public Magazine getMagazine() {
-        return magazine;
-    }
-
-    public void setMagazine(Magazine magazine) {
-        this.magazine = magazine;
     }
 
     public String getToken() {

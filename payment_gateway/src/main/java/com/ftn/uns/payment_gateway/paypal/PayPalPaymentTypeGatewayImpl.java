@@ -16,9 +16,11 @@ import java.net.URLEncoder;
 import java.text.DecimalFormat;
 import java.util.Base64;
 
+@Service
 public class PayPalPaymentTypeGatewayImpl implements PaymentTypeGateway {
 
-    PayPalTokenAcquirer acquirer = new PayPalTokenAcquirer();
+    @Autowired
+    PayPalTokenAcquirer acquirer;
 
     @Override
     public String createOrder(Order o) {

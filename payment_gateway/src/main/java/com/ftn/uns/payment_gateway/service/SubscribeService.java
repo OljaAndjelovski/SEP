@@ -15,13 +15,18 @@ public class SubscribeService {
     @Autowired
     MagazineRepository magazineRepository;
 
+    @Autowired
+    PayPalBillingPlanService billingPlanService;
+
+    @Autowired
+    PayPalBillingAgreementService agreementService;
+
     public String createSubscription(String issn){
         String planID = createPlan(issn);
         return createAgreement(issn, planID);
     }
 
     private String createPlan(String issn){
-        PayPalBillingPlanService billingPlanService = new PayPalBillingPlanService();
         String jsonCreatePlan = billingPlanService.createPlan(issn);
         Gson gson = new Gson();
         Map<String, Object> json = gson.fromJson(jsonCreatePlan, Map.class);
@@ -31,12 +36,10 @@ public class SubscribeService {
     }
 
     private String createAgreement(String issn, String planID){
-        PayPalBillingAgreementService agreementService = new PayPalBillingAgreementService();
         return agreementService.createAgreement(magazineRepository.getOne(issn), planID);
     }
 
     public String executeSubscription(String planID, String issn){
-        PayPalBillingAgreementService agreementService = new PayPalBillingAgreementService();
         return agreementService.executeAgreement(planID, issn);
     }
 }
