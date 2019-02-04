@@ -1,5 +1,6 @@
 package com.ftn.uns.payment_gateway.paypal;
 
+import com.ftn.uns.payment_gateway.config.PasswordUtil;
 import com.ftn.uns.payment_gateway.config.SpringContext;
 import com.ftn.uns.payment_gateway.model.Magazine;
 import com.ftn.uns.payment_gateway.model.PayPalToken;
@@ -55,12 +56,16 @@ public class PayPalTokenAcquirer {
         String client = "";
         String password = "";
 
-        for(PaymentServiceDetails detail: details){
-            if(detail.getType() == PaymentType.PAY_PAL){
-                client = detail.getMerchantID();
-                password = detail.getMerchantPassword();
-                break;
+        try {
+            for (PaymentServiceDetails detail : details) {
+                if (detail.getType() == PaymentType.PAY_PAL) {
+                    client = detail.getMerchantID();
+                    password = PasswordUtil.decrypt(detail.getMerchantPassword());
+                    break;
+                }
             }
+        }catch (Exception e){
+            e.printStackTrace();
         }
 
         String paypalAPI = "";

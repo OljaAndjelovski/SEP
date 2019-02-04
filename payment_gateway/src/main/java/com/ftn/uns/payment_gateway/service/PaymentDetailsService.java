@@ -3,6 +3,7 @@ package com.ftn.uns.payment_gateway.service;
 import java.util.ArrayList;
 import java.util.Set;
 
+import com.ftn.uns.payment_gateway.config.PasswordUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -38,7 +39,11 @@ public class PaymentDetailsService {
 		}
 
 		BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-		details.setMerchantPassword(bCryptPasswordEncoder.encode(details.getMerchantPassword()));
+		try{
+			details.setMerchantPassword(PasswordUtil.encrypt(details.getMerchantPassword()));
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
 
 		details = paymentServiceDetailsRepository.save(details);
 		magazine.getDetails().add(details);
