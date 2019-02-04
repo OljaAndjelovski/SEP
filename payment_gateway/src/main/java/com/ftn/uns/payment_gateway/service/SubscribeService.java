@@ -1,19 +1,21 @@
 package com.ftn.uns.payment_gateway.service;
 
+import com.ftn.uns.payment_gateway.model.Order;
 import com.ftn.uns.payment_gateway.paypal.PayPalBillingAgreementService;
 import com.ftn.uns.payment_gateway.paypal.PayPalBillingPlanService;
-import com.ftn.uns.payment_gateway.repository.MagazineRepository;
+import com.ftn.uns.payment_gateway.repository.OrderRepository;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Map;
 
 @Service
 public class SubscribeService {
 
     @Autowired
-    MagazineRepository magazineRepository;
+    OrderRepository orderRepository;
 
     @Autowired
     PayPalBillingPlanService billingPlanService;
@@ -21,25 +23,51 @@ public class SubscribeService {
     @Autowired
     PayPalBillingAgreementService agreementService;
 
-    public String createSubscription(String issn){
-        String planID = createPlan(issn);
-        return createAgreement(issn, planID);
+    public String createSubscription(Order order) {
+        String planID = createPlan(order);
+        if (planID != null) {
+            order.setMerchantOrderId(planID);
+            order.setMerchantTimestamp(LocalDateTime.now());
+            String retVal = createAgreement(order, planID);
+            orderRepository.save(order);
+            return retVal;
+        }
+
+        return null;
     }
 
-    private String createPlan(String issn){
-        String jsonCreatePlan = billingPlanService.createPlan(issn);
-        Gson gson = new Gson();
-        Map<String, Object> json = gson.fromJson(jsonCreatePlan, Map.class);
-        String planID = json.get("id").toString();
-        billingPlanService.activatePlan(planID, issn);
-        return planID;
+    private String createPlan(Order order) {
+        try {
+            String jsonCreatePlan = billingPlanService.createPlan(order);
+            Gson gson = new Gson();
+            Map<String, Object> json = gson.fromJson(jsonCreatePlan, Map.class);
+            String planID = json.get("id").toString();
+            billingPlanService.activatePlan(planID, order.getMagazine().getIssn());
+            return planID;
+        } catch (Exception e) {
+            return null;
+        }
     }
 
-    private String createAgreement(String issn, String planID){
-        return agreementService.createAgreement(magazineRepository.getOne(issn), planID);
+    private String createAgreement(Order order, String planID) {
+        try {
+            return agreementService.createAgreement(order, planID);
+        }catch (Exception e){
+            return null;
+        }
     }
 
-    public String executeSubscription(String planID, String issn){
-        return agreementService.executeAgreement(planID, issn);
+    public String executeSubscription(String planID, String issn) {
+        try{
+            Order order = orderRepository.getOne(planID);
+            String retVal = agreementService.executeAgreement(planID, issn);
+            if(retVal != null) {
+                order.setExecuted(true);
+                orderRepository.save(order);
+            }
+            return retVal;
+        }catch (Exception e){
+            return null;
+        }
     }
 }

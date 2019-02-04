@@ -20,10 +20,12 @@ public class OrderDto {
 
 	private String currency;
 
+	private String merchandise;
+
 	public OrderDto() {
 	}
 
-	public OrderDto(String merchantOrderId, LocalDateTime merchantTimestamp, String payerId, String merchantId, Double amount, PaymentType type, String currency) {
+	public OrderDto(String merchantOrderId, LocalDateTime merchantTimestamp, String payerId, String merchantId, Double amount, PaymentType type, String currency, String merchandise) {
 		this.merchantOrderId = merchantOrderId;
 		this.merchantTimestamp = merchantTimestamp;
 		this.payerId = payerId;
@@ -31,6 +33,15 @@ public class OrderDto {
 		this.amount = amount;
 		this.type = type;
 		this.currency = currency;
+		this.merchandise = merchandise;
+	}
+
+	public String getMerchandise() {
+		return merchandise;
+	}
+
+	public void setMerchandise(String merchandise) {
+		this.merchandise = merchandise;
 	}
 
 	public String getMerchantOrderId() {

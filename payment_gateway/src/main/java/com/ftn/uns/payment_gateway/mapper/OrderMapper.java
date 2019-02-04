@@ -26,6 +26,7 @@ public class OrderMapper {
         dto.setPayerId(order.getPayerId());
         dto.setType(order.getType());
         dto.setCurrency(order.getCurrency());
+        dto.setMerchandise(order.getMerchandise());
 
         return dto;
     }
@@ -40,6 +41,7 @@ public class OrderMapper {
         order.setMerchantOrderId(dto.getMerchantOrderId());
         order.setType(dto.getType());
         order.setCurrency(dto.getCurrency());
+        order.setMerchandise(dto.getMerchandise());
 
         return order;
     }

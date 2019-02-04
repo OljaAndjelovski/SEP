@@ -35,6 +35,11 @@ public class OrderController {
         return ResponseEntity.ok(mapper.mapToDTO(orderService.findById(id)));
     }
 
+    @GetMapping(value = "/user/{username}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<OrderDto>> getOrdersFromUser(@PathVariable("username") String username) {
+        return ResponseEntity.ok(mapper.mapManyToDTO(orderService.findAllFromUser(username)));
+    }
+
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> createOrder(@RequestBody OrderDto dto) {
         logger.info("\n\t\tUspešno kreirana porudžbina.\n");

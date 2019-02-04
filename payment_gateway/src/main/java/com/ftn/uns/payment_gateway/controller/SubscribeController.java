@@ -1,5 +1,8 @@
 package com.ftn.uns.payment_gateway.controller;
 
+import com.ftn.uns.payment_gateway.dto.OrderDto;
+import com.ftn.uns.payment_gateway.mapper.OrderMapper;
+import com.ftn.uns.payment_gateway.model.Order;
 import com.ftn.uns.payment_gateway.service.SubscribeService;
 
 import org.slf4j.Logger;
@@ -16,13 +19,16 @@ public class SubscribeController {
 
     @Autowired
     SubscribeService subscribeService;
-    
+
+    @Autowired
+    OrderMapper orderMapper;
+
 	private static final Logger logger = LoggerFactory.getLogger(BitcoinController.class);
 
-    @PostMapping(value = "/subscribe/{issn}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> createSubscription(@PathVariable String issn) {
-    	logger.info("\n\t\tUspešan subscription na magazin issn " + issn + ".\n");
-        return ResponseEntity.ok(subscribeService.createSubscription(issn));
+    @PostMapping(value = "/subscribe", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> createSubscription(@RequestBody OrderDto orderDto) {
+    	logger.info("\n\t\tUspešan subscription na magazin issn " + orderDto.getMerchantId() + ".\n");
+        return ResponseEntity.ok(subscribeService.createSubscription(orderMapper.mapFromDTO(orderDto)));
     }
 
     @PutMapping(value = "/subscribe/{planID}/execute", consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

@@ -1,9 +1,11 @@
 package com.ftn.uns.payment_gateway.paypal;
 
 import com.ftn.uns.payment_gateway.model.Magazine;
+import com.ftn.uns.payment_gateway.model.Order;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import org.apache.tomcat.jni.Local;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Service
 public class PayPalBillingAgreementService {
@@ -19,15 +22,15 @@ public class PayPalBillingAgreementService {
     @Autowired
     PayPalTokenAcquirer acquirer;
 
-    public String createAgreement(Magazine magazine, String billingPlanId){
+    public String createAgreement(Order order, String billingPlanId){
 
         RestTemplate restTemplate = new RestTemplate();
         String paypalAPI = "https://api.sandbox.paypal.com/v1/payments/billing-agreements";
         //TODO change date to something special
         String defJson = "{\n" +
-                "  \"name\": \"Agreement-" + magazine.getIssn() + "-"+ LocalDateTime.now() + "\",\n" +
-                "  \"description\": \"A yearly subscription to the " + magazine.getTitle() +" magazine\" ,\n" +
-                "  \"start_date\": \"2019-02-22T09:13:49+0200\"," +
+                "  \"name\": \"Agreement-" + order.getMagazine().getIssn() + "-"+ LocalDateTime.now() + "\",\n" +
+                "  \"description\": \"A yearly subscription to the " + order.getMagazine().getTitle() +" magazine\" ,\n" +
+                "  \"start_date\": \"" + getDateFormat(order.getMerchantTimestamp().plusDays(1)) + "\"," +
                 "  \"payer\": {\n" +
                 "  \"payment_method\": \"paypal\" }," +
                 "  \"plan\": { \"id\": \"" +  billingPlanId + "\"}" +
@@ -37,10 +40,17 @@ public class PayPalBillingAgreementService {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.set("Authorization", "Bearer " + acquirer.acquireAccessToken(magazine.getIssn()));
+        headers.set("Authorization", "Bearer " + acquirer.acquireAccessToken(order.getMagazine().getIssn()));
 
         HttpEntity<String> entity = new HttpEntity<String>(defJson, headers);
         return getConfirmAgreementLinkFromResponse(restTemplate.postForObject(paypalAPI, entity, String.class));
+    }
+
+    private String getDateFormat(LocalDateTime dateTime) {
+        StringBuilder builder = new StringBuilder();
+        builder.append(String.format("%s-%s-%sT%s:%s:%s+0100", dateTime.getYear(), dateTime.getMonthValue(), dateTime.getDayOfMonth(), dateTime.getHour(),
+                dateTime.getMinute(), dateTime.getSecond()));
+        return builder.toString();
     }
 
     public String executeAgreement(String planID, String issn){

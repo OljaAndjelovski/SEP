@@ -3,6 +3,8 @@ package com.ftn.uns.payment_gateway.service;
 import com.ftn.uns.payment_gateway.model.Order;
 import com.ftn.uns.payment_gateway.repository.MagazineRepository;
 import com.ftn.uns.payment_gateway.repository.OrderRepository;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,12 +23,19 @@ public class OrderService {
 	@Autowired
 	PaymentDetailsService paymentDetailsService;
 
+	@Autowired
+	PaymentTypeGatewayFactory paymentTypeGatewayFactory;
+
 	public Order findById(String id) {
 		return orderRepository.findById(id).orElse(null);
 	}
 
 	public List<Order> findAll() {
 		return orderRepository.findAll();
+	}
+
+	public List<Order> findAllFromUser(String username) {
+		return orderRepository.findAllByPayerId(username);
 	}
 
 	public void deleteOrder(String id) {
@@ -38,7 +47,7 @@ public class OrderService {
 		order.setMerchantTimestamp(LocalDateTime.now());
 		order.setExecuted(null);
 		order.setStatus("new");
-		order = orderRepository.save(order);
+//		order = orderRepository.save(order);
 
 		return createOrderService(order);
 	}
@@ -65,12 +74,28 @@ public class OrderService {
 	}
 
 	private String createOrderService(Order order) {
-		PaymentTypeGateway gateway = PaymentTypeGatewayFactory.getGateway(order.getType());
-		return gateway.createOrder(order);
+		PaymentTypeGateway gateway = paymentTypeGatewayFactory.getGateway(order.getType());
+
+		try{
+			String retVal = gateway.createOrder(order);
+			order.setMerchantOrderId(new Gson().fromJson(retVal, JsonObject.class).get("id").getAsString());
+			Order dbOrder = orderRepository.save(order);
+			return retVal;
+		} catch (Exception e){
+			return null;
+		}
 	}
 
 	private String executeOrderService(Order order) {
-		PaymentTypeGateway gateway = PaymentTypeGatewayFactory.getGateway(order.getType());
-		return gateway.executeOrder(order);
+		PaymentTypeGateway gateway = paymentTypeGatewayFactory.getGateway(order.getType());
+		try{
+			String retVal = gateway.executeOrder(order);
+			Order dbOrder = orderRepository.getOne(order.getMerchantOrderId());
+			dbOrder.setExecuted(true);
+			orderRepository.save(dbOrder);
+			return retVal;
+		}catch (Exception e){
+			return null;
+		}
 	}
 }
