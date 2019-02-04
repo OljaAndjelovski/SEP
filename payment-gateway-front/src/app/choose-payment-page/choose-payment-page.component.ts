@@ -138,9 +138,9 @@ export class ChoosePaymentPageComponent implements OnInit, AfterViewChecked {
   }
   public pay(type: string, content) {
     this.order.type = type;
-    // console.log(type);
+    console.log(type);
     // console.log(this.merchandise);
-    if (type == "Bitcoin") {
+    if (type == "BITCOIN") {
       console.log(this.merchandise.price);
       this.http.post("https://localhost:8080/api/bitcoinOrder/bitcoin", this.merchandise)
         .subscribe(
@@ -150,8 +150,8 @@ export class ChoosePaymentPageComponent implements OnInit, AfterViewChecked {
             let d: string = "/'" + data + "/'";
             console.log(d);
             window.location.href = data.toString();
-            //document.location.href = "\'"+data + "\'"; 
-            //this.router.navigate(['/externalRedirect', { externalUrl: 'https://sandbox.coingate.com/invoice/cf6e91fb-3a05-4468-ae84-0420240fbf66' }]);
+            document.location.href = "\'"+data + "\'"; 
+            this.router.navigate(['/externalRedirect', { externalUrl: 'https://sandbox.coingate.com/invoice/cf6e91fb-3a05-4468-ae84-0420240fbf66' }]);
           },
           error => {
             console.log("Error", error);
