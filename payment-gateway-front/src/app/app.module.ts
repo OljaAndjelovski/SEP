@@ -15,7 +15,7 @@ import { ErrorPageComponent } from './end-pages/error-page/error-page.component'
 import { AppRoutingModule } from './app-routing/app-routing.module';
 import { PageNotFoundComponent } from './end-pages/page-not-found/page-not-found.component';
 import { StartPageComponent } from './end-pages/start-page/start-page.component';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+//import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { OrderService } from './services/order.service';
 import { PaymentService } from './services/payment.service';
 import { MagazineService } from './services/magazine.service';
@@ -42,7 +42,7 @@ import { RouterModule } from '@angular/router';
     HttpClientModule,
     FormsModule,
     AngularFontAwesomeModule,
-    NgbModule,
+//    NgbModule,
     TooltipModule.forRoot()
   ],
   bootstrap: [AppComponent],

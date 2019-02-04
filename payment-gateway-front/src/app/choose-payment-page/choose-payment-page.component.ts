@@ -101,20 +101,20 @@ export class ChoosePaymentPageComponent implements OnInit, AfterViewChecked {
       }
     ]
 
-    /*this.http.get<any>("https://localhost:8080/sessions/" + parts[parts.length-1])
+    this.http.get<any>("https://localhost:8080/sessions/" + parts[parts.length-1])
       .subscribe((data) => {
         this.merchandise.name = data.merchandise;
         this.merchandise.price = data.price;
         this.merchandise.currency = data.currency;
         this.merchandise.merchantId = data.issn;
-*/
 
-    /* this.paymentService.getTypesOfMagazine(this.merchandise.merchantId).subscribe(
+
+     this.paymentService.getTypesOfMagazine(this.merchandise.merchantId).subscribe(
        (data) => {
          this.paymentTypes = data;
        }
      );
-   });*/
+   });
   }
 
   ngAfterViewChecked(): void {
