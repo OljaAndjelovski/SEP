@@ -103,6 +103,8 @@ export class ChoosePaymentPageComponent implements OnInit, AfterViewChecked {
 
     this.http.get<any>("https://localhost:8080/sessions/" + parts[parts.length-1])
       .subscribe((data) => {
+        alert(JSON.stringify(data));
+        this.merchandise.description = data.description;
         this.merchandise.name = data.merchandise;
         this.merchandise.price = data.price;
         this.merchandise.currency = data.currency;
@@ -150,8 +152,9 @@ export class ChoosePaymentPageComponent implements OnInit, AfterViewChecked {
             let d: string = "/'" + data + "/'";
             console.log(d);
             window.location.href = data.toString();
-            document.location.href = "\'"+data + "\'"; 
-            this.router.navigate(['/externalRedirect', { externalUrl: 'https://sandbox.coingate.com/invoice/cf6e91fb-3a05-4468-ae84-0420240fbf66' }]);
+            alert(data);
+            //document.location.href = "\'"+data + "\'"; 
+            //this.router.navigate(['/externalRedirect', { externalUrl: 'https://sandbox.coingate.com/invoice/cf6e91fb-3a05-4468-ae84-0420240fbf66' }]);
           },
           error => {
             console.log("Error", error);

@@ -33,8 +33,8 @@ public class BitcoinPaymentTypeGatewayImpl implements PaymentTypeGateway {
 		System.out.println("MERCHANT ORDER ID " + o.getMerchantOrderId());
 		order.setPrice_currency("EUR"); // Valuta u kojoj placa ne sme RSD ili cemo konvertovati
 		order.setReceive_currency("USD"); // Valuta u kojoj zelim da dobijem
-		order.setCancel_url("http://localhost:4200/#/error"); // ako korisnik odustane
-		order.setSuccess_url("http://localhost:4200/#/success");
+		order.setCancel_url("https://localhost:4200/#/error"); // ako korisnik odustane
+		order.setSuccess_url("https://localhost:4200/#/success");
 		order.setToken("Q-smRAh_a6nF-NVXJarEt48YyHtNag1iX-__bZwx");
 
 		String url = "https://api-sandbox.coingate.com/v2/orders";
