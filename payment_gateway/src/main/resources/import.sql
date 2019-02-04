@@ -13,7 +13,7 @@ insert into details(id, magazine, merchant, password, type) values (1, '12345679
 
 insert into transaction(order_id, timestamp, payer_id, magazine, quantity, price, currency, type, buyer_name, buyer_surname, buyer_email, merchandise, executed, id_bitcoin, status) values ('2', '2019-02-23T00:00:05Z', 'pera', '12345679', 1, 1000, 'RSD', 1, 'Jelena', 'Kostic', 'kosticka.jelena@gmail.com', 'abcdefgh', true, 1, 'ok');
 insert into transaction(order_id, timestamp, payer_id, magazine, quantity, price, currency, type, buyer_name, buyer_surname, buyer_email, merchandise, executed, id_bitcoin, status) values ('1', '2019-02-22T00:00:05Z', 'jelena', '12345679', 1, 1000, 'RSD', 1, 'Jelena', 'Kostic', 'kosticka.jelena@gmail.com', 'abcdefgh', true, 1, 'ok');
-
+insert into transaction(order_id, timestamp, payer_id, magazine, quantity, price, currency, type, buyer_name, buyer_surname, buyer_email, merchandise, executed, id_bitcoin, status) values ('3', '2019-02-22T00:00:05Z', 'jelena', '12345679', 1, 1000, 'RSD', 1, 'Jelena', 'Kostic', 'milicmilan@gmail.com', 'abcdefgh', true, 1, 'ok');
 
 
 
