@@ -1,5 +1,7 @@
 package com.ftn.uns.payment_gateway.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -8,14 +10,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.ftn.uns.payment_gateway.bitcoin.BitcoinDto;
 import com.ftn.uns.payment_gateway.bitcoin.BitcoinPaymentTypeGatewayImpl;
 import com.ftn.uns.payment_gateway.model.Order;
 import com.ftn.uns.payment_gateway.model.PaymentType;
 import com.ftn.uns.payment_gateway.service.BitcoinService;
+import com.ftn.uns.payment_gateway.service.MagazineService;
 import com.ftn.uns.payment_gateway.service.OrderService;
 import com.ftn.uns.payment_gateway.service.PaymentTypeGatewayFactory;
 
@@ -31,6 +31,9 @@ public class BitcoinController {
 	private BitcoinService bitcoinService;
 
 	@Autowired
+	private MagazineService magazineService;
+	
+	@Autowired
 	private OrderService orderService;
 
 	private static final Logger logger = LoggerFactory.getLogger(BitcoinController.class); // svaka aktrivnost
@@ -44,7 +47,9 @@ public class BitcoinController {
 				.getGateway(PaymentType.BITCOIN);
 
 		Order order = new Order();
+	
 		order.setPrice(bitcoinDto.getPrice());
+		order.setMagazine(magazineService.findById(bitcoinDto.getMerchantId()));
 		order.setCurrency(bitcoinDto.getCurrency());
 		order.setPrice(bitcoinDto.getPrice());
 		order.setQuantity(bitcoinDto.getQuantity());
