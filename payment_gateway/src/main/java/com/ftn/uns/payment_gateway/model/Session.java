@@ -10,7 +10,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 public class Session implements Serializable {
 
 	private String username;
@@ -19,6 +19,9 @@ public class Session implements Serializable {
 	private String currency;
 	private String merchandise;
 	private LocalDateTime timestamp;
+	private String buyerFirstName;
+	private String buyerLastName;
+	private String buyerEmail;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,7 +30,8 @@ public class Session implements Serializable {
 	public Session() {
 	}
 
-	public Session(String username, String issn, Double price, String currency, String merchandise, LocalDateTime timestamp, Long id) {
+	public Session(String username, String issn, Double price, String currency, String merchandise,
+			LocalDateTime timestamp, Long id) {
 		this.username = username;
 		this.issn = issn;
 		this.price = price;
@@ -92,4 +96,29 @@ public class Session implements Serializable {
 	public void setUsername(String username) {
 		this.username = username;
 	}
+
+	public String getBuyerFirstName() {
+		return buyerFirstName;
+	}
+
+	public void setBuyerFirstName(String buyerFirstName) {
+		this.buyerFirstName = buyerFirstName;
+	}
+
+	public String getBuyerLastName() {
+		return buyerLastName;
+	}
+
+	public void setBuyerLastName(String buyerLastName) {
+		this.buyerLastName = buyerLastName;
+	}
+
+	public String getBuyerEmail() {
+		return buyerEmail;
+	}
+
+	public void setBuyerEmail(String buyerEmail) {
+		this.buyerEmail = buyerEmail;
+	}
+
 }
