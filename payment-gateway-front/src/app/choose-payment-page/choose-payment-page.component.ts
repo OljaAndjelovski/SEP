@@ -25,16 +25,18 @@ export class ChoosePaymentPageComponent implements OnInit, AfterViewChecked {
   paypalConfig = {
     env: 'sandbox',
     commit: true,
-    payment: function (data, actions) {
+    payment: (data, actions) => {
       return actions.request({
         url: "https://localhost:8080/api/orders",
         method: 'POST',
         json: {
-          merchantOrderId: "31231231321",
-          payerID: "2313",
-          merchantId: "12345678",
-          amount: 1,
-          type: "PAY_PAL"
+          merchantOrderId: null,
+          payerId: this.order.payerId,
+          merchantId: this.merchandise.merchantId,
+          amount: this.merchandise.price,
+          currency: this.merchandise.currency,
+          type: "PAY_PAL",
+          merchandise: this.merchandise.name
         },
         contentType: 'application/json'
       })
@@ -42,7 +44,7 @@ export class ChoosePaymentPageComponent implements OnInit, AfterViewChecked {
           return res.id;
         })
     },
-    onAuthorize: function (data, actions) {
+    onAuthorize: (data, actions) => {
 
       // 2. Make a request to your server
       return actions.request({
@@ -51,6 +53,7 @@ export class ChoosePaymentPageComponent implements OnInit, AfterViewChecked {
         json: {
           merchantOrderId: data.paymentID,
           payerId: data.payerID,
+          merchantId: this.merchandise.merchantId,
           type: "PAY_PAL"/*,
           amount: 1*/
         },
@@ -101,26 +104,27 @@ export class ChoosePaymentPageComponent implements OnInit, AfterViewChecked {
       }
     ]
 
-    /*this.http.get<any>("https://localhost:8080/sessions/" + parts[parts.length-1])
+    this.http.get<any>("https://localhost:8080/sessions/" + parts[parts.length-1])
       .subscribe((data) => {
         this.merchandise.name = data.merchandise;
         this.merchandise.price = data.price;
         this.merchandise.currency = data.currency;
         this.merchandise.merchantId = data.issn;
-*/
+        this.order.payerId = data.username;
 
-    /* this.paymentService.getTypesOfMagazine(this.merchandise.merchantId).subscribe(
+    this.paymentService.getTypesOfMagazine(this.merchandise.merchantId).subscribe(
        (data) => {
          this.paymentTypes = data;
        }
      );
-   });*/
+   });
   }
 
   ngAfterViewChecked(): void {
     if (!this.addScript) {
       this.addPaypalScript().then(() => {
         paypal.Button.render(this.paypalConfig, '#paypal-button');
+        this.addScript = true;
         this.paypalLoad = false;
       })
     }
@@ -140,7 +144,7 @@ export class ChoosePaymentPageComponent implements OnInit, AfterViewChecked {
     this.order.type = type;
     // console.log(type);
     // console.log(this.merchandise);
-    if (type == "Bitcoin") {
+    if (type == "BITCOIN") {
       console.log(this.merchandise.price);
       this.http.post("https://localhost:8080/api/bitcoinOrder/bitcoin", this.merchandise)
         .subscribe(
@@ -158,7 +162,7 @@ export class ChoosePaymentPageComponent implements OnInit, AfterViewChecked {
           }
         );
 
-    } else if (type == 'CreditCard') {
+    } else if (type == 'CREDIT_CARD') {
 
       // this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
       // console.log(`Closed with: ${result}`);

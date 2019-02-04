@@ -15,15 +15,14 @@ import { ErrorPageComponent } from './end-pages/error-page/error-page.component'
 import { AppRoutingModule } from './app-routing/app-routing.module';
 import { PageNotFoundComponent } from './end-pages/page-not-found/page-not-found.component';
 import { StartPageComponent } from './end-pages/start-page/start-page.component';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { OrderService } from './services/order.service';
 import { PaymentService } from './services/payment.service';
 import { MagazineService } from './services/magazine.service';
 import { PaymentDetailsService } from './services/payment-details.service';
 import { SubscribeComponent } from './subscribe/subscribe.component';
-import { RouterModule } from '@angular/router';
+import { ConfirmSubscriptionComponent } from './end-pages/confirm-subscription/confirm-subscription.component';
 
-@NgModule({
+@NgModule({ 
   declarations: [
     AppComponent,
     NavbarComponent,
@@ -34,7 +33,8 @@ import { RouterModule } from '@angular/router';
     ErrorPageComponent,
     PageNotFoundComponent,
     StartPageComponent,
-    SubscribeComponent
+    SubscribeComponent,
+    ConfirmSubscriptionComponent
   ],
   imports: [
     BrowserModule,
@@ -42,7 +42,6 @@ import { RouterModule } from '@angular/router';
     HttpClientModule,
     FormsModule,
     AngularFontAwesomeModule,
-    NgbModule,
     TooltipModule.forRoot()
   ],
   bootstrap: [AppComponent],

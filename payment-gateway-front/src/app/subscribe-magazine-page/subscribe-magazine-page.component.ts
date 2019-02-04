@@ -99,7 +99,7 @@ export class SubscribeMagazinePageComponent implements OnInit {
   }
 
   checkValidIssn() {
-    if(this.issn1.length + this.issn2.length < 8) {
+    if(this.issn1.length + this.issn2.length !== 8) {
       this.issnValid = false;
       this.issnMsg = "ISSN needs to be 8 characters long."
       return;
