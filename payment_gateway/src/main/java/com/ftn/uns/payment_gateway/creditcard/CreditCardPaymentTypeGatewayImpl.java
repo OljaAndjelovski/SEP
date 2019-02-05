@@ -18,13 +18,13 @@ import com.ftn.uns.payment_gateway.service.PaymentTypeGateway;
 @Service
 public class CreditCardPaymentTypeGatewayImpl implements PaymentTypeGateway {
 
-	@Value("${url.CANCEL_URL}")
+	@Value("${CANCEL_URL}")
 	private String cancel;
 
-	@Value("${url.SUCCESS_URL}")
+	@Value("${SUCCESS_URL}")
 	private String success;
 
-	@Value("${url.FAILURE_URL}")
+	@Value("${FAILURE_URL}")
 	private String failure;
 
 	@Autowired
