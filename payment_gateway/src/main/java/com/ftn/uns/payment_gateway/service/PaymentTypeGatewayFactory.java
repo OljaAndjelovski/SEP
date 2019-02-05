@@ -1,11 +1,16 @@
 package com.ftn.uns.payment_gateway.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
 import com.ftn.uns.payment_gateway.model.PaymentType;
 
 @Service
 public class PaymentTypeGatewayFactory {
+
+    @Autowired
+    private ApplicationContext context;
 
     public boolean checkIfExistingPlugin(PaymentType type) {
         String className = extractClassName(type);
@@ -18,7 +23,7 @@ public class PaymentTypeGatewayFactory {
         return true;
     }
 
-    private static String extractClassName(PaymentType type) {
+    private String extractClassName(PaymentType type) {
         String[] parts = type.name().split("_");
         StringBuilder name = new StringBuilder("");
         for(String part: parts){
@@ -28,7 +33,7 @@ public class PaymentTypeGatewayFactory {
         return String.format("com.ftn.uns.payment_gateway.%s.%sPaymentTypeGatewayImpl", name.toString().toLowerCase(), name);
     }
 
-    public static PaymentTypeGateway getGateway(PaymentType type){
+    public PaymentTypeGateway getGateway(PaymentType type){
         String className = extractClassName(type);
         Class<?> clazz = null;
         try {
@@ -37,10 +42,6 @@ public class PaymentTypeGatewayFactory {
             return null;
         }
 
-        try {
-            return (PaymentTypeGateway) clazz.newInstance();
-        }catch (InstantiationException | IllegalAccessException ex){
-            return null;
-        }
+        return (PaymentTypeGateway) context.getBean(clazz);
     }
 }

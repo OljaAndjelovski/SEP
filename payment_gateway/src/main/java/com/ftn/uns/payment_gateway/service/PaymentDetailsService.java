@@ -3,7 +3,10 @@ package com.ftn.uns.payment_gateway.service;
 import java.util.ArrayList;
 import java.util.Set;
 
+import com.ftn.uns.payment_gateway.config.PasswordUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.ftn.uns.payment_gateway.model.Magazine;
@@ -29,6 +32,18 @@ public class PaymentDetailsService {
 
 		// todo
 		// create check if magazine already has payment details specified for the type
+		for(PaymentServiceDetails detail: magazine.getDetails()){
+			if(detail.getType() == details.getType()){
+				return null;
+			}
+		}
+
+		BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+		try{
+			details.setMerchantPassword(PasswordUtil.encrypt(details.getMerchantPassword()));
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
 
 		details = paymentServiceDetailsRepository.save(details);
 		magazine.getDetails().add(details);
@@ -68,11 +83,7 @@ public class PaymentDetailsService {
 
 	}
 
-	public String getMerchantPasswordByMerchantId(String merchantId) {
-		return paymentServiceDetailsRepository.findByMerchantId(merchantId).getMerchantPassword();
-	}
-
-	public Set<PaymentServiceDetails> getTypesOfMagazine(String issn) {
+	public Set<PaymentServiceDetails> getTypesOfMagazine(String issn){
 		return magazineRepository.getOne(issn).getDetails();
 	}
 }

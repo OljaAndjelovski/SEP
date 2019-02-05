@@ -7,6 +7,7 @@ import { CancelPageComponent } from '../end-pages/cancel-page/cancel-page.compon
 import { PageNotFoundComponent } from '../end-pages/page-not-found/page-not-found.component';
 import { StartPageComponent } from '../end-pages/start-page/start-page.component';
 import { SubscribeComponent } from '../subscribe/subscribe.component';
+import { ConfirmSubscriptionComponent } from '../end-pages/confirm-subscription/confirm-subscription.component';
 
 export const routes: Routes = [
     {
@@ -24,6 +25,10 @@ export const routes: Routes = [
     {
         path: 'success',
         component: SuccessPageComponent
+    },
+    {
+        path: 'confirm',
+        component: ConfirmSubscriptionComponent
     },
     {
         path: 'error',

@@ -31,5 +31,15 @@
         </div>
       </div>
     </div>
+    <div class="row">
+      <div class="col">
+        <ul>
+          <li *ngFor="let magazine of magazines">
+            <p>{{magazine.title}}</p>
+            <button (click)="subscribe(magazine.issn)">Subscribe</button>
+          </li>
+        </ul>
+      </div>
+    </div>
   </div>
 </div>

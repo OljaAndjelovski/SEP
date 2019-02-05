@@ -5,7 +5,10 @@ import org.springframework.stereotype.Repository;
 
 import com.ftn.uns.payment_gateway.model.Order;
 
+import java.util.List;
+
 @Repository
 public interface OrderRepository extends JpaRepository<Order, String> {
 
+    List<Order> findAllByPayerId(String username);
 }

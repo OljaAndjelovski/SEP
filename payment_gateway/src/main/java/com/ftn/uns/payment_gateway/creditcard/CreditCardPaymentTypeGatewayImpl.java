@@ -1,6 +1,6 @@
+
 package com.ftn.uns.payment_gateway.creditcard;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.client.RestTemplate;
 
 import com.ftn.uns.payment_gateway.dto.MerchantDto;
