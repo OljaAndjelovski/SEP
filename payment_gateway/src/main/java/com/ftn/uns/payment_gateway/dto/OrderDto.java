@@ -17,6 +17,8 @@ public class OrderDto {
 	private Double amount;
 
 	private PaymentType type;
+	
+	private String magazinId;
 
 	public OrderDto() {
 	}
@@ -77,5 +79,13 @@ public class OrderDto {
 
 	public void setType(PaymentType type) {
 		this.type = type;
+	}
+
+	public String getMagazinId() {
+		return magazinId;
+	}
+
+	public void setMagazinId(String magazinId) {
+		this.magazinId = magazinId;
 	}
 }

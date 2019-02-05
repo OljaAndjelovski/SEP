@@ -1,10 +1,15 @@
 package com.ftn.uns.payment_gateway.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "payment_service_details")
 public class PaymentServiceDetails {
 
     @Id
@@ -13,8 +18,10 @@ public class PaymentServiceDetails {
 
     private String merchantID;
 
+    @Column(name = "merchant_password")
     private String merchantPassword;
 
+    @Enumerated(EnumType.STRING)
     private PaymentType type;
 
     public PaymentServiceDetails() {}

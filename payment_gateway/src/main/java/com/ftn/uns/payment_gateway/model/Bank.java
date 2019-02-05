@@ -20,7 +20,7 @@ public class Bank {
 	private String merchantId;
 
 	@Column(name = "BANK_URL")
-	private String bank_url;
+	private String bankUrl;
 
 	public Integer getId() {
 		return id;
@@ -39,18 +39,18 @@ public class Bank {
 	}
 
 	public String getBank_url() {
-		return bank_url;
+		return bankUrl;
 	}
 
 	public void setBank_url(String bank_url) {
-		this.bank_url = bank_url;
+		this.bankUrl = bank_url;
 	}
 
 	public Bank(Integer id, String merchantId, String bank_url) {
 		super();
 		this.id = id;
 		this.merchantId = merchantId;
-		this.bank_url = bank_url;
+		this.bankUrl = bank_url;
 	}
 
 	public Bank() {

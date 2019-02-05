@@ -49,8 +49,13 @@ public class Order {
 
 	private Boolean executed;
 
-	
-	// Dodala sam polje status jer mi to vraca btc - paid, pending... 
+	private String bankUrl;
+
+	private String merchantPassword;
+
+	private String merchantId;
+
+	// Dodala sam polje status jer mi to vraca btc - paid, pending...
 	private Integer idBitcoin;
 	private String status;
 
@@ -202,6 +207,30 @@ public class Order {
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public String getBankUrl() {
+		return bankUrl;
+	}
+
+	public void setBankUrl(String bankUrl) {
+		this.bankUrl = bankUrl;
+	}
+
+	public String getMerchantPassword() {
+		return merchantPassword;
+	}
+
+	public void setMerchantPassword(String merchantPassword) {
+		this.merchantPassword = merchantPassword;
+	}
+
+	public String getMerchantId() {
+		return merchantId;
+	}
+
+	public void setMerchantId(String merchantId) {
+		this.merchantId = merchantId;
 	}
 
 }
