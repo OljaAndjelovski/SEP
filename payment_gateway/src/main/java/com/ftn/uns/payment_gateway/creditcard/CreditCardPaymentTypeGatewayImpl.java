@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.ftn.uns.payment_gateway.dto.MerchantDto;
@@ -14,6 +15,7 @@ import com.ftn.uns.payment_gateway.service.BankService;
 import com.ftn.uns.payment_gateway.service.PaymentDetailsService;
 import com.ftn.uns.payment_gateway.service.PaymentTypeGateway;
 
+@Service
 public class CreditCardPaymentTypeGatewayImpl implements PaymentTypeGateway {
 
 	@Value("${url.CANCEL_URL}")

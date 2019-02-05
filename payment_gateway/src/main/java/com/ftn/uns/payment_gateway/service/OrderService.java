@@ -78,8 +78,7 @@ public class OrderService {
 
 		try{
 			String retVal = gateway.createOrder(order);
-			order.setMerchantOrderId(new Gson().fromJson(retVal, JsonObject.class).get("id").getAsString());
-			Order dbOrder = orderRepository.save(order);
+			orderRepository.save(order);
 			return retVal;
 		} catch (Exception e){
 			return null;

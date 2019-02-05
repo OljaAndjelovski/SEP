@@ -9,11 +9,13 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.ftn.uns.payment_gateway.model.Order;
 import com.ftn.uns.payment_gateway.service.PaymentTypeGateway;
 
+@Service
 public class BitcoinPaymentTypeGatewayImpl implements PaymentTypeGateway {
 
 	@Override
@@ -60,6 +62,7 @@ public class BitcoinPaymentTypeGatewayImpl implements PaymentTypeGateway {
 			responseOrder = responseEntity.getBody();
 			System.out.println(Integer.valueOf(responseEntity.getBody().getId()));
 
+			o.setMerchantOrderId(responseEntity.getBody().getId());
 			return responseOrder.getPayment_url() + "," + Integer.valueOf(responseEntity.getBody().getId());
 		}
 

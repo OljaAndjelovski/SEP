@@ -2,6 +2,8 @@ package com.ftn.uns.payment_gateway.paypal;
 
 import com.ftn.uns.payment_gateway.model.Magazine;
 import com.ftn.uns.payment_gateway.model.Order;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
@@ -48,7 +50,9 @@ public class PayPalBillingPlanService {
         headers.set("Authorization", "Bearer " + acquirer.acquireAccessToken(order.getMagazine().getIssn()));
 
         HttpEntity<String> entity = new HttpEntity<String>(defJson, headers);
-        return restTemplate.postForObject(paypalAPI, entity, String.class);
+        String retVal = restTemplate.postForObject(paypalAPI, entity, String.class);
+        order.setMerchantOrderId(new Gson().fromJson(retVal, JsonObject.class).get("id").getAsString());
+        return retVal;
     }
 
     public String activatePlan(String planID, String issn){
