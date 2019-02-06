@@ -1,4 +1,4 @@
-package com.ftn.uns.payment_gateway.controller;
+package com.ftn.uns.payment_gateway.bitcoin;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,13 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ftn.uns.payment_gateway.bitcoin.BitcoinDto;
-import com.ftn.uns.payment_gateway.bitcoin.BitcoinPaymentTypeGatewayImpl;
 import com.ftn.uns.payment_gateway.model.Order;
 import com.ftn.uns.payment_gateway.model.PaymentType;
-import com.ftn.uns.payment_gateway.service.BitcoinService;
 import com.ftn.uns.payment_gateway.service.MagazineService;
-import com.ftn.uns.payment_gateway.service.OrderService;
 import com.ftn.uns.payment_gateway.service.PaymentTypeGatewayFactory;
 
 @RestController
@@ -28,14 +24,8 @@ public class BitcoinController {
 	private PaymentTypeGatewayFactory paymentTypeGatewayFactory;
 
 	@Autowired
-	private BitcoinService bitcoinService;
-
-	@Autowired
 	private MagazineService magazineService;
 	
-	@Autowired
-	private OrderService orderService;
-
 	private static final Logger logger = LoggerFactory.getLogger(BitcoinController.class); // svaka aktrivnost
 
 	@RequestMapping(value = "/{paymentType}", method = RequestMethod.POST, produces = "application/json")
@@ -46,19 +36,7 @@ public class BitcoinController {
 		BitcoinPaymentTypeGatewayImpl paymentTypeGateway = (BitcoinPaymentTypeGatewayImpl) paymentTypeGatewayFactory
 				.getGateway(PaymentType.BITCOIN);
 
-		Order order = new Order();
-	
-		order.setPrice(bitcoinDto.getPrice());
-		order.setMagazine(magazineService.findById(bitcoinDto.getMerchantId()));
-		order.setCurrency(bitcoinDto.getCurrency());
-		order.setPrice(bitcoinDto.getPrice());
-		order.setQuantity(bitcoinDto.getQuantity());
-		order.setType(PaymentType.BITCOIN);
-		System.out.println("Merchant id " + bitcoinDto.getMerchantId());
-		order.setMerchantOrderId(bitcoinDto.getMerchantId());
-		orderService.createOrder(order);
-
-		String pgr = paymentTypeGateway.createOrder(order);
+		String pgr = paymentTypeGateway.createOrder(createOrderBitcoin(bitcoinDto));
 		String split[] = pgr.split(",");
 
 		System.out.println("split 0 " + split[0]);
@@ -66,9 +44,33 @@ public class BitcoinController {
 		String status = "\"" + split[0] + "\"";
 
 		System.out.println("****" + status);
-		bitcoinService.setOrderBitcoinId(order.getMerchantOrderId(), Integer.valueOf(split[1]));
+		
 
+		logger.info(status);
 		return status;
 
+	}
+	
+	public Order createOrderBitcoin(BitcoinDto b) {
+		Order order = new Order();
+		order.setBuyerEmail(b.getBuyerEmail());
+		order.setBuyerFirstName(b.getName());
+		order.setBuyerLastName(b.getBuyerSurname());
+		order.setCurrency(b.getCurrency());
+		order.setExecuted(false);
+		order.setMagazine(magazineService.findById(b.getMerchantId()));
+		order.setMerchandise(b.getName());
+		order.setMerchantId(b.getMerchantId());
+		//order.setMerchantTimestamp(merchantTimestamp); kreiranje vremena
+		order.setProductId(b.getProductId());
+		order.setPayerId(b.getBuyerEmail());
+		order.setPrice(b.getPrice());
+		order.setQuantity(b.getQuantity());
+		order.setStatus("new");
+		order.setType(PaymentType.BITCOIN);
+		order.setProductType(b.getType());
+		
+		return order;
+		
 	}
 }

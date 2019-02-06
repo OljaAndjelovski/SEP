@@ -15,6 +15,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.ftn.uns.payment_gateway.bitcoin.BitcoinController;
 import com.ftn.uns.payment_gateway.dto.MagazineDto;
 import com.ftn.uns.payment_gateway.model.Magazine;
 import com.ftn.uns.payment_gateway.service.MagazineService;

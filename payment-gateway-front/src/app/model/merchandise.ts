@@ -12,7 +12,7 @@ export class Merchandise {
         public buyerName : string,
         public buyerSurname : string,
         public payerId : string,
-        public productId : string,
+        public productId : number,
         public username : string
 
     ) {}

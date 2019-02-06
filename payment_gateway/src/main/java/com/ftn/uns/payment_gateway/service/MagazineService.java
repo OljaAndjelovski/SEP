@@ -9,6 +9,7 @@ import com.ftn.uns.payment_gateway.dto.MagazineDto;
 import com.ftn.uns.payment_gateway.mapper.MagazineMapper;
 import com.ftn.uns.payment_gateway.model.Magazine;
 import com.ftn.uns.payment_gateway.model.PaymentServiceDetails;
+import com.ftn.uns.payment_gateway.model.PaymentType;
 import com.ftn.uns.payment_gateway.repository.MagazineRepository;
 import com.ftn.uns.payment_gateway.repository.PaymentServiceDetailsRepository;
 
@@ -68,5 +69,37 @@ public class MagazineService {
 		oldMagazine.setDetails(updatedMagazine.getDetails());
 
 		return magazineRepository.save(oldMagazine);
+	}
+	
+	public String findTokenForBitcoin(Magazine magazine) {
+		for(Magazine m : magazineRepository.findAll()) {
+			if(m.getIssn().equals(magazine.getIssn())) {
+				System.out.println("\nPostoji magazin u bazi");
+				for (PaymentServiceDetails d : m.getDetails()) {
+					if(d.getType().equals(PaymentType.BITCOIN)) {
+						System.out.println("\nPronadjen token " + d.getMerchantID());
+						return d.getMerchantID();
+						
+					}
+				}
+			}
+		}
+		return "";
+	}
+	
+	public String findMerchantPassword(Magazine magazine) {
+		for(Magazine m : magazineRepository.findAll()) {
+			if(m.getIssn().equals(magazine.getIssn())) {
+				System.out.println("\nPostoji magazin u bazi");
+				for (PaymentServiceDetails d : m.getDetails()) {
+					if(d.getType().equals(PaymentType.BITCOIN)) {
+						System.out.println("\nPronadjen token " + d.getMerchantID());
+						return d.getMerchantPassword();
+						
+					}
+				}
+			}
+		}
+		return "";
 	}
 }

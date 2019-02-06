@@ -75,6 +75,9 @@ public class OrderService {
 		return executeOrderService(order);
 	}
 
+	public Order createOrderBitcoin(Order o) {
+		 return orderRepository.save(o);
+	}
 	private String createOrderService(Order order) {
 		PaymentTypeGateway gateway = paymentTypeGatewayFactory.getGateway(order.getType());
 
@@ -103,7 +106,7 @@ public class OrderService {
 	public List<Order> getFromUser(String username) {
 		ArrayList<Order> orders = new ArrayList<Order>();
 		for (Order o : orderRepository.findAll()) {
-			if (o.getBuyerEmail().equals(username)) {
+			if (o.getBuyerEmail().equals(username) && o.getExecuted()==true) {
 				orders.add(o);
 			}
 		}

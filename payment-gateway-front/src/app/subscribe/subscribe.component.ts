@@ -72,8 +72,8 @@ export class SubscribeComponent implements OnInit, AfterViewChecked {
       buyerEmail : "dsada",
       buyerName : "dsada",
       buyerSurname : "dsada",
-      payerId : "dsada",
-      productId : "dsada",
+      payerId : "dasd",
+      productId : 4,
       username : "dsad"
     };
 

@@ -10,6 +10,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "TRANSACTION")
 public class Order {
@@ -23,6 +25,7 @@ public class Order {
 
 	private String payerId;
 
+	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "MAGAZINE")
 	private Magazine magazine;
@@ -55,7 +58,9 @@ public class Order {
 
 	private String merchantId;
 
-	private String productId;
+	private String productType;
+
+	private Long productId;
 
 	// Dodala sam polje status jer mi to vraca btc - paid, pending...
 	private Integer idBitcoin;
@@ -103,20 +108,28 @@ public class Order {
 		return merchantTimestamp;
 	}
 
+	public String getProductType() {
+		return productType;
+	}
+
+	public void setProductType(String productType) {
+		this.productType = productType;
+	}
+
 	public void setMerchantTimestamp(LocalDateTime merchantTimestamp) {
 		this.merchantTimestamp = merchantTimestamp;
 	}
 
-	public String getOrderId() {
+	public String getPayerId() {
+		return payerId;
+	}
+
+	public Long getProductId() {
 		return productId;
 	}
 
-	public void setOrderId(String orderId) {
-		this.productId = orderId;
-	}
-
-	public String getPayerId() {
-		return payerId;
+	public void setProductId(Long productId) {
+		this.productId = productId;
 	}
 
 	public void setPayerId(String payerId) {

@@ -1,4 +1,4 @@
-package com.ftn.uns.payment_gateway.service;
+package com.ftn.uns.payment_gateway.bitcoin;
 
 import java.util.Arrays;
 
@@ -12,7 +12,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import com.ftn.uns.payment_gateway.bitcoin.GetOrderDto;
 import com.ftn.uns.payment_gateway.model.Order;
 import com.ftn.uns.payment_gateway.model.PaymentType;
 import com.ftn.uns.payment_gateway.repository.OrderRepository;
@@ -50,6 +49,7 @@ public class BitcoinService {
 				RestTemplate rt = new RestTemplate();
 				ResponseEntity<GetOrderDto> order = rt.exchange(url, HttpMethod.GET, entity, GetOrderDto.class);
 				System.out.println("STATUS ORDERA " + order.getBody().getStatus());
+				o.setExecuted(true);
 				o.setStatus(order.getBody().getStatus());
 				orderRepository.save(o);
 

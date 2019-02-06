@@ -1,5 +1,6 @@
 package com.ftn.uns.payment_gateway.controller;
 
+import com.ftn.uns.payment_gateway.bitcoin.BitcoinController;
 import com.ftn.uns.payment_gateway.config.JWTTokenProvider;
 import com.ftn.uns.payment_gateway.config.SessionToken;
 

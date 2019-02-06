@@ -3,10 +3,16 @@ package com.ftn.uns.payment_gateway.bitcoin;
 public class BitcoinDto {
 	private String name;
 	private String description;
-	private Double price;
-	private String merchantId;
 	private Integer quantity;
+	private Double price;
 	private String currency;
+	private String merchantId;
+	private String type;
+	private String buyerEmail;
+	private String buyerSurname;
+	private String payerId;
+	private Long productId;
+	private String username;
 
 	public String getName() {
 		return name;
@@ -54,6 +60,54 @@ public class BitcoinDto {
 
 	public void setCurrency(String currency) {
 		this.currency = currency;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public String getBuyerEmail() {
+		return buyerEmail;
+	}
+
+	public void setBuyerEmail(String buyerEmail) {
+		this.buyerEmail = buyerEmail;
+	}
+
+	public String getBuyerSurname() {
+		return buyerSurname;
+	}
+
+	public void setBuyerSurname(String buyerSurname) {
+		this.buyerSurname = buyerSurname;
+	}
+
+	public String getPayerId() {
+		return payerId;
+	}
+
+	public void setPayerId(String payerId) {
+		this.payerId = payerId;
+	}
+
+	public Long getProductId() {
+		return productId;
+	}
+
+	public void setProductId(Long productId) {
+		this.productId = productId;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 }

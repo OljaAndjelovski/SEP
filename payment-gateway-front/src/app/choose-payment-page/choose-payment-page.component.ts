@@ -88,8 +88,8 @@ export class ChoosePaymentPageComponent implements OnInit, AfterViewChecked {
       buyerEmail : "dsada",
       buyerName : "dsada",
       buyerSurname : "dsada",
-      payerId : "dsada",
-      productId : "dasdas",
+      payerId : "dsad",
+      productId : 2,
       username : "dsdad"
     };
 

@@ -1,13 +1,13 @@
 package com.ftn.uns.payment_gateway.paypal;
 
-import org.springframework.boot.json.JsonParser;
-import org.springframework.boot.json.JsonParserFactory;
-import org.springframework.http.*;
-import org.springframework.web.client.RestTemplate;
-
-import javax.xml.ws.Response;
 import java.util.Arrays;
-import java.util.Map;
+
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestTemplate;
 
 public class CurrencyConverter {
 

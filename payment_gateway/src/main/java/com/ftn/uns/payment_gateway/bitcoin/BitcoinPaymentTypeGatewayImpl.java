@@ -1,8 +1,9 @@
 package com.ftn.uns.payment_gateway.bitcoin;
 
+import java.sql.Timestamp;
 import java.util.Arrays;
 
-import com.ftn.uns.payment_gateway.paypal.CurrencyConverter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -13,37 +14,46 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.ftn.uns.payment_gateway.model.Order;
+import com.ftn.uns.payment_gateway.paypal.CurrencyConverter;
+import com.ftn.uns.payment_gateway.service.MagazineService;
+import com.ftn.uns.payment_gateway.service.OrderService;
 import com.ftn.uns.payment_gateway.service.PaymentTypeGateway;
 
 @Service
 public class BitcoinPaymentTypeGatewayImpl implements PaymentTypeGateway {
 
+	@Autowired
+	private MagazineService magazineService;
+	
+	@Autowired
+	private OrderService orderService;
+	
 	@Override
 	public String createOrder(Order o) {
-		System.out.println("STARTED BITCOIN SERVICE");
+		System.out.println("\n --- BITCOIN SERVICE ---");
 		System.out.println(o.toString());
 
+		
 		Double ex = CurrencyConverter.excangeRate(o.getCurrency(), "EUR");
 
 		System.out.println("\n ***** " + ex + " CREATE ORDER:  " + "\n");
 		OrderBitcoinDto order = new OrderBitcoinDto();
-		// order.setDescription(orderProduct.getDescription());
-		order.setMerchantId("ID MAGAZINA"); // Ovde ce ici
-		order.setTitle("Title");
-		order.setPrice_amount(o.getPrice()*ex); // Mora da se pazi na cenu
-		order.setOrder_id(o.getMerchantOrderId());
-		System.out.println("MERCHANT ORDER ID " + o.getMerchantOrderId());
-		order.setPrice_currency("EUR"); // Valuta u kojoj placa ne sme RSD ili cemo konvertovati
-		order.setReceive_currency("USD"); // Valuta u kojoj zelim da dobijem
-		order.setCancel_url("https://localhost:4200/#/error"); // ako korisnik odustane
+		order.setTitle(o.getMerchandise());
+		order.setMerchantId(o.getMerchantId());
+		order.setPrice_amount(o.getPrice()*ex); // pazi na cenu
+		order.setPrice_currency("EUR");
+		order.setReceive_currency("USD");
+		order.setCancel_url("https://localhost:4200/#/error");
 		order.setSuccess_url("https://localhost:4200/#/success");
-		order.setToken("Q-smRAh_a6nF-NVXJarEt48YyHtNag1iX-__bZwx");
-
+		order.setToken(magazineService.findTokenForBitcoin(o.getMagazine()));
+		//order.setToken("Q-smRAh_a6nF-NVXJarEt48YyHtNag1iX-__bZwx"); // Ovde ide od magazina token
+		
 		String url = "https://api-sandbox.coingate.com/v2/orders";
 
 		// set up the basic authentication header
-		String authorizationHeader = "Bearer Q-smRAh_a6nF-NVXJarEt48YyHtNag1iX-__bZwx";
-
+		//String authorizationHeader = "Bearer Q-smRAh_a6nF-NVXJarEt48YyHtNag1iX-__bZwx";
+		String authorizationHeader = "Bearer "+ order.getToken();
+		
 		// setting up the request headers
 		HttpHeaders requestHeaders = new HttpHeaders();
 		requestHeaders.setContentType(MediaType.APPLICATION_JSON);
@@ -61,8 +71,11 @@ public class BitcoinPaymentTypeGatewayImpl implements PaymentTypeGateway {
 		if (responseEntity.getStatusCode() == HttpStatus.OK) {
 			responseOrder = responseEntity.getBody();
 			System.out.println(Integer.valueOf(responseEntity.getBody().getId()));
-
+			//o.setMerchantTimestamp(Timestamp.parse(responseEntity.getBody().getCreated_at())); // parse timestamp
 			o.setMerchantOrderId(responseEntity.getBody().getId());
+			o.setMerchantPassword(magazineService.findMerchantPassword(o.getMagazine()));
+			o.setIdBitcoin(Integer.parseInt(responseEntity.getBody().getId()));
+			orderService.createOrderBitcoin(o);
 			return responseOrder.getPayment_url() + "," + Integer.valueOf(responseEntity.getBody().getId());
 		}
 
