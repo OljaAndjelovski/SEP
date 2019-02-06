@@ -54,6 +54,7 @@ public class BitcoinController {
 		order.setPrice(bitcoinDto.getPrice());
 		order.setQuantity(bitcoinDto.getQuantity());
 		order.setType(PaymentType.BITCOIN);
+		System.out.println("Merchant id " + bitcoinDto.getMerchantId());
 		order.setMerchantOrderId(bitcoinDto.getMerchantId());
 		orderService.createOrder(order);
 
@@ -65,7 +66,7 @@ public class BitcoinController {
 		String status = "\"" + split[0] + "\"";
 
 		System.out.println("****" + status);
-		bitcoinService.setOrderBitcoinId(bitcoinDto.getMerchantId(), Integer.valueOf(split[1]));
+		bitcoinService.setOrderBitcoinId(order.getMerchantOrderId(), Integer.valueOf(split[1]));
 
 		return status;
 

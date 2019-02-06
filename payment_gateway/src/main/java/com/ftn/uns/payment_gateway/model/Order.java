@@ -55,6 +55,8 @@ public class Order {
 
 	private String merchantId;
 
+	private String productId;
+
 	// Dodala sam polje status jer mi to vraca btc - paid, pending...
 	private Integer idBitcoin;
 	private String status;
@@ -103,6 +105,14 @@ public class Order {
 
 	public void setMerchantTimestamp(LocalDateTime merchantTimestamp) {
 		this.merchantTimestamp = merchantTimestamp;
+	}
+
+	public String getOrderId() {
+		return productId;
+	}
+
+	public void setOrderId(String orderId) {
+		this.productId = orderId;
 	}
 
 	public String getPayerId() {

@@ -25,9 +25,11 @@ public class BitcoinService {
 
 	public void setOrderBitcoinId(String id, Integer idBitcoin) {
 		Order o = orderRepository.findById(id).orElse(null);
-		System.out.println(o.getMerchantOrderId());
+		if(o!=null) {
+		System.out.println("\n\n UOP"+idBitcoin);
 		o.setIdBitcoin(idBitcoin);
 		orderRepository.save(o);
+		}
 	}
 
 	@Scheduled(fixedRate = 30000)

@@ -83,7 +83,13 @@ export class ChoosePaymentPageComponent implements OnInit, AfterViewChecked {
       quantity: 1,
       price: 42175,
       currency: "RSD",
-      merchantId: "xxWWyyZZ"
+      merchantId: "xxWWyyZZ",
+      type : "dsada",
+      buyerEmail : "dsada",
+      buyerName : "dsada",
+      buyerSurname : "dsada",
+      payerId : "dsada",
+      productId : "dasdas"
     };
 
     this.order = new Order("-1", Date.now(), "1234ABCD", "", 0, "CreditCard", "");
@@ -104,14 +110,42 @@ export class ChoosePaymentPageComponent implements OnInit, AfterViewChecked {
       }
     ]
 
+
+    /*
+
+      name: "Default magazine",
+      description: "This is a default magazine, only present in development mode",
+      quantity: 1,
+      price: 42175,
+      currency: "RSD",
+      merchantId: "xxWWyyZZ",
+      type: "dsads",
+      buyerEmail : "dsada",
+      buyerName : "dsada",
+      buyerSurname : "dsada",
+      payerId : "dsada"
+
+    */
     this.http.get<any>("https://localhost:8080/sessions/" + parts[parts.length-1])
       .subscribe((data) => {
+        alert(JSON.stringify(data))
         this.merchandise.name = data.merchandise;
+        this.merchandise.description = data.description;
+        this.merchandise.quantity = data.quantity;
         this.merchandise.price = data.price;
         this.merchandise.currency = data.currency;
         this.merchandise.merchantId = data.issn;
-        this.order.payerId = data.username;
+        this.merchandise.type = data.type;
+        this.merchandise.buyerEmail = data.buyerEmail;
+        this.merchandise.buyerName = data.buyerName;
+        this.merchandise.buyerSurname = data.buyerSurname;
+        this.merchandise.payerId = data.payerId;
+        this.merchandise.productId = data.productId;
 
+        alert(Merchandise)
+        this.order.payerId = data.username;
+        
+        alert(JSON.stringify(this.merchandise))
     this.paymentService.getTypesOfMagazine(this.merchandise.merchantId).subscribe(
        (data) => {
          this.paymentTypes = data;

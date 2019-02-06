@@ -67,7 +67,13 @@ export class SubscribeComponent implements OnInit, AfterViewChecked {
       quantity: 1,
       price: 42175,
       currency: "RSD",
-      merchantId: "xxWWyyZZ"
+      merchantId: "xxWWyyZZ",
+      type: "dsads",
+      buyerEmail : "dsada",
+      buyerName : "dsada",
+      buyerSurname : "dsada",
+      payerId : "dsada",
+      productId : "dsada"
     };
 
     this.order = new Order("-1", Date.now(), "1234ABCD", "", 0, "CreditCard", "");
