@@ -89,7 +89,8 @@ export class ChoosePaymentPageComponent implements OnInit, AfterViewChecked {
       buyerName : "dsada",
       buyerSurname : "dsada",
       payerId : "dsada",
-      productId : "dasdas"
+      productId : "dasdas",
+      username : "dsdad"
     };
 
     this.order = new Order("-1", Date.now(), "1234ABCD", "", 0, "CreditCard", "");
@@ -141,6 +142,7 @@ export class ChoosePaymentPageComponent implements OnInit, AfterViewChecked {
         this.merchandise.buyerSurname = data.buyerSurname;
         this.merchandise.payerId = data.payerId;
         this.merchandise.productId = data.productId;
+        this.merchandise.username = data.username
 
         alert(Merchandise)
         this.order.payerId = data.username;
