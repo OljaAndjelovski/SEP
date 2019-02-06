@@ -24,10 +24,11 @@ public class Session implements Serializable {
 	private LocalDateTime timestamp;
 	private String buyerSurname;
 	private String buyerName;
-	private String buyerEmail; 
-	private String payerId; 
-	private String type; 
-	private String productId; 
+	private String buyerEmail;
+	private String payerId;
+	private String type;
+	private String productId;
+	private Integer quantity;
 	//
 
 	@Id
@@ -110,6 +111,14 @@ public class Session implements Serializable {
 
 	public String getProductId() {
 		return productId;
+	}
+
+	public Integer getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(Integer quantity) {
+		this.quantity = quantity;
 	}
 
 	public void setProductId(String productId) {
