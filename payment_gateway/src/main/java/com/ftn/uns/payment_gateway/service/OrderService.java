@@ -1,8 +1,12 @@
 package com.ftn.uns.payment_gateway.service;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -46,12 +50,19 @@ public class OrderService {
 
 	public String createOrder(Order order) {
 
-		order.setMerchantTimestamp(LocalDateTime.now());
 		order.setExecuted(null);
 		order.setStatus("new");
-//		order = orderRepository.save(order);
+		order.setProductType("paper");
 
-		return createOrderService(order);
+		String orderResponse =  createOrderService(order);
+		Gson gson = new Gson();
+		Map<String, String> responseMap = (Map<String, String>) gson.fromJson(orderResponse, Map.class);
+		order.setMerchantOrderId(responseMap.get("id"));
+		order.setStatus(responseMap.get("state"));
+		order.setMerchantTimestamp(OffsetDateTime.parse(responseMap.get("create_time")).toLocalDateTime());
+		orderRepository.save(order);
+
+		return orderResponse;
 	}
 
 	public String updateOrder(Order order) {
@@ -78,12 +89,13 @@ public class OrderService {
 	public Order createOrderBitcoin(Order o) {
 		 return orderRepository.save(o);
 	}
+
 	private String createOrderService(Order order) {
 		PaymentTypeGateway gateway = paymentTypeGatewayFactory.getGateway(order.getType());
 
 		try {
 			String retVal = gateway.createOrder(order);
-			orderRepository.save(order);
+
 			return retVal;
 		} catch (Exception e) {
 			return null;
@@ -94,9 +106,17 @@ public class OrderService {
 		PaymentTypeGateway gateway = paymentTypeGatewayFactory.getGateway(order.getType());
 		try {
 			String retVal = gateway.executeOrder(order);
+
+			Gson gson = new Gson();
+			Map<String, String> responseMap = (Map<String, String>) gson.fromJson(retVal, Map.class);
+
 			Order dbOrder = orderRepository.getOne(order.getMerchantOrderId());
 			dbOrder.setExecuted(true);
+			dbOrder.setStatus(responseMap.get("state"));
+			dbOrder.setBuyerEmail(responseMap.get("buyer_email"));
+
 			orderRepository.save(dbOrder);
+
 			return retVal;
 		} catch (Exception e) {
 			return null;
@@ -106,7 +126,7 @@ public class OrderService {
 	public List<Order> getFromUser(String username) {
 		ArrayList<Order> orders = new ArrayList<Order>();
 		for (Order o : orderRepository.findAll()) {
-			if (o.getBuyerEmail().equals(username) && o.getExecuted()==true) {
+			if (o.getPayerId().equals(username) && o.getExecuted()==true) {
 				orders.add(o);
 			}
 		}

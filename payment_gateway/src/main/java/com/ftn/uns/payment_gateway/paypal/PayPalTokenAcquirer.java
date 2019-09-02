@@ -78,8 +78,7 @@ public class PayPalTokenAcquirer {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-        headers.set("Authorization", "Basic " + Base64.getEncoder().encodeToString(
-                String.format("%s:%s", client, password).getBytes()));
+        headers.setBasicAuth(client, password);
 
         HttpEntity<String> entity = new HttpEntity<>(null, headers);
         String jsonResponse = restTemplate.postForObject(paypalAPI, entity, String.class);

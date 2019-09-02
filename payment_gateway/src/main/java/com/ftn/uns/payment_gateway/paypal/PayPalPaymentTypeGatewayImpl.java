@@ -24,7 +24,7 @@ public class PayPalPaymentTypeGatewayImpl implements PaymentTypeGateway {
 
     @Override
     public String createOrder(Order o) {
-        Double total = o.getPrice() * CurrencyConverter.excangeRate(o.getCurrency(), "EUR") /*+ o.getQuantity()*/;
+        Double total = o.getPrice() * CurrencyConverter.excangeRate(o.getCurrency(), "EUR") * o.getQuantity();
 
         RestTemplate restTemplate = new RestTemplate();
         DecimalFormat df = new DecimalFormat("#.##");

@@ -31,8 +31,9 @@ export class ChoosePaymentPageComponent implements OnInit, AfterViewChecked {
         method: 'POST',
         json: {
           merchantOrderId: null,
-          payerId: this.order.payerId,
+          payerId: this.merchandise.buyerEmail,
           merchantId: this.merchandise.merchantId,
+          quantity: this.merchandise.quantity,
           amount: this.merchandise.price,
           currency: this.merchandise.currency,
           type: "PAY_PAL",
@@ -54,8 +55,8 @@ export class ChoosePaymentPageComponent implements OnInit, AfterViewChecked {
           merchantOrderId: data.paymentID,
           payerId: data.payerID,
           merchantId: this.merchandise.merchantId,
-          type: "PAY_PAL"/*,
-          amount: 1*/
+          type: "PAY_PAL",
+          amount: this.merchandise.quantity
         },
         contentType: 'application/json'
       })
@@ -69,7 +70,6 @@ export class ChoosePaymentPageComponent implements OnInit, AfterViewChecked {
   constructor(
     private router: Router,
     private http: HttpClient,
-    // private modalService: NgbModal
     private paymentService: PaymentDetailsService
   ) {
     this.headers = new HttpHeaders();
@@ -111,25 +111,9 @@ export class ChoosePaymentPageComponent implements OnInit, AfterViewChecked {
       }
     ]
 
-
-    /*
-
-      name: "Default magazine",
-      description: "This is a default magazine, only present in development mode",
-      quantity: 1,
-      price: 42175,
-      currency: "RSD",
-      merchantId: "xxWWyyZZ",
-      type: "dsads",
-      buyerEmail : "dsada",
-      buyerName : "dsada",
-      buyerSurname : "dsada",
-      payerId : "dsada"
-
-    */
     this.http.get<any>("https://localhost:8080/sessions/" + parts[parts.length-1])
       .subscribe((data) => {
-        alert(JSON.stringify(data))
+
         this.merchandise.name = data.merchandise;
         this.merchandise.description = data.description;
         this.merchandise.quantity = data.quantity;
@@ -143,16 +127,12 @@ export class ChoosePaymentPageComponent implements OnInit, AfterViewChecked {
         this.merchandise.payerId = data.payerId;
         this.merchandise.productId = data.productId;
         this.merchandise.username = data.username
-
-        alert(Merchandise)
-        this.order.payerId = data.username;
         
-        alert(JSON.stringify(this.merchandise))
-    this.paymentService.getTypesOfMagazine(this.merchandise.merchantId).subscribe(
-       (data) => {
-         this.paymentTypes = data;
-       }
-     );
+        this.paymentService.getTypesOfMagazine(this.merchandise.merchantId).subscribe(
+          (data) => {
+            this.paymentTypes = data;
+          }
+        );
    });
   }
 
