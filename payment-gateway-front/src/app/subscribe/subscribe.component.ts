@@ -36,7 +36,7 @@ export class SubscribeComponent implements OnInit, AfterViewChecked {
 
       // 2. Make a request to your server
       return actions.request({
-        url: "https://localhost:8080/api/subscribe//execute",
+        url: "https://localhost:8080/api/subscribe/execute",
         method: "PUT",
         json: {
           merchantOrderId: data.paymentID,

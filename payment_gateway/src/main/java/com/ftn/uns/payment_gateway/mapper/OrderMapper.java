@@ -29,6 +29,7 @@ public class OrderMapper {
 		dto.setType(order.getType());
 		dto.setCurrency(order.getCurrency());
 		dto.setMerchandise(order.getMerchandise());
+		dto.setQuantity(order.getQuantity());
 
 		return dto;
 	}
@@ -44,6 +45,7 @@ public class OrderMapper {
 		order.setType(dto.getType());
 		order.setCurrency(dto.getCurrency());
 		order.setMerchandise(dto.getMerchandise());
+		order.setQuantity(dto.getQuantity());
 
 		return order;
 	}

@@ -53,7 +53,8 @@ public class OrderController {
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> createOrder(@RequestBody OrderDto dto) {
 		logger.info("\n\t\tUspešno kreirana porudžbina.\n");
-		return ResponseEntity.ok(orderService.createOrder(mapper.mapFromDTO(dto)));
+		String orderResponse = orderService.createOrder(mapper.mapFromDTO(dto));
+		return ResponseEntity.ok(orderResponse);
 	}
 
 	@PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

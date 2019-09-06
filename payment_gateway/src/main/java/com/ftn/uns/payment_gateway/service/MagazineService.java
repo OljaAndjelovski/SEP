@@ -11,7 +11,6 @@ import com.ftn.uns.payment_gateway.model.Magazine;
 import com.ftn.uns.payment_gateway.model.PaymentServiceDetails;
 import com.ftn.uns.payment_gateway.model.PaymentType;
 import com.ftn.uns.payment_gateway.repository.MagazineRepository;
-import com.ftn.uns.payment_gateway.repository.PaymentServiceDetailsRepository;
 
 @Service
 public class MagazineService {
@@ -21,9 +20,6 @@ public class MagazineService {
 
 	@Autowired
 	private MagazineMapper magazineMapper;
-
-	@Autowired
-	private PaymentServiceDetailsRepository paymentServiceDetailsRepository;
 
 	@Autowired
 	private PaymentDetailsService paymentDetailsService;

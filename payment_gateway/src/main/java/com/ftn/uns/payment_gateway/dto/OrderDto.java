@@ -24,11 +24,13 @@ public class OrderDto {
 
 	private String merchandise;
 
+	private Integer quantity;
+
 	public OrderDto() {
 	}
 
 	public OrderDto(String merchantOrderId, LocalDateTime merchantTimestamp, String payerId, String merchantId,
-			Double amount, PaymentType type, String currency, String merchandise) {
+			Double amount, PaymentType type, String currency, String merchandise, Integer quantity) {
 		this.merchantOrderId = merchantOrderId;
 		this.merchantTimestamp = merchantTimestamp;
 		this.payerId = payerId;
@@ -37,6 +39,7 @@ public class OrderDto {
 		this.type = type;
 		this.currency = currency;
 		this.merchandise = merchandise;
+		this.quantity = quantity;
 	}
 
 	public String getMerchandise() {
@@ -110,5 +113,13 @@ public class OrderDto {
 	public void setCurrency(String currency) {
 		this.currency = currency;
 
+	}
+
+	public Integer getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(Integer quantity) {
+		this.quantity = quantity;
 	}
 }
