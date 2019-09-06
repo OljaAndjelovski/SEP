@@ -126,7 +126,7 @@ public class OrderService {
 	public List<Order> getFromUser(String username) {
 		ArrayList<Order> orders = new ArrayList<Order>();
 		for (Order o : orderRepository.findAll()) {
-			if (o.getPayerId().equals(username) && o.getExecuted()==true) {
+			if (o.getPayerId().equals(username) && o.getExecuted() != null && o.getExecuted()) {
 				orders.add(o);
 			}
 		}

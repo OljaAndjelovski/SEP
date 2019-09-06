@@ -1,6 +1,5 @@
 package com.ftn.uns.payment_gateway.paypal;
 
-import com.ftn.uns.payment_gateway.model.Magazine;
 import com.ftn.uns.payment_gateway.model.Order;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -38,7 +37,7 @@ public class PayPalBillingPlanService {
                 "\"frequency_interval\": \"1\"," +
                 "\"cycles\": \"12\"," +
                 "\"amount\": {" +
-                "\"value\": \"" + df.format(total) +"\", \"currency\": \"EUR\"" +
+                "\"value\": \"" + df.format(total) + "\", \"currency\": \"EUR\"" +
                 "}}]," +
                 "\"merchant_preferences\": {" +
                 "\"return_url\": \"https://localhost:4200/#/confirm?magazine=" + order.getMagazine().getIssn() + "\"," +
@@ -55,10 +54,10 @@ public class PayPalBillingPlanService {
         return retVal;
     }
 
-    public String activatePlan(String planID, String issn){
+    public String activatePlan(String planID, String issn) {
         HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory();
         RestTemplate restTemplate = new RestTemplate(requestFactory);
-        String paypalAPI = "https://api.sandbox.paypal.com/v1/payments/billing-plans/"+planID;
+        String paypalAPI = "https://api.sandbox.paypal.com/v1/payments/billing-plans/" + planID;
         String defJson = "[{\n" +
                 "\"op\": \"replace\"," +
                 "\"path\": \"/\"," +
@@ -75,5 +74,19 @@ public class PayPalBillingPlanService {
 
         ResponseEntity<String> response = restTemplate.exchange(paypalAPI, HttpMethod.PATCH, entity, String.class);
         return response.getBody();
+    }
+
+    public String getPlan(String planID, String issn) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.set("Authorization", "Bearer " + acquirer.acquireAccessToken(issn));
+
+        HttpEntity<String> entity = new HttpEntity<String>(null, headers);
+        String paypalAPI = "https://api.sandbox.paypal.com/v1/payments/billing-plans/" + planID;
+
+        RestTemplate restTemplate = new RestTemplate();
+        String retVal = restTemplate.exchange(paypalAPI, HttpMethod.GET, entity, String.class).getBody();
+
+        return retVal;
     }
 }

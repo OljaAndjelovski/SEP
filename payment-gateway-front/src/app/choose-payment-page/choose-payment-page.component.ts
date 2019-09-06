@@ -19,7 +19,7 @@ export class ChoosePaymentPageComponent implements OnInit, AfterViewChecked {
   paypalLoad: boolean = true;
   merchandise: Merchandise;
   order: Order;
-  paymentTypes: any[];
+  paymentTypes: any[] = [];
   headers: HttpHeaders;
 
   paypalConfig = {

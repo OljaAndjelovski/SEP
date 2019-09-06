@@ -1,6 +1,7 @@
 package com.ftn.uns.payment_gateway.service;
 
 import com.ftn.uns.payment_gateway.model.Order;
+import com.ftn.uns.payment_gateway.model.PaymentType;
 import com.ftn.uns.payment_gateway.paypal.PayPalBillingAgreementService;
 import com.ftn.uns.payment_gateway.paypal.PayPalBillingPlanService;
 import com.ftn.uns.payment_gateway.repository.OrderRepository;
@@ -28,6 +29,7 @@ public class SubscribeService {
         if (planID != null) {
             order.setMerchantOrderId(planID);
             order.setMerchantTimestamp(LocalDateTime.now());
+            order.setType(PaymentType.PAY_PAL);
             String retVal = createAgreement(order, planID);
             orderRepository.save(order);
             return retVal;
@@ -66,6 +68,15 @@ public class SubscribeService {
                 orderRepository.save(order);
             }
             return retVal;
+        }catch (Exception e){
+            return null;
+        }
+    }
+
+    public String checkSubscribtion(String planID) {
+        try{
+            Order order = orderRepository.getOne(planID);
+            return billingPlanService.getPlan(planID, order.getMagazine().getIssn());
         }catch (Exception e){
             return null;
         }
